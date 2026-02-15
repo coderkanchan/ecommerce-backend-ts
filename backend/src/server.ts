@@ -1,3 +1,5 @@
+import cors from 'cors';
+//import * as cors from 'cors';
 import path from 'path';
 import uploadRoutes from './routes/uploadRoutes.js';
 import express, { Request, Response } from 'express';
@@ -7,10 +9,16 @@ import productRoutes from './routes/productRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 
-
 dotenv.config();
 connectDB();
+
 const app = express();
+
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
+
 app.use(express.json());
 
 const __dirname = path.resolve();
@@ -29,6 +37,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 
 app.use('/api/orders', orderRoutes);
+
 
 app.listen(PORT, () => {
   console.log(`🚀 Server started on http://localhost:${PORT}`);
