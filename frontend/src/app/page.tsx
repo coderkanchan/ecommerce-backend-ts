@@ -97,7 +97,7 @@ export default function Home() {
           <div key={product._id} className="group border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition bg-white">
             <div className="h-64 overflow-hidden">
               <img
-                src={product.image.startsWith('http') ? product.image : `http://localhost:5000${product.imageUrl}`}
+                src={product.imageUrl.startsWith('http') ? product.imageUrl : `http://localhost:5000${product.imageUrl}`}
                 alt={product.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
               />
