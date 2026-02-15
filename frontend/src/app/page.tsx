@@ -67,6 +67,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import API from '@/services/api';
+import Link from 'next/link';
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -96,11 +97,26 @@ export default function Home() {
         {products.map((product: any) => (
           <div key={product._id} className="group border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition bg-white">
             <div className="h-64 overflow-hidden">
-              <img
+              {/* <img
                 src={product.imageUrl.startsWith('http') ? product.imageUrl : `http://localhost:5000${product.imageUrl}`}
                 alt={product.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+              /> */}
+              <img
+                // imageUrl backend se aa raha hai, use check karein
+                src={product.imageUrl && product.imageUrl.startsWith('http')
+                  ? product.imageUrl
+                  : `http://localhost:5000${product.imageUrl}`}
+                alt={product.name}
+                // isse image card mein fit ho jayegi
+                className="w-full h-full object-contain p-4 group-hover:scale-105 transition duration-300"
               />
+              // Map ke andar card ko wrap karein
+              <Link href={`/product/${product._id}`} key={product._id}>
+                <div className="group border ...">
+                  {/* Aapka purana card code yahan */}
+                </div>
+              </Link>
             </div>
             <div className="p-4">
               <h2 className="font-semibold text-lg text-gray-900 truncate">{product.name}</h2>
