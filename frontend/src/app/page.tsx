@@ -76,7 +76,7 @@ export default function Home() {
     const getProducts = async () => {
       try {
         const { data } = await API.get('/products/all');
-        setProducts(data);
+        setProducts(data.products);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -97,7 +97,7 @@ export default function Home() {
           <div key={product._id} className="group border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition bg-white">
             <div className="h-64 overflow-hidden">
               <img
-                src={product.image.startsWith('http') ? product.image : `http://localhost:5000${product.image}`}
+                src={product.image.startsWith('http') ? product.image : `http://localhost:5000${product.imageUrl}`}
                 alt={product.name}
                 className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
               />
