@@ -1,5 +1,5 @@
 import cors from 'cors';
-//import * as cors from 'cors';
+import cookieParser from 'cookie-parser';
 import path from 'path';
 import uploadRoutes from './routes/uploadRoutes.js';
 import express, { Request, Response } from 'express';
@@ -13,6 +13,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
+app.use(cookieParser());
 
 app.use(cors({
   origin: 'http://localhost:3000',

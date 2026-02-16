@@ -8,32 +8,16 @@ export default function Signup() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const router = useRouter();
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   try {
-  //     await API.post('/auth/register', formData);
-  //     alert("Account created successfully! Please login.");
-  //     router.push('/login');
-  //   } catch (error: any) {
-  //     alert(error.response?.data?.message || "Signup failed");
-  //   }
-  // };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const { data } = await API.post('/auth/register', formData);
-
       localStorage.setItem('userInfo', JSON.stringify(data));
-
-      alert("Account created successfully! Welcome to NexusMart.");
-
+      alert("Signup Successful & Logging In!");
       router.push('/');
-
       window.location.reload();
-
     } catch (error: any) {
-      alert(error.response?.data?.message || "Signup failed");
+      alert(error.response?.data?.message || "Error");
     }
   };
 
