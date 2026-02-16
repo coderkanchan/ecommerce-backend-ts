@@ -1,9 +1,12 @@
 "use client";
+import { useDispatch } from 'react-redux';
+import { addToCart } from '@/redux/slices/cartSlice';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import API from '@/services/api';
 
 export default function ProductDetails() {
+  const dispatch = useDispatch();
   const { id } = useParams();
   const [product, setProduct] = useState<any>(null);
 
@@ -19,6 +22,16 @@ export default function ProductDetails() {
     if (id) getProduct();
   }, [id]);
 
+  const handleAddToCart = () => {
+    dispatch(addToCart({
+      _id: product._id,
+      name: product.name,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      qty: 1
+    }));
+  };
+
   if (!product) return <div className="p-10 text-center">Loading details...</div>;
 
   return (
@@ -30,7 +43,9 @@ export default function ProductDetails() {
         <h1 className="text-4xl font-bold text-white">{product.name}</h1>
         <p className="text-2xl text-blue-400 font-bold">${product.price}</p>
         <p className="text-gray-400 leading-relaxed">{product.description}</p>
-        <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700">
+        <button
+          onClick={handleAddToCart}
+          className="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700">
           Add to Cart
         </button>
       </div>
