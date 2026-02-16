@@ -35,8 +35,9 @@
 
 
 
-import Navbar from '@/components/Navbar'; 
+import Navbar from '@/components/Navbar';
 import './globals.css';
+import { ReduxProvider } from "@/redux/ReduxProvider";
 
 export default function RootLayout({
   children,
@@ -46,8 +47,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navbar /> 
-        <main>{children}</main>
+        <ReduxProvider>
+          <Navbar />
+          <main>{children}</main>
+        </ReduxProvider>
       </body>
     </html>
   );
