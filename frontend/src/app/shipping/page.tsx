@@ -1,15 +1,15 @@
 "use client";
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import  { saveShippingAddress }  from '@/redux/slices/cartSlice';
+import { saveShippingAddress } from '@/redux/slices/cartSlice';
 import { useRouter } from 'next/navigation';
 import { RootState } from '@/redux/store';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function ShippingPage() {
-  const  { shippingAddress } = useSelector((state: RootState) => state.cart);
-  const [address, setAddress] = useState('');
-  const [city, setCity] = useState('');
+  const { shippingAddress } = useSelector((state: RootState) => state.cart);
+  const [address, setAddress] = useState(shippingAddress.address || '');
+  const [city, setCity] = useState(shippingAddress.city || '');
 
   const dispatch = useDispatch();
   const router = useRouter();
