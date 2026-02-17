@@ -60,9 +60,6 @@ export default function CartPage() {
           <div className="bg-gray-900 p-6 rounded-xl border border-gray-800 h-fit">
             <h2 className="text-xl font-bold mb-4">Subtotal ({cartItems.length} items)</h2>
             <p className="text-2xl font-bold text-blue-500 mb-6">${totalAmount.toFixed(2)}</p>
-            <button className="w-full bg-yellow-500 text-black py-4 rounded-full font-bold hover:bg-yellow-600 transition">
-              Proceed to Checkout
-            </button>
 
             <button
               onClick={checkoutHandler}

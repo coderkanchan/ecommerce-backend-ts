@@ -3,10 +3,12 @@ import { useDispatch } from 'react-redux';
 import { addToCart } from '@/redux/slices/cartSlice';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import API from '@/services/api';
 
 export default function ProductDetails() {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { id } = useParams();
   const [product, setProduct] = useState<any>(null);
 
@@ -32,6 +34,18 @@ export default function ProductDetails() {
     }));
   };
 
+  const handleBuyNow = () => {
+    dispatch(addToCart({
+      _id: product._id,
+      name: product.name,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      qty: Number(qty)
+    }));
+
+    router.push('/shipping');
+  };
+
   if (!product) return <div className="p-10 text-center">Loading details...</div>;
 
   return (
@@ -47,6 +61,13 @@ export default function ProductDetails() {
           onClick={handleAddToCart}
           className="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700">
           Add to Cart
+        </button>
+
+        <button
+          onClick={handleBuyNow}
+          className="w-full bg-orange-500 text-white py-4 rounded-full font-bold hover:bg-orange-600 transition shadow-lg"
+        >
+          Buy Now ⚡
         </button>
       </div>
     </div>
