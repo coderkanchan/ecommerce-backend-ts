@@ -1,6 +1,6 @@
 import { User } from './models/User.js';
 import { Product } from './models/Product.js';
-import { products } from './data/products'; 
+import { products } from './data/products.js'; 
 import connectDB from './config/db.js';
 
 connectDB();
