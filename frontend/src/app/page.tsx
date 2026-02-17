@@ -36,7 +36,8 @@ export default function Home() {
               <img
                 src={product.imageUrl && product.imageUrl.startsWith('http')
                   ? product.imageUrl
-                  : `http://localhost:5000${product.imageUrl}`}
+                  : `http://localhost:5000${product.imageUrl}
+                  `}
                 alt={product.name}
                 className="w-full h-full object-contain p-4 group-hover:scale-105 transition duration-300"
                 onError={(e) => { e.currentTarget.src = "https://via.placeholder.com/300?text=No+Image+Found" }}

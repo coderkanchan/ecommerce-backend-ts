@@ -9,7 +9,12 @@ import { ShoppingCart, User, Search, Menu } from 'lucide-react';
 
 export default function Navbar() {
   const [user, setUser] = useState<any>(null);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const { cartItems } = useSelector((state: RootState) => state.cart);
 
@@ -55,9 +60,11 @@ export default function Navbar() {
 
             <Link href="/cart" className="relative hover:text-blue-600">
               <span className="text-2xl"><ShoppingCart /></span>
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
-                {cartCount}
-              </span>
+              {mounted && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                  {cartCount}
+                </span>
+              )}
             </Link>
 
             <Link href="/login" className="text-gray-600 hover:text-blue-600">
