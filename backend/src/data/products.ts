@@ -1,8 +1,9 @@
 const products = [
   {
-    "name": "Professional Laptop",
-    imageUrl: "https://example.com/laptop.jpg",
+    name: "Professional Laptop",
+    imageUrl: "https://images.unsplash.com/photo-1569770218135-bea267ed7e84?q=80&",
     description: "High performance laptop for developers",
+    brand: 'Apple',
     price: 999,
     category: "Electronics",
     countInStock: 10,
