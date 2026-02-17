@@ -1,5 +1,15 @@
 const products = [
   {
+    "name": "Professional Laptop",
+    imageUrl: "https://example.com/laptop.jpg",
+    description: "High performance laptop for developers",
+    price: 999,
+    category: "Electronics",
+    countInStock: 10,
+    rating: 4.1,
+    numReviews: 8,
+  },
+  {
     name: 'Airpods Wireless Bluetooth Headphones',
     imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500',
     description: 'Bluetooth technology lets you connect it with compatible devices wirelessly',
