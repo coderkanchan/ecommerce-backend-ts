@@ -1,14 +1,25 @@
 "use client";
 import { useSelector, useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
 import { RootState } from '@/redux/store';
 import { removeFromCart, addToCart } from '@/redux/slices/cartSlice';
 import Link from 'next/link';
 
 export default function CartPage() {
+  const router = useRouter();
   const { cartItems } = useSelector((state: RootState) => state.cart);
+  const { userInfo } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 
   const totalAmount = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
+
+  const checkoutHandler = () => {
+    if (!userInfo) {
+      router.push('/login?redirect=shipping');
+    } else {
+      router.push('/shipping');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white p-8">
@@ -50,6 +61,13 @@ export default function CartPage() {
             <h2 className="text-xl font-bold mb-4">Subtotal ({cartItems.length} items)</h2>
             <p className="text-2xl font-bold text-blue-500 mb-6">${totalAmount.toFixed(2)}</p>
             <button className="w-full bg-yellow-500 text-black py-4 rounded-full font-bold hover:bg-yellow-600 transition">
+              Proceed to Checkout
+            </button>
+
+            <button
+              onClick={checkoutHandler}
+              className="w-full bg-yellow-500 text-black py-4 rounded-full font-bold hover:bg-yellow-600 transition"
+            >
               Proceed to Checkout
             </button>
           </div>
