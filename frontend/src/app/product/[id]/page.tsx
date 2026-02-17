@@ -11,6 +11,7 @@ export default function ProductDetails() {
   const router = useRouter();
   const { id } = useParams();
   const [product, setProduct] = useState<any>(null);
+  const [qty, setQty] = useState(1);
 
   useEffect(() => {
     const getProduct = async () => {
