@@ -1,12 +1,19 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation'; import React from 'react';
+import { useRouter } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import React from 'react';
 import Link from 'next/link';
 import { ShoppingCart, User, Search, Menu } from 'lucide-react';
 
 export default function Navbar() {
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
+
+  const { cartItems } = useSelector((state: RootState) => state.cart);
+
+  const cartCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
 
   useEffect(() => {
     const userInfo = localStorage.getItem('userInfo');
@@ -45,18 +52,22 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <Link href="/cart" className="text-gray-600 hover:text-blue-600 relative">
-              <ShoppingCart size={24} />
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                0
+
+            <Link href="/cart" className="relative hover:text-blue-600">
+              <span className="text-2xl"><ShoppingCart /></span>
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                {cartCount}
               </span>
             </Link>
+
             <Link href="/login" className="text-gray-600 hover:text-blue-600">
               <User size={24} />
             </Link>
-            <button className="md:hidden text-gray-600">
+
+            <button className="md:hidden text-white ">
               <Menu size={24} />
             </button>
+
           </div>
 
           <div className="space-x-6 flex items-center">
@@ -73,7 +84,9 @@ export default function Navbar() {
             ) : (
               <>
                 <Link href="/login" className="text-white hover:text-blue-400">Login</Link>
+
                 <Link href="/signup" className="bg-blue-600 px-4 py-2 rounded-lg text-white hover:bg-blue-700">Signup</Link>
+
               </>
             )}
           </div>
