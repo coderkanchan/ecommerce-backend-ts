@@ -2,20 +2,24 @@
 import { useState } from 'react';
 import API from '@/services/api';
 import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux'; 
+import { setCredentials } from '@/redux/slices/authSlice'; 
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const { data } = await API.post('/auth/login', formData);
+      dispatch(setCredentials(data));
       localStorage.setItem('userInfo', JSON.stringify(data));
 
       alert("Welcome back! Login Successful.");
       router.push('/');
-      window.location.reload();
+      
     } catch (error: any) {
       alert(error.response?.data?.message || "Login failed");
     }
