@@ -13,6 +13,9 @@ const initialState: CartState = {
   shippingAddress: typeof window !== 'undefined' && localStorage.getItem('shippingAddress')
     ? JSON.parse(localStorage.getItem('shippingAddress')!)
     : {},
+  paymentMethod: typeof window !== 'undefined' && localStorage.getItem('paymentMethod')
+    ? JSON.parse(localStorage.getItem('paymentMethod')!)
+    : 'PayPal',
 };
 
 const cartSlice = createSlice({
