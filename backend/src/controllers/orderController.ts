@@ -21,9 +21,12 @@ export const addOrderItems = async (req: any, res: Response) => {
 }
 
 export const getMyOrders = async (req: any, res: Response) => {
-
-  const orders = await Order.find({ user: req.user._id });
-  res.json(orders);
+  try {
+    const orders = await Order.find({ user: req.user._id });
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching user orders" });
+  }
 };
 
 export const updateOrderToPaid = async (req: Request, res: Response) => {

@@ -1,16 +1,18 @@
 // "use client";
 // import { useEffect, useState } from 'react';
 // import { useRouter } from 'next/navigation';
-// import { useSelector } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
 // import { RootState } from '@/redux/store';
+// import { logout } from '@/redux/slices/authSlice';
 // import React from 'react';
 // import Link from 'next/link';
 // import { ShoppingCart, User, Search, Menu } from 'lucide-react';
 
 // export default function Navbar() {
-//   const [user, setUser] = useState<any>(null);
+//   //const [user, setUser] = useState<any>(null);
 //   const [mounted, setMounted] = useState(false);
 //   const router = useRouter();
+//   const dispatch = useDispatch();
 
 //   useEffect(() => {
 //     setMounted(true);
@@ -23,16 +25,21 @@
 //   useEffect(() => {
 //     const userInfo = localStorage.getItem('userInfo');
 //     if (userInfo) {
-//       setUser(JSON.parse(userInfo));
+//       //setUser(JSON.parse(userInfo));
 //     }
 //   }, []);
 
+//   // const logoutHandler = () => {
+//   //   localStorage.removeItem('userInfo');
+//   //   setUser(null);
+//   //   router.push('/login');
+//   // };
+
 //   const logoutHandler = () => {
-//     localStorage.removeItem('userInfo');
-//     setUser(null);
+//     //setUser(null);
+//     dispatch(logout());
 //     router.push('/login');
 //   };
-
 //   return (
 //     <nav className="bg-gray-900 shadow-md sticky top-0 z-50">
 //       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -103,15 +110,12 @@
 //   );
 // };
 
-
-
-
 "use client";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { logout } from '@/redux/slices/authSlice'; 
+import { logout } from '@/redux/slices/authSlice';
 import Link from 'next/link';
 import { ShoppingCart, User, Search, Menu } from 'lucide-react';
 
@@ -140,7 +144,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
 
           <div className="flex items-center">
-            <Link href="/" className="text-2xl font-bold text-blue-500 hover:text-blue-400 transition">
+            <Link href="/" className="text-2xl font-bold text-blue-500 hover:text-blue-400    transition">
               NexusMart
             </Link>
           </div>
@@ -158,10 +162,10 @@ export default function Navbar() {
 
           <div className="flex items-center space-x-6">
 
-            <Link href="/cart" className="relative text-gray-300 hover:text-blue-500 transition">
-              <ShoppingCart size={24} />
-              {mounted && cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] rounded-full h-5 w-5 flex items-center justify-center font-bold">
+            <Link href="/cart" className="relative hover:text-blue-600">
+              <span className="text-2xl"><ShoppingCart /></span>
+              {mounted && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
                   {cartCount}
                 </span>
               )}
@@ -169,23 +173,29 @@ export default function Navbar() {
 
             {mounted && userInfo ? (
               <div className="flex items-center space-x-4">
-                <Link href="/profile" className="text-gray-300 hover:text-blue-500 flex items-center gap-1">
+
+                <Link href="/profile" className="text-gray-500 p-4 hover:text-blue-500 flex items-center gap-1">
                   <User size={22} />
                   <span className="hidden sm:inline text-sm italic">Hi, {userInfo.name}</span>
                 </Link>
+
                 <button
                   onClick={logoutHandler}
-                  className="bg-red-600/10 text-red-500 border border-red-600/20 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-red-600 hover:text-white transition"
+                  className="bg-red-600/10 text-red-500 border border-red-600/20 px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-red-600 hover:text-white transition "
                 >
                   Logout
                 </button>
+
               </div>
             ) : (
               <div className="flex items-center space-x-4">
+
                 <Link href="/login" className="text-gray-300 hover:text-white text-sm">Login</Link>
+
                 <Link href="/signup" className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
                   Signup
                 </Link>
+
               </div>
             )}
 
