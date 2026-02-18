@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface CartState {
   cartItems: any[];
   shippingAddress: any;
+  paymentMethod: string;
 }
 
 const initialState: CartState = {
@@ -35,9 +36,17 @@ const cartSlice = createSlice({
       state.cartItems = state.cartItems.filter((x) => x._id !== action.payload);
       localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
     },
-    saveShippingAddress: (state, action) => {
+    saveShippingAddress: (state, action: PayloadAction<any>) => {
       state.shippingAddress = action.payload;
       localStorage.setItem('shippingAddress', JSON.stringify(action.payload));
+    },
+    savePaymentMethod: (state, action: PayloadAction<string>) => {
+      state.paymentMethod = action.payload;
+      localStorage.setItem('paymentMethod', JSON.stringify(action.payload));
+    },
+    clearCart: (state) => {
+      state.cartItems = [];
+      localStorage.removeItem('cartItems');
     },
   },
 });
@@ -49,5 +58,5 @@ export const {
   savePaymentMethod,
   clearCart
 } = cartSlice.actions;
-//export const { addToCart, removeFromCart, saveShippingAddress } = cartSlice.actions;
+
 export default cartSlice.reducer;
