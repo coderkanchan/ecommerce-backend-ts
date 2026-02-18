@@ -17,55 +17,6 @@ export default function PlaceOrderPage() {
   const taxPrice = Number((0.15 * itemsPrice).toFixed(2));
   const totalPrice = (itemsPrice + shippingPrice + taxPrice).toFixed(2);
 
-  // const placeOrderHandler = async () => {
-  //   try {
-  //     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-
-  //     if (!userInfo.token) {
-  //       alert("Aapka session khatam ho gaya hai, please fir se login karein.");
-  //       router.push('/login');
-  //       return;
-  //     }
-
-  //     console.log("Sending Token:", userInfo.token); 
-
-  //     const res = await fetch('http://localhost:5000/api/orders', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${userInfo.token}`,
-  //       },
-  //       body: JSON.stringify({
-  //         orderItems: cartItems.map(item => ({
-  //           name: item.name,
-  //           qty: item.qty,
-  //           imageUrl: item.imageUrl,
-  //           price: item.price,
-  //           product: item._id
-  //         })),
-  //         shippingAddress: {
-  //           address: shippingAddress.address,
-  //           city: shippingAddress.city,
-  //           pincode: "125001" 
-  //         },
-  //         totalPrice: Number(totalPrice),
-  //       }),
-  //     });
-
-  //     const data = await res.json();
-
-  //     if (res.ok) {
-  //       alert("Order Placed Successfully! 🎉");
-  //       router.push(`/order/${data._id}`);
-  //     } else {
-  //       alert(data.message || "Order fail ho gaya");
-  //     }
-  //   } catch (err) {
-  //     console.error("Order Error:", err);
-  //   }
-  // };
-
-
   const placeOrderHandler = async () => {
     try {
       const storedUser = localStorage.getItem('userInfo');
