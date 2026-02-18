@@ -21,6 +21,14 @@ export default function PlaceOrderPage() {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
 
+      if (!userInfo.token) {
+        alert("Aapka session khatam ho gaya hai, please fir se login karein.");
+        router.push('/login');
+        return;
+      }
+
+      console.log("Sending Token:", userInfo.token); 
+
       const res = await fetch('http://localhost:5000/api/orders', {
         method: 'POST',
         headers: {
@@ -38,7 +46,7 @@ export default function PlaceOrderPage() {
           shippingAddress: {
             address: shippingAddress.address,
             city: shippingAddress.city,
-            pincode: "000000"
+            pincode: "125001" 
           },
           totalPrice: Number(totalPrice),
         }),
@@ -48,14 +56,12 @@ export default function PlaceOrderPage() {
 
       if (res.ok) {
         alert("Order Placed Successfully! 🎉");
-        //dispatch(clearCart());
         router.push(`/order/${data._id}`);
       } else {
-        alert(data.message || "Order placement failed");
+        alert(data.message || "Order fail ho gaya");
       }
     } catch (err) {
       console.error("Order Error:", err);
-      alert("Something went wrong!");
     }
   };
 
