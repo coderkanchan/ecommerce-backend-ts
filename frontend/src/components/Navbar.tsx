@@ -67,7 +67,7 @@ export default function Navbar() {
               )}
             </Link>
 
-            <Link href="/login" className="text-gray-600 hover:text-blue-600">
+            <Link href="/profile" className="text-gray-600 hover:text-blue-600">
               <User size={24} />
             </Link>
 
@@ -97,9 +97,7 @@ export default function Navbar() {
               </>
             )}
           </div>
-
         </div>
-
       </div>
     </nav>
   );
