@@ -20,13 +20,11 @@ export const addOrderItems = async (req: any, res: Response) => {
   }
 }
 
-
 export const getMyOrders = async (req: any, res: Response) => {
 
   const orders = await Order.find({ user: req.user._id });
   res.json(orders);
 };
-
 
 export const updateOrderToPaid = async (req: Request, res: Response) => {
   const order = await Order.findById(req.params.id);
@@ -48,7 +46,6 @@ export const updateOrderToPaid = async (req: Request, res: Response) => {
   }
 };
 
-
 export const getOrderStats = async (req: Request, res: Response) => {
   try {
     const totalOrders = await Order.countDocuments();
@@ -63,5 +60,16 @@ export const getOrderStats = async (req: Request, res: Response) => {
     });
   } catch (error) {
     res.status(500).json({ message: 'Error fetching dashboard stats' });
+  }
+};
+
+export const getOrderById = async (req: Request, res: Response) => {
+
+  const order = await Order.findById(req.params.id).populate('user', 'name email');
+
+  if (order) {
+    res.json(order);
+  } else {
+    res.status(404).json({ message: 'Order not found' });
   }
 };
