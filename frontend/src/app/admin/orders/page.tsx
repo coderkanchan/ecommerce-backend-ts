@@ -17,20 +17,6 @@ export default function AdminOrdersPage() {
 
   useEffect(() => { fetchOrders(); }, []);
 
-  // const deliverHandler = async (id: string) => {
-  //   const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-  //   if (window.confirm('Mark this order as delivered?')) {
-  //     const res = await fetch(`http://localhost:5000/api/orders/${id}/deliver`, {
-  //       method: 'PUT',
-  //       headers: { Authorization: `Bearer ${userInfo.token}` },
-  //     });
-  //     if (res.ok) {
-  //       alert("Order Updated!");
-  //       fetchOrders();
-  //     }
-  //   }
-  // };
-  
   const deliverHandler = async (id: string) => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
 
