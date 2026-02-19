@@ -12,10 +12,14 @@ export default function Signup() {
     e.preventDefault();
     try {
       const { data } = await API.post('/users/register', formData);
+
       localStorage.setItem('userInfo', JSON.stringify(data));
+
       alert("Signup Successful & Logging In!");
+
       router.push('/');
-      window.location.reload();
+
+      
     } catch (error: any) {
       alert(error.response?.data?.message || "Error");
     }

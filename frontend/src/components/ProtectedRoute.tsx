@@ -12,13 +12,5 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
     }
   }, [router]);
 
-  useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-    if (!userInfo.isAdmin) {
-      alert("Access Denied! Admins only.");
-      router.push('/');
-    }
-  }, []);
-
   return <>{children}</>;
-}
+};
