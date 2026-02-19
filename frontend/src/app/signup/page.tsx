@@ -11,7 +11,7 @@ export default function Signup() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { data } = await API.post('/auth/register', formData);
+      const { data } = await API.post('/users/register', formData);
       localStorage.setItem('userInfo', JSON.stringify(data));
       alert("Signup Successful & Logging In!");
       router.push('/');

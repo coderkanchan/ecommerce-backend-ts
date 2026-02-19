@@ -13,7 +13,7 @@ export default function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { data } = await API.post('/auth/login', formData);
+      const { data } = await API.post('/users/login', formData);
       dispatch(setCredentials(data));
       localStorage.setItem('userInfo', JSON.stringify(data));
 
