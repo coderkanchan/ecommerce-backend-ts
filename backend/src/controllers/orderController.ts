@@ -76,3 +76,8 @@ export const getOrderById = async (req: Request, res: Response) => {
     res.status(404).json({ message: 'Order not found' });
   }
 };
+
+export const getOrders = async (req: Request, res: Response) => {
+  const orders = await Order.find({}).populate('user', 'id name'); 
+  res.json(orders);
+};
