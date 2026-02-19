@@ -29,14 +29,6 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
   }
 };
 
-
-
-
-
-
-
-
-
 export const admin = (req: any, res: Response, next: NextFunction) => {
 
   if (req.user && req.user.isAdmin) {

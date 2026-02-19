@@ -98,3 +98,8 @@ export const updateUserProfile = async (req: any, res: Response) => {
     res.status(404).json({ message: 'User not found' });
   }
 };
+
+export const getUsers = async (req: any, res: Response) => {
+  const users = await User.find({});
+  res.json(users);
+};
