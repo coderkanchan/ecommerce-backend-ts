@@ -16,9 +16,6 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
-
-
-
 export const getProducts = async (req: Request, res: Response) => {
   try {
     const pageSize = 8;
@@ -50,9 +47,6 @@ export const getProducts = async (req: Request, res: Response) => {
   }
 };
 
-
-
-
 export const getProductById = async (req: Request, res: Response) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -66,9 +60,6 @@ export const getProductById = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Server Error: Invalid ID format' });
   }
 };
-
-
-
 
 export const createProductReview = async (req: any, res: Response) => {
   const { rating, comment } = req.body;
@@ -100,6 +91,37 @@ export const createProductReview = async (req: any, res: Response) => {
 
     await product.save();
     res.status(201).json({ message: 'Review added' });
+  } else {
+    res.status(404).json({ message: 'Product not found' });
+  }
+};
+
+export const deleteProduct = async (req: any, res: any) => {
+  const product = await Product.findById(req.params.id);
+
+  if (product) {
+    await product.deleteOne();
+    res.json({ message: 'Product removed' });
+  } else {
+    res.status(404).json({ message: 'Product not found' });
+  }
+};
+
+export const updateProduct = async (req: any, res: any) => {
+  const { name, price, description, imageUrl, category, stock } = req.body;
+
+  const product = await Product.findById(req.params.id);
+
+  if (product) {
+    product.name = name || product.name;
+    product.price = price || product.price;
+    product.description = description || product.description;
+    product.imageUrl = imageUrl || product.imageUrl;
+    product.category = category || product.category;
+    product.stock = stock || product.stock;
+
+    const updatedProduct = await product.save();
+    res.json(updatedProduct);
   } else {
     res.status(404).json({ message: 'Product not found' });
   }
