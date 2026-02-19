@@ -2,6 +2,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '@/redux/slices/authSlice';
 
 export default function ProfilePage() {
   const [name, setName] = useState('');
@@ -10,6 +12,7 @@ export default function ProfilePage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [orders, setOrders] = useState([]);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
@@ -34,14 +37,56 @@ export default function ProfilePage() {
     }
   };
 
+  // const submitHandler = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (password !== confirmPassword) {
+  //     alert("Passwords do not match");
+  //     return;
+  //   }
+
+  //   alert("Profile update logic coming soon!");
+  // };
+
+  // Profile update ka asali logic
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      alert("Passwords do not match!");
       return;
     }
 
-    alert("Profile update logic coming soon!");
+    try {
+      const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+
+      const res = await fetch('http://localhost:5000/api/users/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        // Redux aur LocalStorage dono update karein
+        dispatch(setCredentials(data));
+        alert("Profile Updated Successfully! ✨");
+        setPassword(''); // Password fields khali kar dein
+        setConfirmPassword('');
+      } else {
+        alert(data.message || "Update failed");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred");
+    }
   };
 
   return (
@@ -150,7 +195,7 @@ export default function ProfilePage() {
                         <span className="text-red-400 bg-red-900/20 px-3 py-1 rounded-full text-xs">No</span>
                       )}
                     </td>
-                    
+
                     <td className="p-4">
                       <button
                         onClick={() => router.push(`/order/${order._id}`)}
