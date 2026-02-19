@@ -83,7 +83,7 @@ export const getOrders = async (req: Request, res: Response) => {
 };
 
 export const updateOrderToDelivered = async (req: any, res: any) => {
-  const order = await Order.findById(req.params.id);
+  const order: any = await Order.findById(req.params.id);
 
   if (order) {
     order.isDelivered = true;
