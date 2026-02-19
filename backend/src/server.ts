@@ -33,7 +33,7 @@ app.get('/', (req: Request, res: Response) => {
 
 app.use('/api/upload', uploadRoutes);
 
-app.use('/api/auth', authRoutes);
+app.use('/api/users', authRoutes);
 
 app.use('/api/products', productRoutes);
 

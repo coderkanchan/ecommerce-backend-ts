@@ -26,7 +26,7 @@ export default function ProfilePage() {
   }, []);
 
   const fetchMyOrders = async (token: string) => {
-    try {
+    try {                    
       const res = await fetch('http://localhost:5000/api/orders/myorders', {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -37,17 +37,6 @@ export default function ProfilePage() {
     }
   };
 
-  // const submitHandler = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   if (password !== confirmPassword) {
-  //     alert("Passwords do not match");
-  //     return;
-  //   }
-
-  //   alert("Profile update logic coming soon!");
-  // };
-
-  // Profile update ka asali logic
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -75,10 +64,9 @@ export default function ProfilePage() {
       const data = await res.json();
 
       if (res.ok) {
-        // Redux aur LocalStorage dono update karein
         dispatch(setCredentials(data));
         alert("Profile Updated Successfully! ✨");
-        setPassword(''); // Password fields khali kar dein
+        setPassword('');
         setConfirmPassword('');
       } else {
         alert(data.message || "Update failed");
