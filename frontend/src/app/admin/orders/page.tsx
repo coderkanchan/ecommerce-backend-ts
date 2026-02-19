@@ -71,10 +71,7 @@ export default function AdminOrdersPage() {
                         <span className="text-yellow-400">⏳ Pending</span>
                       )}
                     </td>
-                    {/* <td className="p-4">
-                      <button className="bg-blue-600 px-3 py-1 rounded text-sm hover:bg-blue-700">View</button>
-                    </td> */}
-
+                   
                     <td className="p-4 flex gap-2">
                       <button className="bg-blue-600 px-3 py-1 rounded text-sm hover:bg-blue-700 transition">View</button>
                       {!order.isDelivered && (

@@ -82,7 +82,7 @@ export const getOrders = async (req: Request, res: Response) => {
   res.json(orders);
 };
 
-export const updateOrderToDelivered = async (req: Request, res: Response) => {
+export const updateOrderToDelivered = async (req: any, res: any) => {
   const order = await Order.findById(req.params.id);
 
   if (order) {
