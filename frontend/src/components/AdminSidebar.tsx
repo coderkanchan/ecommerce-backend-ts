@@ -15,7 +15,7 @@ const AdminSidebar = () => {
   return (
     <div className="w-64 bg-gray-900 h-screen sticky top-0 border-r border-gray-800 p-6">
       <h2 className="text-xl font-bold text-blue-500 mb-10">Admin Panel</h2>
-      <nav className="space-y-2">
+      <nav className="flex flex-col gap-2 space-y-2">
         {menuItems.map((item) => (
           <Link
             key={item.path}
