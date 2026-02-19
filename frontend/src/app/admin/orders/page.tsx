@@ -17,20 +17,52 @@ export default function AdminOrdersPage() {
 
   useEffect(() => { fetchOrders(); }, []);
 
+  // const deliverHandler = async (id: string) => {
+  //   const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+  //   if (window.confirm('Mark this order as delivered?')) {
+  //     const res = await fetch(`http://localhost:5000/api/orders/${id}/deliver`, {
+  //       method: 'PUT',
+  //       headers: { Authorization: `Bearer ${userInfo.token}` },
+  //     });
+  //     if (res.ok) {
+  //       alert("Order Updated!");
+  //       fetchOrders();
+  //     }
+  //   }
+  // };
+  
   const deliverHandler = async (id: string) => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+
     if (window.confirm('Mark this order as delivered?')) {
-      const res = await fetch(`http://localhost:5000/api/orders/${id}/deliver`, {
-        method: 'PUT',
-        headers: { Authorization: `Bearer ${userInfo.token}` },
-      });
-      if (res.ok) {
-        alert("Order Updated!");
-        fetchOrders();
+      try {
+        const res = await fetch(`http://localhost:5000/api/orders/${id}/deliver`, {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            'Content-Type': 'application/json'
+          },
+        });
+
+        if (res.ok) {
+          // Step 1: Pehle Alert dikhayein
+          alert("Order Updated!");
+
+          // Step 2: Database se fresh data dobara fetch karein
+          await fetchOrders();
+
+          // Step 3: Optional (Forced Update) - Agar list refresh nahi hoti
+          // setOrders(prev => prev.map(o => o._id === id ? { ...o, isDelivered: true } : o));
+
+        } else {
+          alert("Failed to update order status");
+        }
+      } catch (error) {
+        console.error("Delivery Error:", error);
+        alert("Something went wrong!");
       }
     }
   };
-
   return (
     <AdminRoute>
       <div className="flex min-h-screen bg-black text-white">
@@ -71,7 +103,7 @@ export default function AdminOrdersPage() {
                         <span className="text-yellow-400">⏳ Pending</span>
                       )}
                     </td>
-                   
+
                     <td className="p-4 flex gap-2">
                       <button className="bg-blue-600 px-3 py-1 rounded text-sm hover:bg-blue-700 transition">View</button>
                       {!order.isDelivered && (
