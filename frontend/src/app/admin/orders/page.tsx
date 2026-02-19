@@ -12,7 +12,7 @@ export default function AdminOrdersPage() {
       headers: { Authorization: `Bearer ${userInfo.token}` },
     });
     const data = await res.json();
-    setProducts(data); 
+    setOrders(Array.isArray(data) ? data : data.orders);
   };
 
   useEffect(() => { fetchOrders(); }, []);
