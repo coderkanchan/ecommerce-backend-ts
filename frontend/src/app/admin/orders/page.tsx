@@ -26,29 +26,27 @@ export default function AdminOrdersPage() {
           method: 'PUT',
           headers: {
             Authorization: `Bearer ${userInfo.token}`,
-            'Content-Type': 'application/json'
           },
         });
 
         if (res.ok) {
-          // Step 1: Pehle Alert dikhayein
           alert("Order Updated!");
 
-          // Step 2: Database se fresh data dobara fetch karein
-          await fetchOrders();
-
-          // Step 3: Optional (Forced Update) - Agar list refresh nahi hoti
-          // setOrders(prev => prev.map(o => o._id === id ? { ...o, isDelivered: true } : o));
+          setOrders((prevOrders: any) =>
+            prevOrders.map((o: any) =>
+              o._id === id ? { ...o, isDelivered: true } : o
+            )
+          );
 
         } else {
-          alert("Failed to update order status");
+          alert("Failed to update status");
         }
       } catch (error) {
-        console.error("Delivery Error:", error);
-        alert("Something went wrong!");
+        alert("Error updating order");
       }
     }
   };
+
   return (
     <AdminRoute>
       <div className="flex min-h-screen bg-black text-white">
