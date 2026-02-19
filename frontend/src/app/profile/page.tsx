@@ -26,7 +26,7 @@ export default function ProfilePage() {
   }, []);
 
   const fetchMyOrders = async (token: string) => {
-    try {                    
+    try {                     
       const res = await fetch('http://localhost:5000/api/orders/myorders', {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -47,7 +47,7 @@ export default function ProfilePage() {
 
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-
+                              
       const res = await fetch('http://localhost:5000/api/users/profile', {
         method: 'PUT',
         headers: {
