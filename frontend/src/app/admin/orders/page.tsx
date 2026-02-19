@@ -17,6 +17,20 @@ export default function AdminOrdersPage() {
 
   useEffect(() => { fetchOrders(); }, []);
 
+  const deliverHandler = async (id: string) => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+    if (window.confirm('Mark this order as delivered?')) {
+      const res = await fetch(`http://localhost:5000/api/orders/${id}/deliver`, {
+        method: 'PUT',
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+      if (res.ok) {
+        alert("Order Updated!");
+        fetchOrders();
+      }
+    }
+  };
+
   return (
     <AdminRoute>
       <div className="flex min-h-screen bg-black text-white">
@@ -57,8 +71,20 @@ export default function AdminOrdersPage() {
                         <span className="text-yellow-400">⏳ Pending</span>
                       )}
                     </td>
-                    <td className="p-4">
+                    {/* <td className="p-4">
                       <button className="bg-blue-600 px-3 py-1 rounded text-sm hover:bg-blue-700">View</button>
+                    </td> */}
+
+                    <td className="p-4 flex gap-2">
+                      <button className="bg-blue-600 px-3 py-1 rounded text-sm hover:bg-blue-700 transition">View</button>
+                      {!order.isDelivered && (
+                        <button
+                          onClick={() => deliverHandler(order._id)}
+                          className="bg-green-600 px-3 py-1 rounded text-sm hover:bg-green-700 transition"
+                        >
+                          Deliver
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}
