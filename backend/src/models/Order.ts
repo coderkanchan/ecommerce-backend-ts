@@ -24,6 +24,8 @@ export interface IOrder extends Document {
     totalPrice: number;
     isPaid: boolean;
     paidAt?: Date;
+    isDelivered: boolean;
+    deliveredAt?: Date;
 }
 
 const orderSchema = new Schema<IOrder>({
@@ -51,6 +53,8 @@ const orderSchema = new Schema<IOrder>({
     totalPrice: { type: Number, required: true, default: 0.0 },
     isPaid: { type: Boolean, required: true, default: false },
     paidAt: { type: Date },
+    isDelivered: { type: Boolean, required: true, default: false },
+    deliveredAt: { type: Date },
 }, { timestamps: true });
 
 export const Order = model<IOrder>('Order', orderSchema);
