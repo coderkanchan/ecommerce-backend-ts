@@ -144,9 +144,9 @@ export default function ProfilePage() {
 
           <h2 className="text-2xl font-bold mb-6">My Orders</h2>
 
-          <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
+          <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-x-auto">
 
-            <table className="w-full text-left">
+            <table className="w-full text-left min-w-[600px]">
 
               <thead className="bg-gray-800 text-gray-300 uppercase text-sm">
                 <tr>
