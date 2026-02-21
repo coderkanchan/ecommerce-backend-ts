@@ -25,11 +25,11 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
   }
 
   if (!token) {
-    res.status(401).json({ message: 'Not authorized, no token' });
+    return res.status(401).json({ message: 'Not authorized, no token' });
   }
 };
 
-export const admin = (req: any, res: Response, next: NextFunction) => {
+export const admin = (req: AuthRequest, res: Response, next: NextFunction) => {
 
   if (req.user && req.user.isAdmin) {
     next();

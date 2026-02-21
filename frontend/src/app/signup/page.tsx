@@ -19,7 +19,6 @@ export default function Signup() {
 
       router.push('/');
 
-      
     } catch (error: any) {
       alert(error.response?.data?.message || "Error");
     }
