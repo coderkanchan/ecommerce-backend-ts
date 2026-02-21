@@ -7,13 +7,16 @@ import {
   getOrderStats,
   getOrderById,
   getOrders,
-  updateOrderToDelivered
+  updateOrderToDelivered,
+  getOrderSummary
 }
   from '../controllers/orderController.js';
-  
+
 import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
+
+router.get('/summary', protect, admin, getOrderSummary);
 
 router.route('/').post(protect, addOrderItems);
 

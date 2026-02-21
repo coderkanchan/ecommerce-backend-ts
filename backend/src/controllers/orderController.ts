@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Order } from '../models/Order.js';
+import { User } from '../models/User.js';
 
 export const addOrderItems = async (req: any, res: Response) => {
   const { orderItems, shippingAddress, totalPrice } = req.body;
@@ -90,7 +91,7 @@ export const updateOrderToDelivered = async (req: any, res: any) => {
         isDelivered: true,
         deliveredAt: new Date(),
       },
-      { new: true } 
+      { new: true }
     );
 
     if (updatedOrder) {
@@ -101,4 +102,18 @@ export const updateOrderToDelivered = async (req: any, res: any) => {
   } catch (error) {
     res.status(500).json({ message: 'Error updating order' });
   }
+};
+
+export const getOrderSummary = async (req: any, res: any) => {
+  const ordersCount = await Order.countDocuments();
+  const usersCount = await User.countDocuments();
+
+  const orders = await Order.find({ isPaid: true });
+  const totalSales = orders.reduce((acc, item) => acc + item.totalPrice, 0);
+
+  res.json({
+    ordersCount,
+    usersCount,
+    totalSales,
+  });
 };
