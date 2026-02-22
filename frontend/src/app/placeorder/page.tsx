@@ -5,11 +5,9 @@ import { RootState } from "@/redux/store";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
 
 export default function PlaceOrderPage() {
   const router = useRouter();
-  const dispatch = useDispatch();
   const cart = useSelector((state: RootState) => state.cart);
   const { cartItems, shippingAddress } = cart;
 
@@ -17,58 +15,6 @@ export default function PlaceOrderPage() {
   const shippingPrice = itemsPrice > 100 ? 0 : 10;
   const taxPrice = Number((0.15 * itemsPrice).toFixed(2));
   const totalPrice = (itemsPrice + shippingPrice + taxPrice).toFixed(2);
-
-  // const placeOrderHandler = async () => {
-  //   try {
-  //     const storedUser = localStorage.getItem('userInfo');
-  //     console.log("Stored User Data:", storedUser); 
-
-  //     if (!storedUser) {
-  //       alert("Please login again. User info not found.");
-  //       router.push('/login');
-  //       return;
-  //     }
-
-  //     const userInfo = JSON.parse(storedUser);
-
-  //     const res = await fetch('http://localhost:5000/api/orders', {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': `Bearer ${userInfo.token}`, 
-  //       },
-  //       body: JSON.stringify({
-  //         orderItems: cartItems.map(item => ({
-  //           name: item.name,
-  //           qty: item.qty,
-  //           imageUrl: item.imageUrl,
-  //           price: item.price,
-  //           product: item._id
-  //         })),
-  //         shippingAddress: {
-  //           address: shippingAddress.address,
-  //           city: shippingAddress.city,
-  //           pincode: shippingAddress.pincode || "125001"
-  //         },
-  //         totalPrice: Number(totalPrice),
-  //       }),
-  //     });
-
-  //     const data = await res.json();
-
-  //     if (res.ok) {
-  //       alert("Order Placed Successfully! 🎉");
-  //       localStorage.removeItem('cartItems');
-  //       router.push(`/order/${data._id}`);
-  //     } else {
-  //       alert(data.message || "Order failed");
-  //     }
-  //   } catch (err) {
-  //     console.error("Order Error:", err);
-  //     alert("Connection error! Check if backend is running.");
-  //   }
-  // };
-
 
   const placeOrderHandler = async () => {
     try {
