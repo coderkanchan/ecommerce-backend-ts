@@ -20,12 +20,19 @@ export const fetchProducts = async () => {
   return response.data;
 };
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+
 export const createRazorpayOrder = async (amount: number) => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/order`, {
+  const response = await fetch(`${API_URL}/api/payment/order`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ amount }),
   });
+  
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+
   return response.json();
 };
 
