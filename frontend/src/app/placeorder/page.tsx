@@ -68,12 +68,13 @@ export default function PlaceOrderPage() {
 
           if (payRes.ok) {
             alert("Order Placed & Payment Successful! 🎉");
+            window.location.reload();
             localStorage.removeItem('cartItems');
             router.push(`/order/${orderData._id}`);
           }
         },
         prefill: { name: userInfo.name, email: userInfo.email },
-        theme: { color: "#EAB308" }, 
+        theme: { color: "#EAB308" },
       };
 
       const rzp = new (window as any).Razorpay(options);
