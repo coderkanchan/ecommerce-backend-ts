@@ -162,14 +162,21 @@
 
 "use client";
 import { createRazorpayOrder } from '@/services/api';
-import { useSelector, useDispatch } from "react-redux"; // useDispatch add kiya
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import { clearCartItems } from "@/redux/slices/cartSlice"; // Ye action create karein
+import { clearCartItems } from "@/redux/slices/cartSlice";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
 
 export default function PlaceOrderPage() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   const router = useRouter();
   const dispatch = useDispatch();
   const cart = useSelector((state: RootState) => state.cart);
@@ -207,7 +214,7 @@ export default function PlaceOrderPage() {
 
       const orderData = await res.json();
       if (!res.ok) throw new Error(orderData.message);
-      
+
       const paymentResponse = await createRazorpayOrder(Number(totalPrice));
 
       const options = {
@@ -218,7 +225,7 @@ export default function PlaceOrderPage() {
         order_id: paymentResponse.order.id,
 
         handler: async function (response: any) {
-          
+
           const payRes = await fetch(`http://localhost:5000/api/orders/${orderData._id}/pay`, {
             method: 'PUT',
             headers: {
@@ -238,7 +245,7 @@ export default function PlaceOrderPage() {
             dispatch(clearCartItems());
             localStorage.removeItem('cartItems');
 
-            router.push(`/profile`); 
+            router.push(`/profile`);
           }
         },
         prefill: { name: userInfo.name, email: userInfo.email },
@@ -252,6 +259,8 @@ export default function PlaceOrderPage() {
       alert(err.message || "Something went wrong!");
     }
   };
+
+  if (!isMounted) return null;
 
   return (
     <ProtectedRoute>
