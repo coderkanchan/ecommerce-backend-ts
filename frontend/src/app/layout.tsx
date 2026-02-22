@@ -2,6 +2,7 @@
 import Navbar from '@/components/Navbar';
 import './globals.css';
 import { ReduxProvider } from "@/redux/ReduxProvider";
+import Script from 'next/script';
 
 export default function RootLayout({
   children,
@@ -13,7 +14,13 @@ export default function RootLayout({
       <body>
         <ReduxProvider>
           <Navbar />
-          <main>{children}</main>
+          <main>
+            {children}
+            <Script
+              id="razorpay-checkout-js"
+              src="https://checkout.razorpay.com/v1/checkout.js"
+            />
+          </main>
         </ReduxProvider>
       </body>
     </html>

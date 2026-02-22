@@ -6,9 +6,6 @@ const razorpayInstance = new Razorpay({
   key_secret: process.env.RAZORPAY_KEY_SECRET as string,
 });
 
-// @desc    Create Razorpay Order
-// @route   POST /api/payment/order
-// @access  Private (Aap chahein toh baad mein protect middleware add kar sakti hain)
 export const createOrder = async (req: Request, res: Response) => {
   const { amount } = req.body;
 

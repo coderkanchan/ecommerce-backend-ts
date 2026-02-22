@@ -20,5 +20,13 @@ export const fetchProducts = async () => {
   return response.data;
 };
 
+export const createRazorpayOrder = async (amount: number) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payment/order`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ amount }),
+  });
+  return response.json();
+};
 
 export default API;
