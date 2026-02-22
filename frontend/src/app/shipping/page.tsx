@@ -9,7 +9,7 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function ShippingPage() {
   const { shippingAddress } = useSelector((state: RootState) => state.cart);
-  
+
   const [address, setAddress] = useState(shippingAddress.address || '');
   const [city, setCity] = useState(shippingAddress.city || '');
   const [pincode, setPincode] = useState(shippingAddress.pincode || '');
@@ -20,7 +20,7 @@ export default function ShippingPage() {
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(saveShippingAddress({ address, city, pincode }));
-    router.push('/payment');
+    router.push('/placeorder');
   };
 
   return (
