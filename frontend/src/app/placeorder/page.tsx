@@ -1,4 +1,5 @@
 "use client";
+import { createRazorpayOrder } from '@/services/api';
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import ProtectedRoute from "@/components/ProtectedRoute";
@@ -17,24 +18,69 @@ export default function PlaceOrderPage() {
   const taxPrice = Number((0.15 * itemsPrice).toFixed(2));
   const totalPrice = (itemsPrice + shippingPrice + taxPrice).toFixed(2);
 
+  // const placeOrderHandler = async () => {
+  //   try {
+  //     const storedUser = localStorage.getItem('userInfo');
+  //     console.log("Stored User Data:", storedUser); 
+
+  //     if (!storedUser) {
+  //       alert("Please login again. User info not found.");
+  //       router.push('/login');
+  //       return;
+  //     }
+
+  //     const userInfo = JSON.parse(storedUser);
+
+  //     const res = await fetch('http://localhost:5000/api/orders', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': `Bearer ${userInfo.token}`, 
+  //       },
+  //       body: JSON.stringify({
+  //         orderItems: cartItems.map(item => ({
+  //           name: item.name,
+  //           qty: item.qty,
+  //           imageUrl: item.imageUrl,
+  //           price: item.price,
+  //           product: item._id
+  //         })),
+  //         shippingAddress: {
+  //           address: shippingAddress.address,
+  //           city: shippingAddress.city,
+  //           pincode: shippingAddress.pincode || "125001"
+  //         },
+  //         totalPrice: Number(totalPrice),
+  //       }),
+  //     });
+
+  //     const data = await res.json();
+
+  //     if (res.ok) {
+  //       alert("Order Placed Successfully! 🎉");
+  //       localStorage.removeItem('cartItems');
+  //       router.push(`/order/${data._id}`);
+  //     } else {
+  //       alert(data.message || "Order failed");
+  //     }
+  //   } catch (err) {
+  //     console.error("Order Error:", err);
+  //     alert("Connection error! Check if backend is running.");
+  //   }
+  // };
+
+
   const placeOrderHandler = async () => {
     try {
       const storedUser = localStorage.getItem('userInfo');
-      console.log("Stored User Data:", storedUser); 
-
-      if (!storedUser) {
-        alert("Please login again. User info not found.");
-        router.push('/login');
-        return;
-      }
-
+      if (!storedUser) { router.push('/login'); return; }
       const userInfo = JSON.parse(storedUser);
 
       const res = await fetch('http://localhost:5000/api/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${userInfo.token}`, 
+          'Authorization': `Bearer ${userInfo.token}`,
         },
         body: JSON.stringify({
           orderItems: cartItems.map(item => ({
@@ -44,27 +90,51 @@ export default function PlaceOrderPage() {
             price: item.price,
             product: item._id
           })),
-          shippingAddress: {
-            address: shippingAddress.address,
-            city: shippingAddress.city,
-            pincode: shippingAddress.pincode || "125001"
-          },
+          shippingAddress: shippingAddress,
           totalPrice: Number(totalPrice),
         }),
       });
 
-      const data = await res.json();
+      const orderData = await res.json();
+      if (!res.ok) throw new Error(orderData.message);
 
-      if (res.ok) {
-        alert("Order Placed Successfully! 🎉");
-        localStorage.removeItem('cartItems');
-        router.push(`/order/${data._id}`);
-      } else {
-        alert(data.message || "Order failed");
-      }
-    } catch (err) {
-      console.error("Order Error:", err);
-      alert("Connection error! Check if backend is running.");
+      const paymentResponse = await createRazorpayOrder(Number(totalPrice));
+
+      const options = {
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+        amount: paymentResponse.order.amount,
+        currency: "INR",
+        name: "NexusMart",
+        order_id: paymentResponse.order.id,
+        handler: async function (response: any) {
+          const payRes = await fetch(`http://localhost:5000/api/orders/${orderData._id}/pay`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${userInfo.token}`,
+            },
+            body: JSON.stringify({
+              razorpay_payment_id: response.razorpay_payment_id,
+              status: 'completed',
+              email: userInfo.email
+            }),
+          });
+
+          if (payRes.ok) {
+            alert("Order Placed & Payment Successful! 🎉");
+            localStorage.removeItem('cartItems');
+            router.push(`/order/${orderData._id}`);
+          }
+        },
+        prefill: { name: userInfo.name, email: userInfo.email },
+        theme: { color: "#EAB308" }, 
+      };
+
+      const rzp = new (window as any).Razorpay(options);
+      rzp.open();
+
+    } catch (err: any) {
+      alert(err.message || "Something went wrong!");
     }
   };
 
@@ -88,7 +158,7 @@ export default function PlaceOrderPage() {
 
             <div className="bg-gray-900 p-6 rounded-xl border border-gray-800">
               <h2 className="text-xl font-bold mb-3">2. Payment Method</h2>
-              <p className="text-gray-400"><strong>Method: </strong>PayPal</p>
+              <p className="text-gray-400"><strong>Method: </strong>Razorpay/Online Payment</p>
             </div>
 
             <div className="bg-gray-900 p-6 rounded-xl border border-gray-800">
