@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import AdminSidebar from '@/components/AdminSidebar';
 import AdminRoute from '@/components/AdminRoute';
+import Link from 'next/link';
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -89,7 +90,15 @@ export default function AdminOrdersPage() {
                     </td>
 
                     <td className="p-4 flex gap-2">
-                      <button className="bg-blue-600 px-3 py-1 rounded text-sm hover:bg-blue-700 transition">View</button>
+                      {/* <button
+                        className="bg-blue-600 px-3 py-1 rounded text-sm hover:bg-blue-700 transition">
+                        View
+                      </button> */}
+                      <Link href={`/order/${order._id}`}>
+                        <button className="bg-blue-600 px-3 py-1 rounded text-white hover:bg-blue-700 transition">
+                          View
+                        </button>
+                      </Link>
                       {!order.isDelivered && (
                         <button
                           onClick={() => deliverHandler(order._id)}
