@@ -20,9 +20,8 @@ export default function ShippingPage() {
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(saveShippingAddress({ address, city, pincode }));
-    router.push('/placeorder');
+    router.push('/payment'); 
   };
-
   return (
     <ProtectedRoute>
       <div className="max-w-2xl mx-auto mt-10 p-8 bg-gray-900 rounded-2xl border border-gray-800">

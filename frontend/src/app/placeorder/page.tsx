@@ -98,13 +98,14 @@ export default function PlaceOrderPage() {
   //   }
   // };
 
+  const { paymentMethod } = useSelector((state: RootState) => state.cart);
+
   const placeOrderHandler = async () => {
   try {
     const storedUser = localStorage.getItem('userInfo');
     if (!storedUser) { router.push('/login'); return; }
     const userInfo = JSON.parse(storedUser);
 
-    // 1. Backend mein order create karein
     const res = await fetch('http://localhost:5000/api/orders', {
       method: 'POST',
       headers: {
@@ -121,14 +122,13 @@ export default function PlaceOrderPage() {
         })),
         shippingAddress: shippingAddress,
         totalPrice: Number(totalPrice),
-        paymentMethod: 'Razorpay', // Humne ise ab fixed kar diya
+        paymentMethod: 'Razorpay', 
       }),
     });
 
     const orderData = await res.json();
     if (!res.ok) throw new Error(orderData.message);
 
-    // 2. Razorpay Order ID generate karein
     const paymentResponse = await createRazorpayOrder(Number(totalPrice));
 
     const options = {
@@ -138,7 +138,7 @@ export default function PlaceOrderPage() {
       name: "NexusMart",
       order_id: paymentResponse.order.id,
       handler: async function (response: any) {
-        // --- SECOND TRY-CATCH (For Payment Update) ---
+
         try {
           const payRes = await fetch(`http://localhost:5000/api/orders/${orderData._id}/pay`, {
             method: 'PUT',
