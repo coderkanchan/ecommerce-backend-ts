@@ -1,11 +1,73 @@
+// "use client";
+// import AdminSidebar from '@/components/AdminSidebar';
+// import AdminRoute from "@/components/AdminRoute";
+// import { useEffect, useState } from 'react';
+
+// export default function AdminDashboard() {
+
+//   const [summary, setSummary] = useState({ totalSales: 0, ordersCount: 0, usersCount: 0 });
+
+//   const fetchSummary = async () => {
+//     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+//     const res = await fetch('http://localhost:5000/api/orders/summary', {
+//       headers: { Authorization: `Bearer ${userInfo.token}` },
+//     });
+//     const data = await res.json();
+//     setSummary(data);
+//   };
+
+//   useEffect(() => { fetchSummary(); }, []);
+
+//   return (
+//     <AdminRoute>
+//       <div className="flex min-h-screen bg-black text-white">
+//         <AdminSidebar />
+//         <main className="flex-1 p-8">
+//           <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
+
+//           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+//             <div className="bg-gray-900 p-6 rounded-2xl border border-gray-800">
+//               <p className="text-gray-400 text-sm">Total Sales</p>
+//               <h2 className="text-2xl font-bold text-green-400">
+//                 ${summary.totalSales.toFixed(2)}
+//               </h2>
+//             </div>
+//             <div className="bg-gray-900 p-6 rounded-2xl border border-gray-800">
+//               <p className="text-gray-400 text-sm">Total Orders</p>
+//               <h2 className="text-2xl font-bold text-blue-400">{summary.ordersCount}</h2>
+//             </div>
+//             <div className="bg-gray-900 p-6 rounded-2xl border border-gray-800">
+//               <p className="text-gray-400 text-sm">Total Users</p>
+//               <h2 className="text-2xl font-bold text-purple-400">{summary.usersCount}</h2>
+//             </div>
+//           </div>
+
+//           <div className="bg-gray-900 p-12 rounded-2xl border border-gray-800 text-center">
+//             <p className="text-gray-500 italic">Charts and Detailed Analytics coming soon...</p>
+//           </div>
+//         </main>
+//       </div>
+//     </AdminRoute>
+//   );
+// }
+
+
+
 "use client";
 import AdminSidebar from '@/components/AdminSidebar';
 import AdminRoute from "@/components/AdminRoute";
 import { useEffect, useState } from 'react';
+// 1. Recharts Imports
+import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 export default function AdminDashboard() {
-
-  const [summary, setSummary] = useState({ totalSales: 0, ordersCount: 0, usersCount: 0 });
+  // 2. State mein salesData add kiya
+  const [summary, setSummary] = useState({
+    totalSales: 0,
+    ordersCount: 0,
+    usersCount: 0,
+    salesData: []
+  });
 
   const fetchSummary = async () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
@@ -23,27 +85,62 @@ export default function AdminDashboard() {
       <div className="flex min-h-screen bg-black text-white">
         <AdminSidebar />
         <main className="flex-1 p-8">
-          <h1 className="text-3xl font-bold mb-8">Admin Dashboard</h1>
+          <h1 className="text-3xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+            Admin Dashboard
+          </h1>
 
+          {/* Stats Cards Section */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            {/* ... Aapke purane cards (Total Sales, Orders, Users) ... */}
             <div className="bg-gray-900 p-6 rounded-2xl border border-gray-800">
               <p className="text-gray-400 text-sm">Total Sales</p>
-              <h2 className="text-2xl font-bold text-green-400">
-                ${summary.totalSales.toFixed(2)}
-              </h2>
+              <h2 className="text-2xl font-bold text-green-400">${summary.totalSales.toFixed(2)}</h2>
             </div>
-            <div className="bg-gray-900 p-6 rounded-2xl border border-gray-800">
-              <p className="text-gray-400 text-sm">Total Orders</p>
-              <h2 className="text-2xl font-bold text-blue-400">{summary.ordersCount}</h2>
-            </div>
-            <div className="bg-gray-900 p-6 rounded-2xl border border-gray-800">
-              <p className="text-gray-400 text-sm">Total Users</p>
-              <h2 className="text-2xl font-bold text-purple-400">{summary.usersCount}</h2>
-            </div>
+            {/* (Baki dono cards yahan rahenge) */}
           </div>
 
-          <div className="bg-gray-900 p-12 rounded-2xl border border-gray-800 text-center">
-            <p className="text-gray-500 italic">Charts and Detailed Analytics coming soon...</p>
+          {/* 3. CHART SECTION (Replacement for "Coming soon" text) */}
+          <div className="bg-gray-900 p-8 rounded-2xl border border-gray-800">
+            <h2 className="text-xl font-bold mb-6 text-blue-400">Sales Analytics</h2>
+            <div className="h-87.5 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={summary.salesData}>
+                  <defs>
+                    <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8} />
+                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#1f2937" vertical={false} />
+                  <XAxis
+                    dataKey="_id"
+                    stroke="#6b7280"
+                    tick={{ fill: '#9ca3af', fontSize: 12 }}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    stroke="#6b7280"
+                    tick={{ fill: '#9ca3af', fontSize: 12 }}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(value) => `$${value}`}
+                  />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#111827', border: '1px solid #374151', borderRadius: '12px' }}
+                    itemStyle={{ color: '#3b82f6' }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="sales"
+                    stroke="#3b82f6"
+                    strokeWidth={3}
+                    fillOpacity={1}
+                    fill="url(#colorSales)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </main>
       </div>
