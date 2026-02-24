@@ -4,7 +4,6 @@ interface CartState {
   cartItems: any[];
   shippingAddress: any;
   paymentMethod: string;
-  buyNowRequest: string;
 }
 
 const initialState: CartState = {
@@ -66,7 +65,7 @@ export const {
   removeFromCart,
   saveShippingAddress,
   savePaymentMethod,
-  clearCartItems
+  clearCartItems,
   buyNowRequest
 } = cartSlice.actions;
 
