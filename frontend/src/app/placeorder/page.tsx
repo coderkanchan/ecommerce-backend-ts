@@ -101,81 +101,90 @@ export default function PlaceOrderPage() {
   const { paymentMethod } = useSelector((state: RootState) => state.cart);
 
   const placeOrderHandler = async () => {
-  try {
-    const storedUser = localStorage.getItem('userInfo');
-    if (!storedUser) { router.push('/login'); return; }
-    const userInfo = JSON.parse(storedUser);
+    try {
+      const storedUser = localStorage.getItem('userInfo');
+      if (!storedUser) { router.push('/login'); return; }
+      const userInfo = JSON.parse(storedUser);
 
-    const res = await fetch('http://localhost:5000/api/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${userInfo.token}`,
-      },
-      body: JSON.stringify({
-        orderItems: cartItems.map(item => ({
-          name: item.name,
-          qty: item.qty,
-          imageUrl: item.imageUrl,
-          price: item.price,
-          product: item._id
-        })),
-        shippingAddress: shippingAddress,
-        totalPrice: Number(totalPrice),
-        paymentMethod: 'Razorpay', 
-      }),
-    });
+      const res = await fetch('http://localhost:5000/api/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userInfo.token}`,
+        },
+        body: JSON.stringify({
+          orderItems: cartItems.map(item => ({
+            name: item.name,
+            qty: item.qty,
+            imageUrl: item.imageUrl,
+            price: item.price,
+            product: item._id
+          })),
+          shippingAddress: shippingAddress,
+          totalPrice: Number(totalPrice),
+          paymentMethod: 'paymentMethod',
+        }),
+      });
 
-    const orderData = await res.json();
-    if (!res.ok) throw new Error(orderData.message);
+      const orderData = await res.json();
+      if (!res.ok) throw new Error(orderData.message);
 
-    const paymentResponse = await createRazorpayOrder(Number(totalPrice));
+      if (paymentMethod === 'COD') {
+        alert("Order Placed Successfully via COD! 📦");
+        dispatch(clearCartItems());
+        localStorage.removeItem('cartItems');
+        router.push(`/profile`);
 
-    const options = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-      amount: paymentResponse.order.amount,
-      currency: "INR",
-      name: "NexusMart",
-      order_id: paymentResponse.order.id,
-      handler: async function (response: any) {
+      } else {
 
-        try {
-          const payRes = await fetch(`http://localhost:5000/api/orders/${orderData._id}/pay`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${userInfo.token}`,
-            },
-            body: JSON.stringify({
-              razorpay_payment_id: response.razorpay_payment_id,
-              status: 'completed',
-              email: userInfo.email
-            }),
-          });
+        const paymentResponse = await createRazorpayOrder(Number(totalPrice));
 
-          if (!payRes.ok) throw new Error("Failed to update order status on server");
+        const options = {
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+          amount: paymentResponse.order.amount,
+          currency: "INR",
+          name: "NexusMart",
+          order_id: paymentResponse.order.id,
+          handler: async function (response: any) {
 
-          alert("Order Placed & Payment Successful! 🎉");
-          dispatch(clearCartItems());
-          localStorage.removeItem('cartItems');
-          router.push(`/profile`);
+            try {
+              const payRes = await fetch(`http://localhost:5000/api/orders/${orderData._id}/pay`, {
+                method: 'PUT',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${userInfo.token}`,
+                },
+                body: JSON.stringify({
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  status: 'completed',
+                  email: userInfo.email
+                }),
+              });
 
-        } catch (innerErr: any) {
-          alert("Payment was successful but server update failed. Please contact support.");
-          console.error(innerErr);
-        }
-      },
-      prefill: { name: userInfo.name, email: userInfo.email },
-      theme: { color: "#EAB308" },
-    };
+              if (!payRes.ok) throw new Error("Failed to update order status on server");
 
-    const rzp = new (window as any).Razorpay(options);
-    rzp.open();
+              alert("Order Placed & Payment Successful! 🎉");
+              dispatch(clearCartItems());
+              localStorage.removeItem('cartItems');
+              router.push(`/profile`);
 
-  } catch (err: any) {
-    alert(err.message || "Something went wrong!");
-  }
-};
+            } catch (innerErr: any) {
+              alert("Payment was successful but server update failed. Please contact support.");
+              console.error(innerErr);
+            }
+          },
+          prefill: { name: userInfo.name, email: userInfo.email },
+          theme: { color: "#EAB308" },
+        };
+
+        const rzp = new (window as any).Razorpay(options);
+        rzp.open();
+      }
+
+    } catch (err: any) {
+      alert(err.message || "Something went wrong!");
+    }
+  };
 
   if (!isMounted) return null;
 
