@@ -25,45 +25,121 @@ export default function PlaceOrderPage() {
   const taxPrice = Number((0.15 * itemsPrice).toFixed(2));
   const totalPrice = (itemsPrice + shippingPrice + taxPrice).toFixed(2);
 
+  // const placeOrderHandler = async () => {
+  //   try {
+  //     const storedUser = localStorage.getItem('userInfo');
+  //     if (!storedUser) { router.push('/login'); return; }
+  //     const userInfo = JSON.parse(storedUser);
+
+  //     const res = await fetch('http://localhost:5000/api/orders', {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': `Bearer ${userInfo.token}`,
+  //       },
+  //       body: JSON.stringify({
+  //         orderItems: cartItems.map(item => ({
+  //           name: item.name,
+  //           qty: item.qty,
+  //           imageUrl: item.imageUrl,
+  //           price: item.price,
+  //           product: item._id
+  //         })),
+  //         shippingAddress: shippingAddress,
+  //         totalPrice: Number(totalPrice),
+  //       }),
+  //     });
+
+  //     const orderData = await res.json();
+  //     if (!res.ok) throw new Error(orderData.message);
+
+  //     const paymentResponse = await createRazorpayOrder(Number(totalPrice));
+
+  //     const options = {
+  //       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+  //       amount: paymentResponse.order.amount,
+  //       currency: "INR",
+  //       name: "NexusMart",
+  //       order_id: paymentResponse.order.id,
+
+  //       handler: async function (response: any) {
+
+  //         const payRes = await fetch(`http://localhost:5000/api/orders/${orderData._id}/pay`, {
+  //           method: 'PUT',
+  //           headers: {
+  //             'Content-Type': 'application/json',
+  //             'Authorization': `Bearer ${userInfo.token}`,
+  //           },
+  //           body: JSON.stringify({
+  //             razorpay_payment_id: response.razorpay_payment_id,
+  //             status: 'completed',
+  //             email: userInfo.email
+  //           }),
+  //         });
+
+  //         if (payRes.ok) {
+  //           alert("Order Placed & Payment Successful! 🎉");
+
+  //           dispatch(clearCartItems());
+  //           localStorage.removeItem('cartItems');
+
+  //           router.push(`/profile`);
+  //         }
+  //       },
+  //       prefill: { name: userInfo.name, email: userInfo.email },
+  //       theme: { color: "#EAB308" },
+  //     };
+
+  //     const rzp = new (window as any).Razorpay(options);
+  //     rzp.open();
+
+  //   } catch (err: any) {
+  //     alert(err.message || "Something went wrong!");
+  //   }
+  // };
+
   const placeOrderHandler = async () => {
-    try {
-      const storedUser = localStorage.getItem('userInfo');
-      if (!storedUser) { router.push('/login'); return; }
-      const userInfo = JSON.parse(storedUser);
+  try {
+    const storedUser = localStorage.getItem('userInfo');
+    if (!storedUser) { router.push('/login'); return; }
+    const userInfo = JSON.parse(storedUser);
 
-      const res = await fetch('http://localhost:5000/api/orders', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${userInfo.token}`,
-        },
-        body: JSON.stringify({
-          orderItems: cartItems.map(item => ({
-            name: item.name,
-            qty: item.qty,
-            imageUrl: item.imageUrl,
-            price: item.price,
-            product: item._id
-          })),
-          shippingAddress: shippingAddress,
-          totalPrice: Number(totalPrice),
-        }),
-      });
+    // 1. Backend mein order create karein
+    const res = await fetch('http://localhost:5000/api/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${userInfo.token}`,
+      },
+      body: JSON.stringify({
+        orderItems: cartItems.map(item => ({
+          name: item.name,
+          qty: item.qty,
+          imageUrl: item.imageUrl,
+          price: item.price,
+          product: item._id
+        })),
+        shippingAddress: shippingAddress,
+        totalPrice: Number(totalPrice),
+        paymentMethod: 'Razorpay', // Humne ise ab fixed kar diya
+      }),
+    });
 
-      const orderData = await res.json();
-      if (!res.ok) throw new Error(orderData.message);
+    const orderData = await res.json();
+    if (!res.ok) throw new Error(orderData.message);
 
-      const paymentResponse = await createRazorpayOrder(Number(totalPrice));
+    // 2. Razorpay Order ID generate karein
+    const paymentResponse = await createRazorpayOrder(Number(totalPrice));
 
-      const options = {
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: paymentResponse.order.amount,
-        currency: "INR",
-        name: "NexusMart",
-        order_id: paymentResponse.order.id,
-
-        handler: async function (response: any) {
-
+    const options = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+      amount: paymentResponse.order.amount,
+      currency: "INR",
+      name: "NexusMart",
+      order_id: paymentResponse.order.id,
+      handler: async function (response: any) {
+        // --- SECOND TRY-CATCH (For Payment Update) ---
+        try {
           const payRes = await fetch(`http://localhost:5000/api/orders/${orderData._id}/pay`, {
             method: 'PUT',
             headers: {
@@ -77,26 +153,29 @@ export default function PlaceOrderPage() {
             }),
           });
 
-          if (payRes.ok) {
-            alert("Order Placed & Payment Successful! 🎉");
+          if (!payRes.ok) throw new Error("Failed to update order status on server");
 
-            dispatch(clearCartItems());
-            localStorage.removeItem('cartItems');
+          alert("Order Placed & Payment Successful! 🎉");
+          dispatch(clearCartItems());
+          localStorage.removeItem('cartItems');
+          router.push(`/profile`);
 
-            router.push(`/profile`);
-          }
-        },
-        prefill: { name: userInfo.name, email: userInfo.email },
-        theme: { color: "#EAB308" },
-      };
+        } catch (innerErr: any) {
+          alert("Payment was successful but server update failed. Please contact support.");
+          console.error(innerErr);
+        }
+      },
+      prefill: { name: userInfo.name, email: userInfo.email },
+      theme: { color: "#EAB308" },
+    };
 
-      const rzp = new (window as any).Razorpay(options);
-      rzp.open();
+    const rzp = new (window as any).Razorpay(options);
+    rzp.open();
 
-    } catch (err: any) {
-      alert(err.message || "Something went wrong!");
-    }
-  };
+  } catch (err: any) {
+    alert(err.message || "Something went wrong!");
+  }
+};
 
   if (!isMounted) return null;
 
