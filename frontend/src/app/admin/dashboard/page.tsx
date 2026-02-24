@@ -210,7 +210,7 @@ export default function AdminDashboard() {
           </div>
 
           {/* Professional Chart Section */}
-          <div className="bg-[#111] p-10 rounded-3xl border border-gray-800 shadow-2xl">
+          {/* <div className="bg-[#111] p-10 rounded-3xl border border-gray-800 shadow-2xl">
             <h2 className="text-xl font-bold mb-8 flex items-center gap-2">
               <span className="w-2 h-8 bg-blue-600 rounded-full"></span>
               Sales Analytics (Revenue Over Time)
@@ -260,6 +260,37 @@ export default function AdminDashboard() {
                   No sales data available for the chart yet...
                 </div>
               )}
+            </div>
+          </div> */}
+          {/* Chart Container - Yahan height dena zaroori hai */}
+          <div className="bg-[#111] p-10 rounded-3xl border border-gray-800 shadow-2xl mt-8">
+            <h2 className="text-xl font-bold mb-8 text-blue-400">
+              Sales Analytics (Revenue Over Time)
+            </h2>
+
+            {/* Is div ko dhyan se dekho, h-[400px] add kiya hai */}
+            <div style={{ width: '100%', height: 400 }}>
+              <ResponsiveContainer>
+                <AreaChart data={summary.salesData}>
+                  <defs>
+                    <linearGradient id="colorSales" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#222" vertical={false} />
+                  <XAxis dataKey="_id" stroke="#444" fontSize={12} />
+                  <YAxis stroke="#444" fontSize={12} />
+                  <Tooltip contentStyle={{ backgroundColor: '#000', border: '1px solid #333' }} />
+                  <Area
+                    type="monotone"
+                    dataKey="sales"
+                    stroke="#3b82f6"
+                    strokeWidth={4}
+                    fill="url(#colorSales)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </main>
