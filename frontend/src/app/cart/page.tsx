@@ -2,14 +2,20 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { RootState } from '@/redux/store';
+import { useState, useEffect } from 'react';
 import { removeFromCart, addToCart } from '@/redux/slices/cartSlice';
 import Link from 'next/link';
 
 export default function CartPage() {
   const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
   const { cartItems } = useSelector((state: RootState) => state.cart);
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const totalAmount = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
 
@@ -20,6 +26,8 @@ export default function CartPage() {
       router.push('/shipping');
     }
   };
+
+  if (!isClient) return null;
 
   return (
     <div className="min-h-screen bg-black text-white p-8">

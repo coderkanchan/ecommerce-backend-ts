@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { logout } from '@/redux/slices/authSlice';
+import { clearCartItems } from '@/redux/slices/cartSlice';
 import Link from 'next/link';
 import { ShoppingCart, User, Search, Menu } from 'lucide-react';
 
@@ -21,8 +22,13 @@ export default function Navbar() {
 
   const cartCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
 
+  // const logoutHandler = () => {
+  //   dispatch(logout());
+  //   router.push('/login');
+  // };
   const logoutHandler = () => {
-    dispatch(logout());
+    dispatch(logout()); 
+    dispatch(clearCartItems()); 
     router.push('/login');
   };
 
@@ -61,7 +67,7 @@ export default function Navbar() {
 
             {mounted && userInfo ? (
               <div className="flex items-center space-x-4">
-              
+
                 {userInfo.isAdmin && (
                   <Link
                     href="/admin/dashboard"
