@@ -207,8 +207,14 @@ export default function PlaceOrderPage() {
             </div>
 
             <div className="bg-gray-900 p-6 rounded-xl border border-gray-800">
+
               <h2 className="text-xl font-bold mb-3">2. Payment Method</h2>
-              <p className="text-gray-400"><strong>Method: </strong>Razorpay/Online Payment</p>
+
+              {/* <p className="text-gray-400"><strong>Method: </strong>Razorpay/Online Payment</p> */}
+              <p>
+                <strong>Method: </strong>
+                {cart.paymentMethod === 'COD' ? 'Cash On Delivery' : 'Online Payment (Razorpay)'}
+              </p>
             </div>
 
             <div className="bg-gray-900 p-6 rounded-xl border border-gray-800">
@@ -236,10 +242,21 @@ export default function PlaceOrderPage() {
             <h2 className="text-xl font-bold mb-6">Order Summary</h2>
 
             <div className="space-y-3 text-gray-400">
-              <div className="flex justify-between"><span>Items</span><span>${itemsPrice.toFixed(2)}</span></div>
-              <div className="flex justify-between"><span>Shipping</span><span>${shippingPrice.toFixed(2)}</span></div>
-              <div className="flex justify-between"><span>Tax</span><span>${taxPrice}</span></div>
+
+              <div className="flex justify-between">
+                <span>Items</span><span>${itemsPrice.toFixed(2)}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Shipping</span><span>${shippingPrice.toFixed(2)}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Tax</span><span>${taxPrice}</span>
+              </div>
+
               <hr className="border-gray-800 my-4" />
+
               <div className="flex justify-between text-xl font-bold text-white">
                 <span>Total</span><span>${totalPrice}</span>
               </div>

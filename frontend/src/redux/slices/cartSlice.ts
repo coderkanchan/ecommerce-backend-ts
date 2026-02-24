@@ -4,6 +4,7 @@ interface CartState {
   cartItems: any[];
   shippingAddress: any;
   paymentMethod: string;
+  buyNowRequest: string;
 }
 
 const initialState: CartState = {
@@ -52,7 +53,11 @@ const cartSlice = createSlice({
       if (typeof window !== "undefined") {
         localStorage.removeItem("cartItems");
       }
-    }
+    },
+    buyNowRequest: (state, action) => {
+      state.cartItems = [action.payload]; 
+      localStorage.setItem('cartItems', JSON.stringify(state.cartItems));
+    },
   },
 });
 
@@ -62,6 +67,7 @@ export const {
   saveShippingAddress,
   savePaymentMethod,
   clearCartItems
+  buyNowRequest
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

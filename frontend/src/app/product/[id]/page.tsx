@@ -4,6 +4,7 @@ import { addToCart } from '@/redux/slices/cartSlice';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import { buyNowRequest } from '@/redux/slices/cartSlice';
 import API from '@/services/api';
 
 export default function ProductDetails() {
@@ -36,14 +37,13 @@ export default function ProductDetails() {
   };
 
   const handleBuyNow = () => {
-    dispatch(addToCart({
+    dispatch(buyNowRequest({
       _id: product._id,
       name: product.name,
       price: product.price,
       imageUrl: product.imageUrl,
       qty: Number(qty)
     }));
-
     router.push('/shipping');
   };
 
@@ -78,7 +78,7 @@ export default function ProductDetails() {
 
           <button
             onClick={handleBuyNow}
-            
+
           >
             Buy Now
           </button>
