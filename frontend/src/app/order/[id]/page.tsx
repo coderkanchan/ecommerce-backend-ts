@@ -49,7 +49,7 @@ export default function OrderDetailsPage() {
 
           <div className="bg-gray-900 p-6 rounded-xl border border-gray-800">
             <h2 className="text-xl font-bold mb-2">Payment Method</h2>
-            <p><strong>Method:</strong> PayPal/COD</p>
+            <p><strong>Method:</strong> Razorpay/COD</p>
             <div className={`mt-4 p-3 rounded ${order.isPaid ? 'bg-green-900/30 text-green-400' : 'bg-red-900/30 text-red-400'}`}>
               {order.isPaid ? `Paid at ${order.paidAt}` : "Not Paid"}
             </div>
