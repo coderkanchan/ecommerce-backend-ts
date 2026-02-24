@@ -15,7 +15,7 @@ const initialState: CartState = {
     : {},
   paymentMethod: typeof window !== 'undefined' && localStorage.getItem('paymentMethod')
     ? JSON.parse(localStorage.getItem('paymentMethod')!)
-    : 'PayPal',
+    : 'Razorpay',
 };
 
 const cartSlice = createSlice({
