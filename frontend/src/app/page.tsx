@@ -18,8 +18,6 @@ function HomeContent() {
   const category = searchParams.get('category') || '';
   const pageNumber = searchParams.get('pageNumber') || '1';
 
- 
-
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -43,14 +41,26 @@ function HomeContent() {
   return (
     <main className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-8 text-white">Latest Products</h1>
-     
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {products.map((product: any) => (
-          <ProductCard key={product._id} product={product} />
-        ))}
+        {products.length > 0 ? (
+          products.map((product: any) => (
+            <ProductCard key={product._id} product={product} />
+          ))
+        ) : (
+          <div className="col-span-full py-20 text-center">
+            <div className="text-6xl mb-4">🔍</div>
+            <h3 className="text-2xl font-semibold text-gray-400">No Products Found</h3>
+            <p className="text-gray-500 mt-2">Try adjusting your search or filters to find what you're looking for.</p>
+            <button
+              onClick={() => router.push('/')}
+              className="mt-6 text-blue-500 hover:underline"
+            >
+              Clear all filters
+            </button>
+          </div>
+        )}
       </div>
-     
-   
       <Pagination pages={pages} page={page} />
     </main>
   );
