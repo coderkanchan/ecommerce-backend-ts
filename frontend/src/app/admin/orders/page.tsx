@@ -90,10 +90,6 @@ export default function AdminOrdersPage() {
                     </td>
 
                     <td className="p-4 flex gap-2">
-                      {/* <button
-                        className="bg-blue-600 px-3 py-1 rounded text-sm hover:bg-blue-700 transition">
-                        View
-                      </button> */}
                       <Link href={`/order/${order._id}`}>
                         <button className="bg-blue-600 px-3 py-1 rounded text-white hover:bg-blue-700 transition">
                           View

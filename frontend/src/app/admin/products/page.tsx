@@ -6,8 +6,8 @@ import AdminRoute from '@/components/AdminRoute';
 export default function AdminProductsPage() {
   const [products, setProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
-
-  const [editingId, setEditingId] = useState<string | null>(null); 
+  const [uploading, setUploading] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
   const [category, setCategory] = useState('');
@@ -39,7 +39,7 @@ export default function AdminProductsPage() {
     setStock(product.stock);
     setImageUrl(product.imageUrl);
     setDescription(product.description);
-    setShowModal(true); 
+    setShowModal(true);
   };
 
   const deleteHandler = async (id: string) => {
@@ -50,6 +50,30 @@ export default function AdminProductsPage() {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
       fetchProducts();
+    }
+  };
+
+  const uploadFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('image', file);
+    setUploading(true);
+
+    try {
+      const res = await fetch('http://localhost:5000/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      setImageUrl(data.image);
+      setUploading(false);
+      alert("Image Uploaded Successfully! ✨");
+    } catch (err) {
+      console.error(err);
+      setUploading(false);
+      alert("Upload failed");
     }
   };
 
@@ -103,23 +127,78 @@ export default function AdminProductsPage() {
                 <h2 className="text-2xl font-bold mb-6">{editingId ? 'Edit Product' : 'Add New Product'}</h2>
 
                 <form onSubmit={submitHandler} className="space-y-4">
-                  <input type="text" placeholder="Product Name" className="w-full p-3 bg-black border border-gray-700 rounded-lg" value={name} onChange={(e) => setName(e.target.value)} required />
+                  <input
+                    type="text"
+                    placeholder="Product Name"
+                    className="w-full p-3 bg-black border border-gray-700 rounded-lg"
+                    value={name} onChange={(e) => setName(e.target.value)}
+                    required
+                  />
                   <div className="grid grid-cols-2 gap-4">
-                    <input type="number" placeholder="Price" className="w-full p-3 bg-black border border-gray-700 rounded-lg" value={price} onChange={(e) => setPrice(Number(e.target.value))} required />
-                    <input type="number" placeholder="Stock" className="w-full p-3 bg-black border border-gray-700 rounded-lg" value={stock} onChange={(e) => setStock(Number(e.target.value))} required />
+                    <input
+                      type="number"
+                      placeholder="Price"
+                      className="w-full p-3 bg-black border border-gray-700 rounded-lg"
+                      value={price} onChange={(e) => setPrice(Number(e.target.value))}
+                      required
+                    />
+                    <input
+                      type="number"
+                      placeholder="Stock"
+                      className="w-full p-3 bg-black border border-gray-700 rounded-lg"
+                      value={stock} onChange={(e) => setStock(Number(e.target.value))}
+                      required
+                    />
                   </div>
-                  <input type="text" placeholder="Category" className="w-full p-3 bg-black border border-gray-700 rounded-lg" value={category} onChange={(e) => setCategory(e.target.value)} required />
-                  <input type="text" placeholder="Image URL (Link)" className="w-full p-3 bg-black border border-gray-700 rounded-lg" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} required />
-                  <textarea placeholder="Description" className="w-full p-3 bg-black border border-gray-700 rounded-lg h-32" value={description} onChange={(e) => setDescription(e.target.value)} required />
+                  <input
+                    type="text"
+                    placeholder="Category"
+                    className="w-full p-3 bg-black border border-gray-700 rounded-lg"
+                    value={category} onChange={(e) => setCategory(e.target.value)}
+                    required
+                  />
+                  <input
+                    type="text"
+                    placeholder="Image URL (Link)"
+                    className="w-full p-3 bg-black border border-gray-700 rounded-lg"
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
+                  />
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm text-gray-400">Or Upload Image File:</label>
+                    <input
+                      type="file"
+                      onChange={uploadFileHandler}
+                      className="text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
+                    />
+                    {uploading && <p className="text-blue-400 text-xs animate-pulse">Uploading to Cloudinary...</p>}
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Image URL (Link)"
+                    className="w-full p-3 bg-black border border-gray-700 rounded-lg"
+                    value={imageUrl} onChange={(e) => setImageUrl(e.target.value)}
+                    required
+                  />
+                  <textarea
+                    placeholder="Description"
+                    className="w-full p-3 bg-black border border-gray-700 rounded-lg h-32"
+                    value={description} onChange={(e) => setDescription(e.target.value)}
+                    required
+                  />
 
                   <div className="flex gap-4 mt-6">
+
                     <button type="submit" className="flex-1 bg-blue-600 py-3 rounded-lg font-bold hover:bg-blue-700 transition">
                       {editingId ? 'Update Product' : 'Save Product'}
                     </button>
+
                     <button type="button" onClick={closeModalHandler} className="flex-1 bg-gray-800 py-3 rounded-lg font-bold hover:bg-gray-700 transition text-gray-400">
                       Cancel
                     </button>
+
                   </div>
+
                 </form>
               </div>
             </div>

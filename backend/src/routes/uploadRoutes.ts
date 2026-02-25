@@ -1,46 +1,41 @@
-import path from 'path';
 import express from 'express';
 import multer from 'multer';
+import { v2 as cloudinary } from 'cloudinary';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const router = express.Router();
 
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename(req, file, cb) {
-    cb(null, `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`);
-  },
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-function checkFileType(file: Express.Multer.File, cb: any) {
-  const filetypes = /jpg|jpeg|png|jfif/;
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
+const storage = multer.memoryStorage(); 
+const upload = multer({ storage });
 
-  if (extname && mimetype) {
-    return cb(null, true);
-  } else {
-    cb('Images only!');
+router.post('/', upload.single('image'), async (req: any, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).send({ message: 'Please upload an image' });
+    }
+
+    const fileBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+
+    const uploadResponse = await cloudinary.uploader.upload(fileBase64, {
+      folder: 'ecommerce_products', 
+    });
+
+    res.send({
+      message: 'Image Uploaded to Cloudinary',
+      image: uploadResponse.secure_url, 
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: 'Upload to Cloudinary failed' });
   }
-}
-
-const upload = multer({
-  storage,
-  fileFilter: function (req, file, cb) {
-    checkFileType(file, cb);
-  },
-});
-
-router.post('/', upload.single('image'), (req: any, res) => {
-  if (!req.file) {
-    return res.status(400).send({ message: 'Please upload an image' });
-  }
-
-  res.send({
-    message: 'Image Uploaded',
-    image: `/${req.file.path.replace(/\\/g, "/")}`,
-  });
 });
 
 export default router;
