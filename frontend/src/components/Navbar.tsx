@@ -49,17 +49,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* <div className="hidden md:flex flex-1 justify-center px-8">
-            <div className="relative w-full max-w-lg">
-              <input
-                type="text"
-                className="w-full bg-black border border-gray-700 text-white rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Search products..."
-              />
-              <Search className="absolute left-3 top-2.5 text-gray-500" size={20} />
-            </div>
-          </div> */}
-          {/* <form onSubmit={submitHandler} className="hidden md:flex flex-1 justify-center px-8">
+          <form onSubmit={submitHandler} className="hidden md:flex flex-1 justify-center px-8">
             <div className="relative w-full max-w-lg">
               <input
                 type="text"
@@ -70,7 +60,7 @@ export default function Navbar() {
               />
               <Search className="absolute left-3 top-2.5 text-gray-500" size={20} />
             </div>
-          </form> */}
+          </form>
 
           <div className="flex items-center space-x-6">
 
