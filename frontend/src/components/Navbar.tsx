@@ -37,7 +37,7 @@ export default function Navbar() {
       router.push('/');
     }
   };
-  
+
   return (
     <nav className="bg-gray-900 shadow-md sticky top-0 z-50 border-b border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,7 +49,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <div className="hidden md:flex flex-1 justify-center px-8">
+          {/* <div className="hidden md:flex flex-1 justify-center px-8">
             <div className="relative w-full max-w-lg">
               <input
                 type="text"
@@ -58,7 +58,19 @@ export default function Navbar() {
               />
               <Search className="absolute left-3 top-2.5 text-gray-500" size={20} />
             </div>
-          </div>
+          </div> */}
+          {/* <form onSubmit={submitHandler} className="hidden md:flex flex-1 justify-center px-8">
+            <div className="relative w-full max-w-lg">
+              <input
+                type="text"
+                value={keyword} 
+                onChange={(e) => setKeyword(e.target.value)} 
+                className="w-full bg-black border border-gray-700 text-white rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Search products..."
+              />
+              <Search className="absolute left-3 top-2.5 text-gray-500" size={20} />
+            </div>
+          </form> */}
 
           <div className="flex items-center space-x-6">
 
