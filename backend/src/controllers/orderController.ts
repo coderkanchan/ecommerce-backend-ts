@@ -104,20 +104,6 @@ export const updateOrderToDelivered = async (req: any, res: any) => {
   }
 };
 
-// export const getOrderSummary = async (req: any, res: any) => {
-//   const ordersCount = await Order.countDocuments();
-//   const usersCount = await User.countDocuments();
-
-//   const orders = await Order.find({ isPaid: true });
-//   const totalSales = orders.reduce((acc, item) => acc + item.totalPrice, 0);
-
-//   res.json({
-//     ordersCount,
-//     usersCount,
-//     totalSales,
-//   });
-// };
-
 export const getOrderSummary = async (req: any, res: any) => {
   const orders = await Order.find();
   const ordersCount = orders.length;
