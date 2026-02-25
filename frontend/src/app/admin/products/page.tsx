@@ -2,8 +2,11 @@
 import { useEffect, useState } from 'react';
 import AdminSidebar from '@/components/AdminSidebar';
 import AdminRoute from '@/components/AdminRoute';
+import Pagination from '@/components/Pagination';
 
 export default function AdminProductsPage() {
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
   const [products, setProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -15,11 +18,22 @@ export default function AdminProductsPage() {
   const [imageUrl, setImageUrl] = useState('');
   const [description, setDescription] = useState('');
 
-  const fetchProducts = async () => {
-    const res = await fetch('http://localhost:5000/api/products/all');
+  // const fetchProducts = async () => {
+  //   const res = await fetch('http://localhost:5000/api/products/all');
+  //   const data = await res.json();
+  //   setProducts(data.products);
+  // };
+  const fetchProducts = async (pageNumber = 1) => {
+    const res = await fetch(`http://localhost:5000/api/products/all?pageNumber=${pageNumber}`);
     const data = await res.json();
     setProducts(data.products);
+    setPages(data.pages);
+    setPage(data.page);
   };
+
+  useEffect(() => {
+    fetchProducts(page);
+  }, [page]);
 
   useEffect(() => {
     fetchProducts();
@@ -211,6 +225,7 @@ export default function AdminProductsPage() {
           )}
 
           <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
+            
             <table className="w-full text-left">
               <thead className="bg-gray-800 text-gray-300 uppercase text-sm font-semibold">
                 <tr>
@@ -244,6 +259,8 @@ export default function AdminProductsPage() {
                 ))}
               </tbody>
             </table>
+
+            <Pagination pages={pages} page={page} isAdmin={true} />
           </div>
         </main>
       </div>

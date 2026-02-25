@@ -3,8 +3,11 @@
 import { useEffect, useState } from 'react';
 import API from '@/services/api';
 import Link from 'next/link';
+import Pagination from '@/components/Pagination';
 
 export default function Home() {
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,6 +16,8 @@ export default function Home() {
       try {
         const { data } = await API.get('/products/all');
         setProducts(data.products);
+        setPages(data.pages);
+        setPage(data.page);
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -20,7 +25,7 @@ export default function Home() {
       }
     };
     getProducts();
-  }, []);
+  }, [page]);
 
   if (loading) return <div className="p-10 text-center text-white">Loading Products...</div>;
 
@@ -54,6 +59,8 @@ export default function Home() {
           </Link>
         ))}
       </div>
+
+      <Pagination pages={pages} page={page} isAdmin={true} />
     </div>
   );
 }
