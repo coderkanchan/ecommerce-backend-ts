@@ -4,21 +4,18 @@ interface Props {
   pages: number;
   page: number;
   isAdmin?: boolean;
-  keyword?: string;
 }
 
-const Pagination = ({ pages, page, isAdmin = false, keyword = '' }: Props) => {
+const Pagination = ({ pages, page, isAdmin = false }: Props) => {
   return pages > 1 ? (
     <div className="flex justify-center my-8 gap-2">
       {[...Array(pages).keys()].map((x) => (
         <Link
           key={x + 1}
           href={
-            !isAdmin
-              ? keyword
-                ? `/search/${keyword}/page/${x + 1}`
-                : `/page/${x + 1}`
-              : `/admin/products/${x + 1}`
+            isAdmin
+              ? `/admin/products?pageNumber=${x + 1}`
+              : `/?pageNumber=${x + 1}`
           }
         >
           <button
