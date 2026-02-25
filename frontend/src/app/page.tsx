@@ -21,6 +21,7 @@ function HomeContent() {
       try {
         setLoading(true);
         //const { data } = await API.get(`/products/all?pageNumber=${pageNumber}`);
+        
         const { data } = await API.get(`/products/all?keyword=${keyword}&category=${category}&pageNumber=${pageNumber}`
         );
         setProducts(data.products);
