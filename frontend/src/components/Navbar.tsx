@@ -13,7 +13,7 @@ export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
-
+  const categories = ["Electronics", "Fashion", "Home", "Books", "Toys", "Beauty"];
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const { cartItems } = useSelector((state: RootState) => state.cart);
 
@@ -50,15 +50,32 @@ export default function Navbar() {
           </div>
 
           <form onSubmit={submitHandler} className="hidden md:flex flex-1 justify-center px-8">
-            <div className="relative w-full max-w-lg">
+            <div className="flex w-full max-w-2xl bg-white rounded-md overflow-hidden border border-gray-700 focus-within:ring-2 focus-within:ring-blue-500">
+
+              <select
+                className="bg-gray-100 text-gray-700 text-sm px-3 border-r border-gray-300 outline-none cursor-pointer hover:bg-gray-200"
+                onChange={(e) => router.push(e.target.value === 'All' ? '/' : `/?category=${e.target.value}`)}
+              >
+                <option value="All">All</option>
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>{cat}</option>
+                ))}
+              </select>
+
               <input
                 type="text"
-                value={keyword} 
-                onChange={(e) => setKeyword(e.target.value)} 
-                className="w-full bg-black border border-gray-700 text-white rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Search products..."
+                value={keyword}
+                onChange={(e) => setKeyword(e.target.value)}
+                className="grow py-2 px-4 text-black outline-none"
+                placeholder="Search NexusMart..."
               />
-              <Search className="absolute left-3 top-2.5 text-gray-500" size={20} />
+
+              <button
+                type="submit"
+                className="bg-blue-600 px-5 text-white hover:bg-blue-700 transition flex items-center justify-center"
+              >
+                <Search size={20} />
+              </button>
             </div>
           </form>
 
