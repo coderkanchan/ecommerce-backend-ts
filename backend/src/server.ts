@@ -12,7 +12,7 @@ import paymentRoutes from './routes/paymentRoutes.js';
 
 dotenv.config();
 connectDB();
-
+console.log("Cloudinary Name:", process.env.CLOUDINARY_CLOUD_NAME);
 const app = express();
 app.use(cookieParser());
 

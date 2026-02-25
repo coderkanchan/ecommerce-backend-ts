@@ -18,7 +18,7 @@ export const createProduct = async (req: Request, res: Response) => {
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const pageSize = 8;
+    const pageSize = 100;
     const page = Number(req.query.pageNumber) || 1;
 
     const queryKeyword = req.query.keyword as string;

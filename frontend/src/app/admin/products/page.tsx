@@ -110,57 +110,68 @@ export default function AdminProductsPage() {
   return (
     <AdminRoute>
       <div className="flex min-h-screen bg-black text-white">
+
         <AdminSidebar />
+
         <main className="flex-1 p-8">
+
           <div className="flex justify-between items-center mb-8">
+
             <h1 className="text-3xl font-bold">Products</h1>
+
             <button
               onClick={() => setShowModal(true)}
               className="bg-blue-600 px-4 py-2 rounded-lg font-bold hover:bg-blue-700">
               + Create Product
             </button>
+
           </div>
 
           {showModal && (
             <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
               <div className="bg-gray-900 border border-gray-800 p-8 rounded-2xl w-full max-w-md shadow-2xl overflow-y-auto max-h-[90vh]">
-                <h2 className="text-2xl font-bold mb-6">{editingId ? 'Edit Product' : 'Add New Product'}</h2>
 
-                <form onSubmit={submitHandler} className="space-y-4">
+                <h2 className="text-2xl font-bold mb-6">
+                  {editingId ? 'Edit Product' : 'Add New Product'}
+                </h2>
+
+                <form onSubmit={submitHandler} className="h-full w-full space-y-4">
                   <input
                     type="text"
                     placeholder="Product Name"
-                    className="w-full p-3 bg-black border border-gray-700 rounded-lg"
+                    className="w-full p-4  bg-black border border-gray-700 rounded-lg"
                     value={name} onChange={(e) => setName(e.target.value)}
                     required
                   />
-                  <div className="grid grid-cols-2 gap-4">
-                    <input
-                      type="number"
-                      placeholder="Price"
-                      className="w-full p-3 bg-black border border-gray-700 rounded-lg"
-                      value={price} onChange={(e) => setPrice(Number(e.target.value))}
-                      required
-                    />
-                    <input
-                      type="number"
-                      placeholder="Stock"
-                      className="w-full p-3 bg-black border border-gray-700 rounded-lg"
-                      value={stock} onChange={(e) => setStock(Number(e.target.value))}
-                      required
-                    />
-                  </div>
+
+                  <label className="text-sm text-gray-400">Price</label>
+                  <input
+                    type="number"
+                    placeholder="Price"
+                    className="w-full p-4  bg-black border border-gray-700 rounded-lg"
+                    value={price} onChange={(e) => setPrice(Number(e.target.value))}
+                    required
+                  />
+                  <label className="text-sm text-gray-400">Stock</label>
+                  <input
+                    type="number"
+                    placeholder="Stock"
+                    className="w-full p-4 bg-black border border-gray-700 rounded-lg"
+                    value={stock} onChange={(e) => setStock(Number(e.target.value))}
+                    required
+                  />
+
                   <input
                     type="text"
                     placeholder="Category"
-                    className="w-full p-3 bg-black border border-gray-700 rounded-lg"
+                    className="w-full p-4 bg-black border border-gray-700 rounded-lg"
                     value={category} onChange={(e) => setCategory(e.target.value)}
                     required
                   />
                   <input
                     type="text"
                     placeholder="Image URL (Link)"
-                    className="w-full p-3 bg-black border border-gray-700 rounded-lg"
+                    className="w-full p-4 bg-black border border-gray-700 rounded-lg"
                     value={imageUrl}
                     onChange={(e) => setImageUrl(e.target.value)}
                   />
@@ -171,18 +182,13 @@ export default function AdminProductsPage() {
                       onChange={uploadFileHandler}
                       className="text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer"
                     />
-                    {uploading && <p className="text-blue-400 text-xs animate-pulse">Uploading to Cloudinary...</p>}
+                    {uploading &&
+                      <p className="text-blue-400 text-xs animate-pulse">Uploading to Cloudinary...</p>
+                    }
                   </div>
-                  <input
-                    type="text"
-                    placeholder="Image URL (Link)"
-                    className="w-full p-3 bg-black border border-gray-700 rounded-lg"
-                    value={imageUrl} onChange={(e) => setImageUrl(e.target.value)}
-                    required
-                  />
                   <textarea
                     placeholder="Description"
-                    className="w-full p-3 bg-black border border-gray-700 rounded-lg h-32"
+                    className="w-full p-4 bg-black border border-gray-700 rounded-lg h-32"
                     value={description} onChange={(e) => setDescription(e.target.value)}
                     required
                   />
