@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { ShoppingCart, User, Search, Menu } from 'lucide-react';
 
 export default function Navbar() {
+  const [keyword, setKeyword] = useState('');
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
@@ -22,16 +23,21 @@ export default function Navbar() {
 
   const cartCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
 
-  // const logoutHandler = () => {
-  //   dispatch(logout());
-  //   router.push('/login');
-  // };
   const logoutHandler = () => {
-    dispatch(logout()); 
-    dispatch(clearCartItems()); 
+    dispatch(logout());
+    dispatch(clearCartItems());
     router.push('/login');
   };
 
+  const submitHandler = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (keyword.trim()) {
+      router.push(`/?keyword=${keyword}`);
+    } else {
+      router.push('/');
+    }
+  };
+  
   return (
     <nav className="bg-gray-900 shadow-md sticky top-0 z-50 border-b border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

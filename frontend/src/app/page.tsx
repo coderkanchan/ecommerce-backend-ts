@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, Suspense } from 'react'; 
+import { useEffect, useState, Suspense } from 'react';
 import API from '@/services/api';
 import ProductCard from '@/components/ProductCard';
 import Pagination from '@/components/Pagination';
@@ -12,14 +12,17 @@ function HomeContent() {
   const [loading, setLoading] = useState(true);
 
   const searchParams = useSearchParams();
-
+  const keyword = searchParams.get('keyword') || '';
+  const category = searchParams.get('category') || '';
   const pageNumber = searchParams.get('pageNumber') || '1';
 
   useEffect(() => {
     const getProducts = async () => {
       try {
         setLoading(true);
-        const { data } = await API.get(`/products/all?pageNumber=${pageNumber}`);
+        //const { data } = await API.get(`/products/all?pageNumber=${pageNumber}`);
+        const { data } = await API.get(`/products/all?keyword=${keyword}&category=${category}&pageNumber=${pageNumber}`
+        );
         setProducts(data.products);
         setPages(data.pages);
         setPage(data.page);
@@ -30,7 +33,7 @@ function HomeContent() {
       }
     };
     getProducts();
-  }, [pageNumber]); 
+  }, [keyword, category, pageNumber]);
 
   if (loading) return <div className="p-10 text-center text-white font-mono animate-pulse">Loading Products...</div>;
 

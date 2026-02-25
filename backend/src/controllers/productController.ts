@@ -16,35 +16,59 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
+// export const getProducts = async (req: Request, res: Response) => {
+//   try {
+//     const pageSize = 8;
+//     const page = Number(req.query.pageNumber) || 1;
+
+//     const queryKeyword = req.query.keyword as string;
+//     const queryCategory = req.query.category as string;
+
+//     const keyword = queryKeyword
+//       ? {
+//         name: {
+//           $regex: queryKeyword,
+//           $options: 'i',
+//         },
+//       }
+//       : {};
+
+//     const category = queryCategory ? { category: queryCategory } : {};
+
+//     const count = await Product.countDocuments({ ...keyword, ...category });
+//     const products = await Product.find({ ...keyword, ...category })
+//       .limit(pageSize)
+//       .skip(pageSize * (page - 1));
+
+//     res.json({ products, page, pages: Math.ceil(count / pageSize) });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Error fetching products' });
+//   }
+// };
+
 export const getProducts = async (req: Request, res: Response) => {
-  try {
-    const pageSize = 8;
-    const page = Number(req.query.pageNumber) || 1;
+  const pageSize = 8;
+  const page = Number(req.query.pageNumber) || 1;
 
-    const queryKeyword = req.query.keyword as string;
-    const queryCategory = req.query.category as string;
+  const keyword = req.query.keyword
+    ? {
+      name: {
+        $regex: req.query.keyword,
+        $options: "i",
+      },
+    }
+    : {};
 
-    const keyword = queryKeyword
-      ? {
-        name: {
-          $regex: queryKeyword,
-          $options: 'i',
-        },
-      }
-      : {};
+  const category = req.query.category ? { category: req.query.category } : {};
 
-    const category = queryCategory ? { category: queryCategory } : {};
+  const count = await Product.countDocuments({ ...keyword, ...category });
+  const products = await Product.find({ ...keyword, ...category })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1))
+    .sort({ createdAt: -1 });
 
-    const count = await Product.countDocuments({ ...keyword, ...category });
-    const products = await Product.find({ ...keyword, ...category })
-      .limit(pageSize)
-      .skip(pageSize * (page - 1));
-
-    res.json({ products, page, pages: Math.ceil(count / pageSize) });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error fetching products' });
-  }
+  res.json({ products, page, pages: Math.ceil(count / pageSize) });
 };
 
 export const getProductById = async (req: Request, res: Response) => {
