@@ -19,7 +19,8 @@ export default function Home() {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const { data } = await API.get('/products/all');
+        setLoading(true);
+        const { data } = await API.get(`/products/all?pageNumber=${pageNumber}`);
         setProducts(data.products);
         setPages(data.pages);
         setPage(data.page);
@@ -30,7 +31,7 @@ export default function Home() {
       }
     };
     getProducts();
-  }, [pageNumber]);
+  }, [pageNumber]); 
 
   if (loading) return <div className="p-10 text-center text-white">Loading Products...</div>;
 
