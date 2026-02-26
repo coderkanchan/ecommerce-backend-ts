@@ -6,13 +6,12 @@ import { RootState } from '@/redux/store';
 import { logout } from '@/redux/slices/authSlice';
 import { clearCartItems } from '@/redux/slices/cartSlice';
 import Link from 'next/link';
-import { ShoppingCart, User, , Menu } from 'lucide-react';
+import { ShoppingCart, User, Menu } from 'lucide-react';
 import SearchBox from './SearchBox';
 
 export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const dispatch = useDispatch();
-  //onst categories = ["Electronics", "Fashion", "Home", "Books", "Toys", "Beauty"];
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const { cartItems } = useSelector((state: RootState) => state.cart);
 
@@ -71,11 +70,12 @@ export default function Navbar() {
                   </Link>
                 )}
 
-                <Link href="/profile" className="flex items-center gap-2 text-white">
+                <Link href="/profile" className="flex items-center gap-2 text-white hover:text-blue-600">
 
-                  <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-xl px-4 py-2 font-bold">
+                  {/* <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-xl px-4 py-2 font-bold">
                     {userInfo.name.charAt(0).toUpperCase()}
-                  </div>
+                  </div> */}
+                  <div ><User size={30}/></div>
 
                   <span className="hidden sm:inline text-sm italic">Hi, {userInfo.name}</span>
 
@@ -83,7 +83,7 @@ export default function Navbar() {
 
                 <button
                   onClick={logoutHandler}
-                  className="bg-red-600  font-semibold rounded-xl text-xl px-4 py-2 text-white transition "
+                  className="bg-red-600  font-semibold rounded-xl text-xl px-4 py-2 text-white transition cursor-pointer"
                 >
                   Logout
                 </button>

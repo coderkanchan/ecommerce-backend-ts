@@ -2,6 +2,7 @@
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Search } from 'lucide-react';
+import { RiArrowDownSFill } from "react-icons/ri";
 
 function SearchInput() {
   const router = useRouter();
@@ -22,30 +23,31 @@ function SearchInput() {
   return (
     <form onSubmit={submitHandler} className="flex-1 max-w-lg flex items-center border border-blue-500 rounded-xl overflow-hidden group">
       <select
-        className="bg-gray-100 text-gray-700 text-sm px-3 border-r border-gray-300 outline-none cursor-pointer hover:bg-gray-200 h-10"
+        className="bg-gray-400 text-gray-700 text-lg py-4  outline-none cursor-pointer hover:bg-gray-200 h-9"
         value={currentCategory}
         onChange={(e) => {
           const val = e.target.value;
           router.push(val === 'All' ? '/' : `/?category=${val}`);
         }}
       >
-        <option value="All">All</option>
+        <option value="All">All<RiArrowDownSFill /></option>
         {categories.map((cat) => (
           <option key={cat} value={cat}>{cat}</option>
         ))}
       </select>
+      <div className='w-full flex items-center justify-between'>
+        <input
+          type="text"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          className=" py-4 w-full text-black outline-none h-10"
+          placeholder="Search NexusMart..."
+        />
 
-      <input
-        type="text"
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
-        className="grow py-2 px-4 text-black outline-none h-10"
-        placeholder="Search NexusMart..."
-      />
-
-      <button type="submit" className="bg-blue-600 p-2.5 text-white hover:bg-blue-700 transition">
-        <Search size={20} />
-      </button>
+        <button type="submit" className="bg-blue-600 p-4  text-white hover:bg-blue-700 transition">
+          <Search size={30} />
+        </button>
+      </div>
     </form>
   );
 }
