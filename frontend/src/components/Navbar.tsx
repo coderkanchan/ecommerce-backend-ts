@@ -6,18 +6,16 @@ import { RootState } from '@/redux/store';
 import { logout } from '@/redux/slices/authSlice';
 import { clearCartItems } from '@/redux/slices/cartSlice';
 import Link from 'next/link';
-import { ShoppingCart, User, Search, Menu } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
+import { ShoppingCart, User, , Menu } from 'lucide-react';
+import SearchBox from './SearchBox';
 
 export default function Navbar() {
-  const [keyword, setKeyword] = useState('');
   const [mounted, setMounted] = useState(false);
   const dispatch = useDispatch();
-  const categories = ["Electronics", "Fashion", "Home", "Books", "Toys", "Beauty"];
+  //onst categories = ["Electronics", "Fashion", "Home", "Books", "Toys", "Beauty"];
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const { cartItems } = useSelector((state: RootState) => state.cart);
-  const searchParams = useSearchParams();
-  const currentCategory = searchParams.get('category') || 'All';
+
 
   const router = useRouter();
 
@@ -26,17 +24,7 @@ export default function Navbar() {
   const logoutHandler = () => {
     dispatch(logout());
     dispatch(clearCartItems());
-    setKeyword('');
     router.push('/login');
-  };
- 
-  const submitHandler = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (keyword.trim()) {
-      router.push(`/?keyword=${keyword}`);
-    } else {
-      router.push('/');
-    }
   };
 
   useEffect(() => {
@@ -56,64 +44,9 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <form onSubmit={submitHandler} className="hidden  max-w-lg md:flex flex-1 items-center border border-blue-500 rounded-xl group ">
-
-            {/* <select className=" text-gray-700 text-sm px-3 outline-none cursor-pointer"
-              onChange={(e) => router.push(e.target.value === 'All' ? '/' : `/?category=${e.target.value}`)}>
-
-              <option className='outline-none' value="All">All</option>
-
-              {categories.map((cat) => (
-                <option
-                  key={cat}
-                  value={cat}
-                  className='bg-gray-400 text-gray-700'
-                >
-                  {cat}
-                </option>
-              ))}
-            </select> */}
-            <select
-              className="bg-gray-100 text-gray-700 text-sm px-3 border-r border-gray-300 outline-none cursor-pointer hover:bg-gray-200"
-              // YAHAN CHANGE HAI: value ko URL se sync kiya
-              value={currentCategory}
-              onChange={(e) => {
-                const val = e.target.value;
-                if (val === 'All') {
-                  router.push('/');
-                } else {
-                  router.push(`/?category=${val}`);
-                }
-              }}
-            >
-              <option value="All">All Categories</option>
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
-              ))}
-            </select>
-            <div className='w-full flex items-center justify-between '>
-              {/* <input
-                type="text"
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-                className=" py-2 px-4 text-black outline-none border-none  w-full "
-                placeholder="Search NexusMart..."
-              /> */}
-              <input
-                type="text"
-                value={keyword}
-                onChange={(e) => setKeyword(e.target.value)}
-                className="grow py-2 px-4 text-black outline-none"
-                placeholder="Search NexusMart..."
-              />
-              <button
-                type="submit"
-                className="bg-blue-600 p-5 text-white hover:bg-blue-700 transition flex items-center justify-center "
-              >
-                <Search size={20} />
-              </button>
-            </div>
-          </form>
+          <div className="hidden md:flex flex-1 justify-center px-8">
+            <SearchBox />
+          </div>
 
           <div className=" flex items-center justify-between space-x-6">
 
