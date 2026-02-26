@@ -2,7 +2,6 @@
 import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Search } from 'lucide-react';
-import { RiArrowDownSFill } from "react-icons/ri";
 
 function SearchInput() {
   const router = useRouter();
@@ -23,14 +22,14 @@ function SearchInput() {
   return (
     <form onSubmit={submitHandler} className="flex-1 max-w-lg flex items-center border border-blue-500 rounded-xl overflow-hidden group">
       <select
-        className="bg-gray-400 text-gray-700 text-lg py-4  outline-none cursor-pointer hover:bg-gray-200 h-9"
+        className="bg-gray-400 text-gray-700 text-lg py-4  outline-none cursor-pointer hover:bg-gray-200 h-10"
         value={currentCategory}
         onChange={(e) => {
           const val = e.target.value;
           router.push(val === 'All' ? '/' : `/?category=${val}`);
         }}
       >
-        <option value="All">All<RiArrowDownSFill /></option>
+        <option value="All">All</option>
         {categories.map((cat) => (
           <option key={cat} value={cat}>{cat}</option>
         ))}

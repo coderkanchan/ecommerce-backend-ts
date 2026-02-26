@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import AdminSidebar from '@/components/AdminSidebar';
 import AdminRoute from '@/components/AdminRoute';
 import Pagination from '@/components/Pagination';
+import { useSearchParams } from 'next/navigation';
 
 export default function AdminProductsPage() {
   const [page, setPage] = useState(1);
@@ -18,26 +19,30 @@ export default function AdminProductsPage() {
   const [imageUrl, setImageUrl] = useState('');
   const [description, setDescription] = useState('');
 
-  // const fetchProducts = async () => {
-  //   const res = await fetch('http://localhost:5000/api/products/all');
+  const searchParams = useSearchParams();
+  const pageNumber = searchParams.get('pageNumber') || 1;
+
+  // const fetchProducts = async (pageNumber = 1) => {
+  //   const res = await fetch(`http://localhost:5000/api/products/all?pageNumber=${pageNumber}`);
   //   const data = await res.json();
   //   setProducts(data.products);
+  //   setPages(data.pages);
+  //   setPage(data.page);
   // };
-  const fetchProducts = async (pageNumber = 1) => {
-    const res = await fetch(`http://localhost:5000/api/products/all?pageNumber=${pageNumber}`);
-    const data = await res.json();
-    setProducts(data.products);
-    setPages(data.pages);
-    setPage(data.page);
+  const fetchProducts = async (pNum = pageNumber) => {
+    try {
+      const res = await fetch(`http://localhost:5000/api/products/all?pageNumber=${pNum}`);
+      const data = await res.json();
+      setProducts(data.products);
+      setPages(data.pages);
+      setPage(data.page);
+    } catch (error) {
+      console.error("Fetch error:", error);
+    }
   };
-
   useEffect(() => {
-    fetchProducts(page);
-  }, [page]);
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+    fetchProducts(pageNumber);
+  }, [pageNumber]);
 
   const closeModalHandler = () => {
     setShowModal(false);
@@ -225,7 +230,7 @@ export default function AdminProductsPage() {
           )}
 
           <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
-            
+
             <table className="w-full text-left">
               <thead className="bg-gray-800 text-gray-300 uppercase text-sm font-semibold">
                 <tr>
