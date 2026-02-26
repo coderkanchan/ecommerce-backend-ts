@@ -37,7 +37,7 @@ export const updateOrderToPaid = async (req: Request, res: Response) => {
     order.isPaid = true;
     order.paidAt = new Date();
     order.paymentResult = {
-      id: req.body.razorpay_payment_id, 
+      id: req.body.razorpay_payment_id,
       status: 'completed',
       update_time: String(Date.now()),
       email_address: req.body.email,
@@ -104,21 +104,57 @@ export const updateOrderToDelivered = async (req: any, res: any) => {
   }
 };
 
+// export const getOrderSummary = async (req: any, res: any) => {
+//   const orders = await Order.find();
+//   const ordersCount = orders.length;
+//   const totalSales = orders.reduce((acc, item) => acc + item.totalPrice, 0);
+//   const usersCount = await User.countDocuments();
+
+//   const salesData = await Order.aggregate([
+//     {
+//       $group: {
+//         _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+//         sales: { $sum: "$totalPrice" },
+//       },
+//     },
+//     { $sort: { _id: 1 } },
+//   ]);
+
+//   res.send({ ordersCount, totalSales, usersCount, salesData });
+// };
+
 export const getOrderSummary = async (req: any, res: any) => {
-  const orders = await Order.find();
-  const ordersCount = orders.length;
-  const totalSales = orders.reduce((acc, item) => acc + item.totalPrice, 0);
-  const usersCount = await User.countDocuments();
+  try {
+    const orders = await Order.find();
+    const ordersCount = orders.length;
 
-  const salesData = await Order.aggregate([
-    {
-      $group: {
-        _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-        sales: { $sum: "$totalPrice" },
+    const totalSales = orders.reduce((acc, item) => acc + item.totalPrice, 0);
+
+    const usersCount = await User.countDocuments();
+
+    const salesData = await Order.aggregate([
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+          sales: { $sum: "$totalPrice" },
+        },
       },
-    },
-    { $sort: { _id: 1 } },
-  ]);
+      { $sort: { _id: 1 } },
+    ]);
 
-  res.send({ ordersCount, totalSales, usersCount, salesData });
+    const recentOrders = await Order.find()
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .populate('user', 'name');
+
+    res.json({
+      ordersCount,
+      totalSales,
+      usersCount,
+      salesData,
+      recentOrders,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching summary", error });
+  }
 };
