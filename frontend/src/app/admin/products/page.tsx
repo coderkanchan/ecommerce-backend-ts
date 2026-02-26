@@ -18,17 +18,11 @@ export default function AdminProductsPage() {
   const [stock, setStock] = useState(0);
   const [imageUrl, setImageUrl] = useState('');
   const [description, setDescription] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const searchParams = useSearchParams();
   const pageNumber = searchParams.get('pageNumber') || 1;
 
-  // const fetchProducts = async (pageNumber = 1) => {
-  //   const res = await fetch(`http://localhost:5000/api/products/all?pageNumber=${pageNumber}`);
-  //   const data = await res.json();
-  //   setProducts(data.products);
-  //   setPages(data.pages);
-  //   setPage(data.page);
-  // };
   const fetchProducts = async (pNum = pageNumber) => {
     try {
       const res = await fetch(`http://localhost:5000/api/products/all?pageNumber=${pNum}`);
@@ -72,60 +66,112 @@ export default function AdminProductsPage() {
     }
   };
 
-  const uploadFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  // const uploadFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (!file) return;
+
+  //   const formData = new FormData();
+  //   formData.append('image', file);
+  //   setUploading(true);
+
+  //   try {
+  //     const res = await fetch('http://localhost:5000/api/upload', {
+  //       method: 'POST',
+  //       body: formData,
+  //     });
+  //     const data = await res.json();
+  //     setImageUrl(data.image);
+  //     setUploading(false);
+  //     alert("Image Uploaded Successfully! ✨");
+  //   } catch (err) {
+  //     console.error(err);
+  //     setUploading(false);
+  //     alert("Upload failed");
+  //   }
+  // };
+  const uploadFileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
-
-    const formData = new FormData();
-    formData.append('image', file);
-    setUploading(true);
-
-    try {
-      const res = await fetch('http://localhost:5000/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-      const data = await res.json();
-      setImageUrl(data.image);
-      setUploading(false);
-      alert("Image Uploaded Successfully! ✨");
-    } catch (err) {
-      console.error(err);
-      setUploading(false);
-      alert("Upload failed");
+    if (file) {
+      setImageFile(file);
+      setImageUrl(URL.createObjectURL(file));
     }
   };
+  // const submitHandler = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
 
+  //   const url = editingId
+  //     ? `http://localhost:5000/api/products/${editingId}`
+  //     : 'http://localhost:5000/api/products/add';
+
+  //   const method = editingId ? 'PUT' : 'POST';
+
+  //   try {
+  //     const res = await fetch(url, {
+  //       method: method,
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${userInfo.token}`,
+  //       },
+  //       body: JSON.stringify({ name, price, category, stock, imageUrl, description }),
+  //     });
+
+  //     if (res.ok) {
+  //       alert(editingId ? "Product Updated! ✨" : "Product Created! 🎉");
+  //       closeModalHandler();
+  //       fetchProducts();
+  //     }
+  //   } catch (err) {
+  //     alert("Error saving product");
+  //   }
+  // };
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-
-    const url = editingId
-      ? `http://localhost:5000/api/products/${editingId}`
-      : 'http://localhost:5000/api/products/add';
-
-    const method = editingId ? 'PUT' : 'POST';
+    setUploading(true);
+    let finalImageUrl = imageUrl;
 
     try {
+      if (imageFile) {
+        const formData = new FormData();
+        formData.append('image', imageFile);
+        const uploadRes = await fetch('http://localhost:5000/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        const uploadData = await uploadRes.json();
+        finalImageUrl = uploadData.image; 
+      }
+
+      const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+      const url = editingId
+        ? `http://localhost:5000/api/products/${editingId}`
+        : 'http://localhost:5000/api/products/add';
+
       const res = await fetch(url, {
-        method: method,
+        method: editingId ? 'PUT' : 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${userInfo.token}`,
         },
-        body: JSON.stringify({ name, price, category, stock, imageUrl, description }),
+        body: JSON.stringify({
+          name, price, category, stock,
+          imageUrl: finalImageUrl, 
+          description
+        }),
       });
 
       if (res.ok) {
-        alert(editingId ? "Product Updated! ✨" : "Product Created! 🎉");
+        alert("Success! ✨");
         closeModalHandler();
         fetchProducts();
       }
     } catch (err) {
       alert("Error saving product");
+    } finally {
+      setUploading(false);
+      setImageFile(null); 
     }
   };
-
   return (
     <AdminRoute>
       <div className="flex min-h-screen bg-black text-white">
