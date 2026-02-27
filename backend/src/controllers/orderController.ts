@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Order } from '../models/Order.js';
 import { User } from '../models/User.js';
+import { Product } from '../models/Product';
 
 export const addOrderItems = async (req: any, res: Response) => {
   const { orderItems, shippingAddress, totalPrice } = req.body;
@@ -141,7 +142,6 @@ export const updateOrderToDelivered = async (req: any, res: any) => {
 //   }
 // };
 
-
 export const getOrderSummary = async (req: any, res: any) => {
   try {
     const orders = await Order.find();
@@ -149,7 +149,7 @@ export const getOrderSummary = async (req: any, res: any) => {
     const totalSales = orders.reduce((acc, item) => acc + item.totalPrice, 0);
     const usersCount = await User.countDocuments();
 
-    const lowStockCount = await Product.countDocuments({ stock: { $lt: 5 } }); 
+    const lowStockCount = await Product.countDocuments({ stock: { $lt: 5 } });
 
     const salesData = await Order.aggregate([
       {
@@ -164,14 +164,13 @@ export const getOrderSummary = async (req: any, res: any) => {
     const recentOrders = await Order.find()
       .sort({ createdAt: -1 })
       .limit(5)
-      .populate('user', 'name'); 
+      .populate('user', 'name');
 
-
-    res.json({ 
-      ordersCount, 
-      totalSales, 
-      usersCount, 
-      salesData, 
+    res.json({
+      ordersCount,
+      totalSales,
+      usersCount,
+      salesData,
       recentOrders,
       lowStockCount 
     });

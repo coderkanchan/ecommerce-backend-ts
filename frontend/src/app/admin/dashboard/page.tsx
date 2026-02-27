@@ -90,7 +90,7 @@ export default function AdminDashboard() {
             </button>
 
           </div>
-          {/* Dashboard Header ke niche ye Alert Bar add karein */}
+        
           {summary.lowStockCount > 0 && (
             <div className="mb-8 flex items-center justify-between bg-red-500/10 border border-red-500/20 p-4 rounded-2xl">
               <div className="flex items-center gap-3">
