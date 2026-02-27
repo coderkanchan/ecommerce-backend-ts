@@ -29,6 +29,7 @@ export default function AdminDashboard() {
     totalSales: 0,
     ordersCount: 0,
     usersCount: 0,
+    lowStockCount: 0,
     salesData: [],
     recentOrders: []
   });
