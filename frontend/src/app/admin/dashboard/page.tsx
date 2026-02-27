@@ -128,6 +128,7 @@
 import AdminSidebar from '@/components/AdminSidebar';
 import AdminRoute from "@/components/AdminRoute";
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { DollarSign, ShoppingBag, Users, ArrowUpRight } from 'lucide-react'; // Icons
 
@@ -148,13 +149,14 @@ const StatCard = ({ title, value, icon: Icon, color }: any) => (
 );
 
 export default function AdminDashboard() {
+  const router = useRouter()
   const [isClient, setIsClient] = useState(false);
   const [summary, setSummary] = useState({
     totalSales: 0,
     ordersCount: 0,
     usersCount: 0,
     salesData: [],
-    recentOrders: [] 
+    recentOrders: []
   });
 
   useEffect(() => {
@@ -198,7 +200,7 @@ export default function AdminDashboard() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-           
+
             <div className="lg:col-span-2 bg-[#111] p-8 rounded-3xl border border-gray-800 shadow-2xl">
               <h2 className="text-xl font-bold mb-8 flex items-center gap-2">
                 Sales Analytics <ArrowUpRight size={18} className="text-green-500" />
@@ -226,7 +228,7 @@ export default function AdminDashboard() {
               </div>
             </div>
 
-            <div className="bg-[#111] p-8 rounded-3xl border border-gray-800 shadow-2xl">
+            {/* <div className="bg-[#111] p-8 rounded-3xl border border-gray-800 shadow-2xl">
               <h2 className="text-xl font-bold mb-6">Recent Orders</h2>
               <div className="space-y-6">
             
@@ -241,6 +243,33 @@ export default function AdminDashboard() {
                 ))}
               </div>
               <button className="w-full mt-6 py-3 rounded-xl bg-gray-800 text-xs font-bold hover:bg-gray-700 transition">
+                VIEW ALL ORDERS
+              </button>
+            </div> */}
+
+            <div className="bg-[#111] p-8 rounded-3xl border border-gray-800 shadow-2xl">
+              <h2 className="text-xl font-bold mb-6">Recent Orders</h2>
+              <div className="space-y-6">
+                {summary.recentOrders && summary.recentOrders.length > 0 ? (
+                  summary.recentOrders.map((order: any) => (
+                    <div key={order._id} className="flex items-center justify-between border-b border-gray-800 pb-4 last:border-0">
+                      <div>
+                        <p className="font-medium text-sm">Order by {order.user?.name || 'Guest'}</p>
+                      
+                        <p className="text-xs text-gray-500">{new Date(order.createdAt).toLocaleDateString('en-GB')}</p>
+                      </div>
+                      <p className="text-sm font-bold text-green-400">+${order.totalPrice.toFixed(2)}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-600 italic">No recent orders yet.</p>
+                )}
+              </div>
+
+              <button
+                onClick={() => router.push('/admin/orders')}
+                className="w-full mt-8 py-4 rounded-2xl border border-gray-800 text-xs font-bold hover:bg-white hover:text-black transition-all tracking-widest"
+              >
                 VIEW ALL ORDERS
               </button>
             </div>
