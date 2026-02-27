@@ -104,14 +104,52 @@ export const updateOrderToDelivered = async (req: any, res: any) => {
   }
 };
 
+// export const getOrderSummary = async (req: any, res: any) => {
+
+//   try {
+//     const orders = await Order.find();
+//     const ordersCount = orders.length;
+
+//     const totalSales = orders.reduce((acc, item) => acc + item.totalPrice, 0);
+
+//     const usersCount = await User.countDocuments();
+
+//     const salesData = await Order.aggregate([
+//       {
+//         $group: {
+//           _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+//           sales: { $sum: "$totalPrice" },
+//         },
+//       },
+//       { $sort: { _id: 1 } },
+//     ]);
+
+//     const recentOrders = await Order.find()
+//       .sort({ createdAt: -1 })
+//       .limit(5)
+//       .populate('user', 'name');
+
+//     res.json({
+//       ordersCount,
+//       totalSales,
+//       usersCount,
+//       salesData,
+//       recentOrders,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error fetching summary", error });
+//   }
+// };
+
+
 export const getOrderSummary = async (req: any, res: any) => {
   try {
     const orders = await Order.find();
     const ordersCount = orders.length;
-
     const totalSales = orders.reduce((acc, item) => acc + item.totalPrice, 0);
-
     const usersCount = await User.countDocuments();
+
+    const lowStockCount = await Product.countDocuments({ stock: { $lt: 5 } }); 
 
     const salesData = await Order.aggregate([
       {
@@ -126,14 +164,16 @@ export const getOrderSummary = async (req: any, res: any) => {
     const recentOrders = await Order.find()
       .sort({ createdAt: -1 })
       .limit(5)
-      .populate('user', 'name');
+      .populate('user', 'name'); 
 
-    res.json({
-      ordersCount,
-      totalSales,
-      usersCount,
-      salesData,
+
+    res.json({ 
+      ordersCount, 
+      totalSales, 
+      usersCount, 
+      salesData, 
       recentOrders,
+      lowStockCount 
     });
   } catch (error) {
     res.status(500).json({ message: "Error fetching summary", error });

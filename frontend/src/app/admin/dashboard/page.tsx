@@ -90,7 +90,26 @@ export default function AdminDashboard() {
             </button>
 
           </div>
-
+          {/* Dashboard Header ke niche ye Alert Bar add karein */}
+          {summary.lowStockCount > 0 && (
+            <div className="mb-8 flex items-center justify-between bg-red-500/10 border border-red-500/20 p-4 rounded-2xl">
+              <div className="flex items-center gap-3">
+                <span className="relative flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                </span>
+                <p className="text-red-500 text-sm font-bold tracking-wide uppercase">
+                  Attention: {summary.lowStockCount} products are running low on stock!
+                </p>
+              </div>
+              <button
+                onClick={() => router.push('/admin/products')}
+                className="text-[10px] font-black bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition-colors"
+              >
+                RESTOCK NOW
+              </button>
+            </div>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <StatCard title="Total Revenue" value={`$${summary.totalSales.toFixed(2)}`} icon={DollarSign} color="bg-green-500" />
             <StatCard title="Total Orders" value={summary.ordersCount} icon={ShoppingBag} color="bg-blue-500" />
