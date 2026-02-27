@@ -66,29 +66,6 @@ export default function AdminProductsPage() {
     }
   };
 
-  // const uploadFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = e.target.files?.[0];
-  //   if (!file) return;
-
-  //   const formData = new FormData();
-  //   formData.append('image', file);
-  //   setUploading(true);
-
-  //   try {
-  //     const res = await fetch('http://localhost:5000/api/upload', {
-  //       method: 'POST',
-  //       body: formData,
-  //     });
-  //     const data = await res.json();
-  //     setImageUrl(data.image);
-  //     setUploading(false);
-  //     alert("Image Uploaded Successfully! ✨");
-  //   } catch (err) {
-  //     console.error(err);
-  //     setUploading(false);
-  //     alert("Upload failed");
-  //   }
-  // };
   const uploadFileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -96,35 +73,7 @@ export default function AdminProductsPage() {
       setImageUrl(URL.createObjectURL(file));
     }
   };
-  // const submitHandler = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
 
-  //   const url = editingId
-  //     ? `http://localhost:5000/api/products/${editingId}`
-  //     : 'http://localhost:5000/api/products/add';
-
-  //   const method = editingId ? 'PUT' : 'POST';
-
-  //   try {
-  //     const res = await fetch(url, {
-  //       method: method,
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${userInfo.token}`,
-  //       },
-  //       body: JSON.stringify({ name, price, category, stock, imageUrl, description }),
-  //     });
-
-  //     if (res.ok) {
-  //       alert(editingId ? "Product Updated! ✨" : "Product Created! 🎉");
-  //       closeModalHandler();
-  //       fetchProducts();
-  //     }
-  //   } catch (err) {
-  //     alert("Error saving product");
-  //   }
-  // };
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
     setUploading(true);

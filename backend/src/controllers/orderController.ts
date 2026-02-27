@@ -104,25 +104,6 @@ export const updateOrderToDelivered = async (req: any, res: any) => {
   }
 };
 
-// export const getOrderSummary = async (req: any, res: any) => {
-//   const orders = await Order.find();
-//   const ordersCount = orders.length;
-//   const totalSales = orders.reduce((acc, item) => acc + item.totalPrice, 0);
-//   const usersCount = await User.countDocuments();
-
-//   const salesData = await Order.aggregate([
-//     {
-//       $group: {
-//         _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
-//         sales: { $sum: "$totalPrice" },
-//       },
-//     },
-//     { $sort: { _id: 1 } },
-//   ]);
-
-//   res.send({ ordersCount, totalSales, usersCount, salesData });
-// };
-
 export const getOrderSummary = async (req: any, res: any) => {
   try {
     const orders = await Order.find();
