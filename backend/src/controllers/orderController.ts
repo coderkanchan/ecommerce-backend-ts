@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Order } from '../models/Order.js';
 import { User } from '../models/User.js';
-import { Product } from '../models/Product';
+import { Product } from '../models/Product.js';
 
 export const addOrderItems = async (req: any, res: Response) => {
   const { orderItems, shippingAddress, totalPrice } = req.body;
