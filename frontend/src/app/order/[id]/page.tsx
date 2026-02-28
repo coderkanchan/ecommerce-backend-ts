@@ -12,7 +12,7 @@ export default function OrderDetailsPage() {
     const fetchOrder = async () => {
       try {
         const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-        const res = await fetch(`http://localhost:5000/api/orders/${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/${id}`, {
           headers: {
             Authorization: `Bearer ${userInfo.token}`,
           },

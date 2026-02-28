@@ -9,7 +9,7 @@ export default function AdminOrdersPage() {
 
   const fetchOrders = async () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-    const res = await fetch('http://localhost:5000/api/orders', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
       headers: { Authorization: `Bearer ${userInfo.token}` },
     });
     const data = await res.json();
@@ -23,7 +23,7 @@ export default function AdminOrdersPage() {
 
     if (window.confirm('Mark this order as delivered?')) {
       try {
-        const res = await fetch(`http://localhost:5000/api/orders/${id}/deliver`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/${id}/deliver`, {
           method: 'PUT',
           headers: {
             Authorization: `Bearer ${userInfo.token}`,

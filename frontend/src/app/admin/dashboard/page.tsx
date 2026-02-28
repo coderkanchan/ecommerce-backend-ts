@@ -42,7 +42,7 @@ export default function AdminDashboard() {
   const fetchSummary = async () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-      const res = await fetch('http://localhost:5000/api/orders/summary', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/orders/summary`, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
       const data = await res.json();
@@ -91,7 +91,7 @@ export default function AdminDashboard() {
             </button>
 
           </div>
-        
+
           {summary.lowStockCount > 0 && (
             <div className="mb-8 flex items-center justify-between bg-red-500/10 border border-red-500/20 p-4 rounded-2xl">
               <div className="flex items-center gap-3">

@@ -106,7 +106,7 @@ export default function PlaceOrderPage() {
       if (!storedUser) { router.push('/login'); return; }
       const userInfo = JSON.parse(storedUser);
 
-      const res = await fetch('http://localhost:5000/api/orders', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -148,7 +148,7 @@ export default function PlaceOrderPage() {
           handler: async function (response: any) {
 
             try {
-              const payRes = await fetch(`http://localhost:5000/api/orders/${orderData._id}/pay`, {
+              const payRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderData._id}/pay`, {
                 method: 'PUT',
                 headers: {
                   'Content-Type': 'application/json',
