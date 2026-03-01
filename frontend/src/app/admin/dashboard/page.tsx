@@ -42,7 +42,7 @@ export default function AdminDashboard() {
   const fetchSummary = async () => {
     try {
       const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}api/orders/summary`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/summary`, {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       });
       const data = await res.json();

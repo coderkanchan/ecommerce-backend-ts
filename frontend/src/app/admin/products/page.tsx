@@ -271,7 +271,7 @@
 
 
 "use client";
-import { useEffect, useState, Suspense } from 'react'; 
+import { useEffect, useState, Suspense } from 'react';
 import AdminSidebar from '@/components/AdminSidebar';
 import AdminRoute from '@/components/AdminRoute';
 import Pagination from '@/components/Pagination';
@@ -417,7 +417,7 @@ function AdminProductsContent() {
                 {editingId ? 'Edit Product' : 'Add New Product'}
               </h2>
               <form onSubmit={submitHandler} className="h-full w-full space-y-4">
-               
+
                 <input
                   type="text"
                   placeholder="Product Name"
@@ -483,13 +483,14 @@ function AdminProductsContent() {
           </div>
         )}
 
-        <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
+        {/* <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden">
           <table className="w-full text-left">
             <thead className="bg-gray-800 text-gray-300 uppercase text-sm">
               <tr>
                 <th className="p-4">Name</th>
                 <th className="p-4">Price</th>
                 <th className="p-4">Category</th>
+                <th className="px-4 py-2">Stock</th>
                 <th className="p-4">Actions</th>
               </tr>
             </thead>
@@ -499,9 +500,87 @@ function AdminProductsContent() {
                   <td className="p-4">{product.name}</td>
                   <td className="p-4 text-green-400">${product.price}</td>
                   <td className="p-4 text-gray-400">{product.category}</td>
+                  <td className="px-4 py-2">
+                    {product.countInStock <= 0 ? (
+                      <span className="text-red-500 font-bold bg-red-500/10 px-2 py-1 rounded text-xs">
+                        Out of Stock
+                      </span>
+                    ) : product.countInStock <= 10 ? (
+                      <span className="text-orange-500 font-bold bg-orange-500/10 px-2 py-1 rounded text-xs">
+                        Low: {product.countInStock}
+                      </span>
+                    ) : (
+                      <span className="text-green-500 px-2 py-1 rounded text-xs">
+                        {product.countInStock} units
+                      </span>
+                    )}
+                  </td>
                   <td className="p-4 flex gap-4">
                     <button onClick={() => editHandler(product)} className="text-blue-400 font-semibold">Edit</button>
                     <button onClick={() => deleteHandler(product._id)} className="text-red-400 font-semibold">Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <Pagination pages={pages} page={page} isAdmin={true} />
+        </div> */}
+        <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden shadow-xl">
+          <table className="w-full table-fixed text-left border-collapse">
+            <thead className="bg-gray-800/50 text-gray-400 uppercase text-xs tracking-wider">
+              <tr>
+                <th className="p-4 w-[35%]">Name</th>
+                <th className="p-4 w-[15%]">Price</th>
+                <th className="p-4 w-[20%]">Category</th>
+                <th className="p-4 w-[15%]">Stock Status</th>
+                <th className="p-4 w-[15%] text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-800">
+              {products.map((product: any) => (
+                <tr key={product._id} className="hover:bg-gray-800/30 transition-colors group">
+                  <td className="p-4 truncate font-medium text-gray-200">
+                    {product.name}
+                  </td>
+                  <td className="p-4 text-green-400 font-mono">
+                    ${product.price.toFixed(2)}
+                  </td>
+                  <td className="p-4 text-gray-400">
+                    <span className="bg-gray-800 px-2 py-1 rounded text-xs">
+                      {product.category}
+                    </span>
+                  </td>
+                  <td className="p-4">
+                    {/* Logic check: product.stock ya product.countInStock? */}
+                    {(product.stock ?? product.countInStock) <= 0 ? (
+                      <span className="text-red-500 font-bold bg-red-500/10 px-2 py-1 rounded-full text-[10px] uppercase border border-red-500/20">
+                        Out of Stock
+                      </span>
+                    ) : (product.stock ?? product.countInStock) <= 10 ? (
+                      <span className="text-orange-500 font-bold bg-orange-500/10 px-2 py-1 rounded-full text-[10px] uppercase border border-orange-500/20">
+                        Low: {product.stock ?? product.countInStock}
+                      </span>
+                    ) : (
+                      <span className="text-green-500 font-medium bg-green-500/10 px-2 py-1 rounded-full text-[10px] uppercase border border-green-500/20">
+                        {product.stock ?? product.countInStock} Units
+                      </span>
+                    )}
+                  </td>
+                  <td className="p-4 text-right">
+                    <div className="flex justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <button
+                        onClick={() => editHandler(product)}
+                        className="text-blue-400 hover:text-blue-300 text-sm font-semibold"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => deleteHandler(product._id)}
+                        className="text-red-400 hover:text-red-300 text-sm font-semibold"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
