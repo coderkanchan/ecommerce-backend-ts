@@ -53,26 +53,15 @@ export default function ProductDetails() {
   return (
     <div className="max-w-6xl mx-auto p-8 flex flex-col md:flex-row gap-8">
 
-      {/* <div className="flex-1 bg-white rounded-xl p-4">
-        <div className="relative  w-full overflow-hidden">
-          <Image
-            src={product.imageUrl}
-            height={300} width={450}
-            className="object-contain"
-            alt={product.name}
-            priority
-          />
-        </div>
-      </div> */}
       <div className="flex-1 bg-white rounded-xl p-4">
-        <div className="relative w-full h-[300px] md:h-[450px]">
+        <div className="relative w-full h-[300px] md:h-[450px] overflow-hidden">
           <Image
             src={product.imageUrl}
             alt={product.name}
             fill 
             priority 
             className="object-contain" 
-            sizes="(max-width: 768px) 100vw, 50vw" 
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
       </div>
