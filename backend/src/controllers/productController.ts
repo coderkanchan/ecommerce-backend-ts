@@ -35,7 +35,8 @@ export const getProducts = async (req: Request, res: Response) => {
     const products = await Product.find(query)
       .limit(pageSize)
       .skip(pageSize * (page - 1))
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .select('name price imageUrl category stock rating numReviews');
 
     res.json({ products, page, pages: Math.ceil(count / pageSize) });
   } catch (error) {

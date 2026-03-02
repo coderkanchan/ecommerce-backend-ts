@@ -11,9 +11,13 @@ import orderRoutes from './routes/orderRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 
 dotenv.config();
+
 connectDB();
+
 console.log("Cloudinary Name:", process.env.CLOUDINARY_CLOUD_NAME);
+
 const app = express();
+
 app.use(cookieParser());
 
 app.use(cors({
@@ -24,6 +28,7 @@ app.use(cors({
 app.use(express.json());
 
 const __dirname = path.resolve();
+
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 const PORT = process.env.PORT || 5000;
