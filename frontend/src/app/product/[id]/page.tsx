@@ -54,7 +54,7 @@ export default function ProductDetails() {
     <div className="max-w-6xl mx-auto p-8 flex flex-col md:flex-row gap-8">
 
       <div className="flex-1 bg-white rounded-xl p-4">
-        <div className="flex-1 bg-white rounded-xl p-4 relative min-h-[450px] w-full">
+        <div className="flex-1 bg-white rounded-xl overflow-hidden relative h-[300px] md:h-[450px] w-full">
           <Image
             src={product.imageUrl}
             alt={product.name}
