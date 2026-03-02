@@ -64,7 +64,6 @@ function HomeContent() {
         )}
       </div>
 
-      {/* Pagination component with extra padding */}
       <div className="mt-12">
         <Pagination pages={pages} page={page} />
       </div>
