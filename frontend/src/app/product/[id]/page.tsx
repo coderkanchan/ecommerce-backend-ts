@@ -54,13 +54,15 @@ export default function ProductDetails() {
     <div className="max-w-6xl mx-auto p-8 flex flex-col md:flex-row gap-8">
 
       <div className="flex-1 bg-white rounded-xl p-4">
-        <div className="relative w-full h-[300px] md:h-[450px] overflow-hidden">
+        <div
+          //className="relative w-full h-[300px] md:h-[450px] block overflow-hidden"
+          className="relative w-full h-96 overflow-hidden">
           <Image
             src={product.imageUrl}
             alt={product.name}
-            fill 
-            priority 
-            className="object-contain" 
+            fill
+            priority
+            className="object-contain"
             sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
