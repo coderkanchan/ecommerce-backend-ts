@@ -67,6 +67,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <Image
           src={imageSrc}
           alt={product.name}
+          priority
           fill 
           className="object-contain p-4 group-hover:scale-105 transition duration-300"
           sizes="(max-width: 768px) 100vw, 25vw"
