@@ -57,7 +57,7 @@ export default function ProductDetails() {
         <div className="relative h-[300px] md:h-[450px] w-full overflow-hidden">
           <Image
             src={product.imageUrl}
-            fill
+            height={300} width={450}
             className="object-contain"
             alt={product.name}
           />
