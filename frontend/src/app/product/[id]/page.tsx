@@ -18,7 +18,7 @@ export default function ProductDetails() {
   useEffect(() => {
     const getProduct = async () => {
       try {
-        const { data } = await API.get(`/products/${id}`);
+        const { data } = await API.get(`products/${id}`);
         setProduct(data);
       } catch (error) {
         console.error("Error:", error);
@@ -54,14 +54,12 @@ export default function ProductDetails() {
     <div className="max-w-6xl mx-auto p-8 flex flex-col md:flex-row gap-8">
 
       <div className="flex-1 bg-white rounded-xl p-4">
-        <div className="flex-1 bg-white rounded-xl overflow-hidden relative h-75 md:h-112.5 w-full">
+        <div className="relative h-[300px] md:h-[450px] w-full overflow-hidden">
           <Image
             src={product.imageUrl}
-            alt={product.name}
             fill
-            priority
-            className="object-contain p-4"
-            sizes="(max-width: 768px) 100vw, 50vw"
+            className="object-contain"
+            alt={product.name}
           />
         </div>
       </div>
