@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { buyNowRequest } from '@/redux/slices/cartSlice';
 import Image from 'next/image';
 import API from '@/services/api';
+import DetailSkeleton from '@/components/DetailSkeleton';
 
 export default function ProductDetails() {
   const dispatch = useDispatch();
@@ -48,8 +49,9 @@ export default function ProductDetails() {
     router.push('/shipping');
   };
 
-  if (!product) return <div className="p-10 text-center">Loading details...</div>;
-
+  if (!product) {
+    return <DetailSkeleton />;
+  }
   return (
     <div className="max-w-6xl mx-auto p-8 flex flex-col md:flex-row gap-8">
 
@@ -58,7 +60,7 @@ export default function ProductDetails() {
           className="relative w-full overflow-hidden"
           style={{
             height: 'auto',
-            aspectRatio: '1/1', 
+            aspectRatio: '1/1',
             minHeight: '300px',
             position: 'relative'
           }}
