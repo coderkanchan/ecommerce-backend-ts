@@ -33,14 +33,6 @@ export const getProducts = async (req: Request, res: Response) => {
   const pageSize = 8;
   const page = Number(req.query.pageNumber) || 1;
 
-  // const keyword = req.query.keyword
-  //   ? {
-  //     name:
-  //     {
-  //       $regex: String(req.query.keyword),
-  //       $options: "i"
-  //     }
-  //   } : {};
   const keyword = req.query.keyword
     ? {
       $or: [
@@ -158,4 +150,13 @@ export const updateProduct = async (req: any, res: any) => {
   } catch (error) {
     res.status(500).json({ message: "Server Error while updating product" });
   }
+};
+
+export const getSuggestions = async (req: any, res: any) => {
+  const keyword = req.query.keyword
+    ? { name: { $regex: String(req.query.keyword), $options: "i" } }
+    : {};
+
+  const products = await Product.find(keyword).select("name").limit(6);
+  res.json(products);
 };
