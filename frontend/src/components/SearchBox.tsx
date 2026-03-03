@@ -28,7 +28,7 @@ function SearchInput() {
 
   useEffect(() => {
     const fetchSuggestions = async () => {
-      if (keyword.length > 1) {
+      if (keyword.length > 0) {
         try {
           const { data } = await API.get(`/products/all?keyword=${keyword}&limit=6`);
           setSuggestions(data.products);
