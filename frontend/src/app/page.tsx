@@ -5,6 +5,7 @@ import ProductCard from '@/components/ProductCard';
 import Pagination from '@/components/Pagination';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
+import ProductSkeleton from '@/components/ProductSkeleton';
 
 function HomeContent() {
   const router = useRouter();
@@ -36,7 +37,18 @@ function HomeContent() {
     getProducts();
   }, [keyword, category, pageNumber]);
 
-  if (loading) return <div className="p-10 text-center text-white font-mono animate-pulse">Loading Products...</div>;
+  if (loading) {
+    return (
+      <main className="container mx-auto p-4 min-h-screen">
+        <div className="h-10 bg-gray-800 w-48 mb-8 rounded animate-pulse"></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[...Array(8)].map((_, index) => (
+            <ProductSkeleton key={index} />
+          ))}
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="container mx-auto p-4 min-h-screen">
