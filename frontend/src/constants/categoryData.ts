@@ -1,6 +1,6 @@
 export const SEARCH_CATEGORIES = [
-  "Electronics", "Fashion", "Home", "Books", "Toys", "Beauty",
-  "Automotive", "Grocery", "Health", "Sports"
+  "All", "Electronics", "Fashion", "Home", "Books", "Toys", 
+  "Beauty", "Automotive", "Grocery", "Health", "Sports"
 ];
 
 export const QUICK_FILTERS = [

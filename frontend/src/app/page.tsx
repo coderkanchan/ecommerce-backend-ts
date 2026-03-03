@@ -6,8 +6,9 @@ import Pagination from '@/components/Pagination';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import ProductSkeleton from '@/components/ProductSkeleton';
+import { QUICK_FILTERS } from '@/constants/categoryData';
 
-const categories = ["All", "Electronics", "Fashion", "Home", "Books", "Toys", "Beauty"];
+
 
 function HomeContent() {
   const router = useRouter();
@@ -39,56 +40,10 @@ function HomeContent() {
     getProducts();
   }, [keyword, category, pageNumber]);
 
-  //   if (loading) {
-  //     return (
-  //       <main className="container mx-auto p-4 min-h-screen">
-  //         <div className="h-10 bg-gray-800 w-48 mb-8 rounded animate-pulse"></div>
-  //         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-  //           {[...Array(8)].map((_, index) => (
-  //             <ProductSkeleton key={index} />
-  //           ))}
-  //         </div>
-  //       </main>
-  //     );
-  //   }
-
-  //   return (
-  //     <main className="container mx-auto p-4 min-h-screen">
-  //       <h1 className="text-3xl font-bold mb-8 text-white tracking-tight">
-  //         {keyword ? `Search results for "${keyword}"` : 'Latest Products'}
-  //       </h1>
-
-  //       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-  //         {products.length > 0 ? (
-  //           products.map((product: any) => (
-  //             <ProductCard key={product._id} product={product} />
-  //           ))
-  //         ) : (
-  //           <div className="col-span-full py-20 text-center bg-gray-900/50 rounded-3xl border border-dashed border-gray-800">
-  //             <div className="text-6xl mb-4 opacity-50">🔍</div>
-  //             <h3 className="text-2xl font-semibold text-gray-300">No Products Found</h3>
-  //             <p className="text-gray-500 mt-2">We couldn't find what you're looking for.</p>
-  //             <button
-  //               onClick={() => router.push('/')}
-  //               className="mt-6 bg-gray-800 px-6 py-2 rounded-full text-blue-400 hover:bg-gray-700 transition"
-  //             >
-  //               Clear all filters
-  //             </button>
-  //           </div>
-  //         )}
-  //       </div>
-
-  //       <div className="mt-12">
-  //         <Pagination pages={pages} page={page} />
-  //       </div>
-  //     </main>
-  //   );
-  // }
-
   return (
     <main className="container mx-auto p-4 min-h-screen">
       <div className="flex gap-3 overflow-x-auto pb-8 scrollbar-hide no-scrollbar">
-        {categories.map((cat) => (
+        {QUICK_FILTERS.map((cat) => (
           <button
             key={cat}
             onClick={() => {

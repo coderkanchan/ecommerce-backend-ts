@@ -74,12 +74,9 @@
 import { useState, useEffect, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Search, MapPin, Clock } from 'lucide-react';
+import { SEARCH_CATEGORIES } from '@/constants/categoryData';
 import API from '@/services/api';
 
-const SEARCH_CATEGORIES = [
-  "All", "Electronics", "Fashion", "Home", "Books", "Toys",
-  "Beauty", "Automotive", "Grocery", "Health", "Sports"
-];
 
 function SearchInput() {
   const router = useRouter();
