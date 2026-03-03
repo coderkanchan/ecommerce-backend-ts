@@ -5,17 +5,27 @@ export const createProduct = async (req: Request, res: Response) => {
   try {
     const { name, description, price, category, stock, imageUrl } = req.body;
 
-    if (!name || !price || price <= 0 || stock < 0) {
-      return res.status(400).json({ message: "Please provide valid product details" });
+    if (!name || !description || !price || !category || stock === undefined || !imageUrl) {
+      return res.status(400).json({ message: "All fields are required" });
     }
+
+    if (Number(price) <= 0) {
+      return res.status(400).json({ message: "Price must be a positive number" });
+    }
+
+    if (Number(stock) < 0) {
+      return res.status(400).json({ message: "Stock cannot be negative" });
+    }
+
     const product = new Product({
-      name, description, price, category, stock, imageUrl
+      name, description, price: Number(price), category, stock: Number(stock), imageUrl
     });
 
     const savedProduct = await product.save();
     res.status(201).json(savedProduct);
   } catch (error) {
-    res.status(500).json({ message: "Server Error", error });
+    console.error("Create Product Error:", error);
+    res.status(500).json({ message: "Server Error while creating product" });
   }
 };
 
@@ -110,19 +120,30 @@ export const deleteProduct = async (req: any, res: any) => {
 export const updateProduct = async (req: any, res: any) => {
   const { name, price, description, imageUrl, category, stock } = req.body;
 
-  const product = await Product.findById(req.params.id);
+  try {
+    const product = await Product.findById(req.params.id);
 
-  if (product) {
-    product.name = name || product.name;
-    product.price = price || product.price;
-    product.description = description || product.description;
-    product.imageUrl = imageUrl || product.imageUrl;
-    product.category = category || product.category;
-    product.stock = stock || product.stock;
+    if (product) {
+      if (price !== undefined && Number(price) <= 0) {
+        return res.status(400).json({ message: "Price must be positive" });
+      }
+      if (stock !== undefined && Number(stock) < 0) {
+        return res.status(400).json({ message: "Stock cannot be negative" });
+      }
 
-    const updatedProduct = await product.save();
-    res.json(updatedProduct);
-  } else {
-    res.status(404).json({ message: 'Product not found' });
+      product.name = name || product.name;
+      product.price = price !== undefined ? Number(price) : product.price;
+      product.description = description || product.description;
+      product.imageUrl = imageUrl || product.imageUrl;
+      product.category = category || product.category;
+      product.stock = stock !== undefined ? Number(stock) : product.stock;
+
+      const updatedProduct = await product.save();
+      res.json(updatedProduct);
+    } else {
+      res.status(404).json({ message: 'Product not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server Error while updating product" });
   }
 };
