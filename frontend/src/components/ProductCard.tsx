@@ -42,7 +42,7 @@
 
 "use client";
 import Link from 'next/link';
-import Image from 'next/image'; 
+import Image from 'next/image';
 
 interface ProductCardProps {
   product: {
@@ -68,9 +68,10 @@ export default function ProductCard({ product }: ProductCardProps) {
           src={imageSrc}
           alt={product.name}
           priority
-          fill 
+          fill
           className="object-contain p-4 group-hover:scale-105 transition duration-300"
           sizes="(max-width: 768px) 100vw, 25vw"
+          unoptimized={product.imageUrl.includes('placeholder')}
         />
       </div>
 
