@@ -55,19 +55,25 @@ export default function ProductDetails() {
 
       <div className="flex-1 bg-white rounded-xl p-4">
         <div
-          //className="relative w-full h-[300px] md:h-[450px] block overflow-hidden"
-          className="relative w-full h-96 overflow-hidden">
+          className="relative w-full overflow-hidden"
+          style={{
+            height: 'auto',
+            aspectRatio: '1/1', 
+            minHeight: '300px',
+            position: 'relative'
+          }}
+        >
           <Image
             src={product.imageUrl}
             alt={product.name}
             fill
             priority
+            unoptimized={product.imageUrl.includes('placeholder')}
             className="object-contain"
             sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
       </div>
-
       <div className="flex-1 space-y-4">
 
         <h1 className="text-4xl font-bold text-white">{product.name}</h1>
