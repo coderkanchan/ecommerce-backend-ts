@@ -5,6 +5,9 @@ export const createProduct = async (req: Request, res: Response) => {
   try {
     const { name, description, price, category, stock, imageUrl } = req.body;
 
+    if (!name || !price || price <= 0 || stock < 0) {
+      return res.status(400).json({ message: "Please provide valid product details" });
+    }
     const product = new Product({
       name, description, price, category, stock, imageUrl
     });
