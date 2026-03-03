@@ -14,7 +14,12 @@ const generateToken = (id: string) => {
 export const registerUser = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
-
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Please provide all fields' });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters' });
+    }
     const userExists = await User.findOne({ email });
 
     if (userExists) return res.status(400).json({ message: 'User already exists' });
@@ -44,7 +49,12 @@ export const registerUser = async (req: Request, res: Response) => {
 export const loginUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Please provide all fields' });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters' });
+    }
     const user = await User.findOne({ email });
 
     if (user && (await bcrypt.compare(password, user.password))) {

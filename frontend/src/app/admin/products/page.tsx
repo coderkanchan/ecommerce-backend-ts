@@ -79,6 +79,16 @@ function AdminProductsContent() {
 
   const submitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!name || !price || !description || !category) {
+      alert("Please fill all required fields!");
+      return;
+    }
+
+    if (price <= 0 || stock < 0) {
+      alert("Price must be greater than 0 and Stock cannot be negative!");
+      return;
+    }
     setUploading(true);
     let finalImageUrl = imageUrl;
 
