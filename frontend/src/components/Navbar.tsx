@@ -64,7 +64,7 @@ export default function Navbar() {
                 {userInfo.isAdmin && (
                   <Link
                     href="/admin/dashboard"
-                    className="bg-blue-100 border px-4 py-2 rounded-xl text-xl font-bold text-white transition"
+                    className="bg-blue-400 border px-4 py-2 rounded-xl text-xl font-bold text-white transition"
                   >
                     Admin Panel
                   </Link>

@@ -29,35 +29,80 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
+// export const getProducts = async (req: Request, res: Response) => {
+//   const pageSize = 8;
+//   const page = Number(req.query.pageNumber) || 1;
+
+// const keyword = req.query.keyword
+//   ? {
+//     $or: [
+//       { name: { $regex: String(req.query.keyword), $options: "i" } },
+//       { description: { $regex: String(req.query.keyword), $options: "i" } }
+//     ]
+//   }
+//   : {};
+// const category = req.query.category
+//   ? { category: String(req.query.category) }
+//   : {};
+
+// const query = { ...keyword, ...category };
+
+//   try {
+//     const count = await Product.countDocuments(query);
+//     const products = await Product.find(query)
+//       .limit(pageSize)
+//       .skip(pageSize * (page - 1))
+//       .sort({ createdAt: -1 })
+//       .select('name price imageUrl category stock rating numReviews');
+
+//     res.json({ products, page, pages: Math.ceil(count / pageSize) });
+//   } catch (error) {
+//     res.status(500).json({ message: "Server Error" });
+//   }
+// };
+
+// backend/src/controllers/productController.ts
+
 export const getProducts = async (req: Request, res: Response) => {
-  const pageSize = 8;
-  const page = Number(req.query.pageNumber) || 1;
-
-  const keyword = req.query.keyword
-    ? {
-      $or: [
-        { name: { $regex: String(req.query.keyword), $options: "i" } },
-        { description: { $regex: String(req.query.keyword), $options: "i" } }
-      ]
-    }
-    : {};
-  const category = req.query.category
-    ? { category: String(req.query.category) }
-    : {};
-
-  const query = { ...keyword, ...category };
-
   try {
-    const count = await Product.countDocuments(query);
-    const products = await Product.find(query)
+    const pageSize = 8;
+    const page = Number(req.query.pageNumber) || 1;
+
+    const keyword = req.query.keyword ?
+      {
+        name: {
+          $regex: req.query.keyword,
+          $options: 'i'
+        }
+      } : {};
+
+    const category = req.query.category && req.query.category !== 'All' ? { category: req.query.category } : {};
+
+
+    let sortOrder = {};
+    switch (req.query.sort) {
+      case 'lowest':
+        sortOrder = { price: 1 }; 
+        break;
+      case 'highest':
+        sortOrder = { price: -1 }; 
+        break;
+      case 'toprated':
+        sortOrder = { rating: -1 }; 
+        break;
+      default:
+        sortOrder = { createdAt: -1 }; 
+    }
+    
+    const count = await Product.countDocuments({ ...keyword, ...category });
+    const products = await Product.find({ ...keyword, ...category })
+      .sort(sortOrder as any) 
       .limit(pageSize)
-      .skip(pageSize * (page - 1))
-      .sort({ createdAt: -1 })
-      .select('name price imageUrl category stock rating numReviews');
+      .skip(pageSize * (page - 1));
 
     res.json({ products, page, pages: Math.ceil(count / pageSize) });
   } catch (error) {
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ message: "Error fetching products" });
   }
 };
 
