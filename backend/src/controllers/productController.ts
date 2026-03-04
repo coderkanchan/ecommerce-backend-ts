@@ -106,20 +106,52 @@ export const createProduct = async (req: Request, res: Response) => {
 //   }
 // };
 
+// export const getProducts = async (req: Request, res: Response) => {
+//   try {
+//     const pageSize = 8;
+//     const page = Number(req.query.pageNumber) || 1;
+
+//     const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: 'i' } } : {};
+//     const category = req.query.category && req.query.category !== 'All' ? { category: req.query.category } : {};
+
+//     let sortOrder: any = { createdAt: -1 }; 
+//     if (req.query.sort === 'lowest') sortOrder = { price: 1 };
+//     else if (req.query.sort === 'highest') sortOrder = { price: -1 };
+//     else if (req.query.sort === 'toprated') sortOrder = { rating: -1 };
+
+//     const queryFilter = { ...keyword, ...category };
+
+//     const count = await Product.countDocuments(queryFilter);
+//     const products = await Product.find(queryFilter)
+//       .sort(sortOrder)
+//       .limit(pageSize)
+//       .skip(pageSize * (page - 1));
+
+//     res.json({ products, page, pages: Math.ceil(count / pageSize) });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error fetching products" });
+//   }
+// };
+
 export const getProducts = async (req: Request, res: Response) => {
   try {
     const pageSize = 8;
     const page = Number(req.query.pageNumber) || 1;
 
-    const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: 'i' } } : {};
-    const category = req.query.category && req.query.category !== 'All' ? { category: req.query.category } : {};
+    const keyword = req.query.keyword
+      ? { name: { $regex: req.query.keyword as string, $options: 'i' } }
+      : {};
 
-    let sortOrder: any = { createdAt: -1 }; 
+    const category = req.query.category && req.query.category !== 'All'
+      ? { category: req.query.category as string }
+      : {};
+
+    let sortOrder: any = { createdAt: -1 };
     if (req.query.sort === 'lowest') sortOrder = { price: 1 };
     else if (req.query.sort === 'highest') sortOrder = { price: -1 };
     else if (req.query.sort === 'toprated') sortOrder = { rating: -1 };
 
-    const queryFilter = { ...keyword, ...category };
+    const queryFilter: any = { ...keyword, ...category };
 
     const count = await Product.countDocuments(queryFilter);
     const products = await Product.find(queryFilter)
