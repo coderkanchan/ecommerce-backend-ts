@@ -8,8 +8,6 @@ import { useRouter } from 'next/navigation';
 import ProductSkeleton from '@/components/ProductSkeleton';
 import { QUICK_FILTERS } from '@/constants/categoryData';
 
-
-
 function HomeContent() {
   const router = useRouter();
   const [page, setPage] = useState(1);
