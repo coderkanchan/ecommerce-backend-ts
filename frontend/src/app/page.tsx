@@ -16,7 +16,7 @@ function HomeContent() {
   const [pages, setPages] = useState(1);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [sort, setSort] = useState(searchParams.get('sort') || '');
   const searchParams = useSearchParams();
   const keyword = searchParams.get('keyword') || '';
   const category = searchParams.get('category') || '';
@@ -26,8 +26,7 @@ function HomeContent() {
     const getProducts = async () => {
       try {
         setLoading(true);
-        const { data } = await API.get(`/products/all?keyword=${keyword}&category=${category}&pageNumber=${pageNumber}`
-        );
+        const { data } = await API.get(`/products/all?keyword=${keyword}&category=${category}&pageNumber=${pageNumber}&sort=${sort}`)
         setProducts(data.products);
         setPages(data.pages);
         setPage(data.page);
@@ -38,7 +37,7 @@ function HomeContent() {
       }
     };
     getProducts();
-  }, [keyword, category, pageNumber]);
+  }, [keyword, category, pageNumber, sort]);
 
   return (
     <main className="container mx-auto p-4 min-h-screen">
@@ -71,7 +70,22 @@ function HomeContent() {
           <h1 className="text-3xl font-bold mb-8 text-white tracking-tight">
             {keyword ? `Search results for "${keyword}"` : category ? `${category} Products` : 'Latest Products'}
           </h1>
-
+          <div className="flex items-center gap-2">
+            <span className="text-gray-400 text-sm">Sort by:</span>
+            <select
+              value={sort}
+              onChange={(e) => {
+                setSort(e.target.value);
+                router.push(`/?sort=${e.target.value}${keyword ? `&keyword=${keyword}` : ''}${category ? `&category=${category}` : ''}`);
+              }}
+              className="bg-gray-900 border border-gray-800 text-white text-sm rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500 outline-none cursor-pointer"
+            >
+              <option value="newest">Newest Arrivals</option>
+              <option value="lowest">Price: Low to High</option>
+              <option value="highest">Price: High to Low</option>
+              <option value="toprated">Avg. Customer Review</option>
+            </select>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {products.length > 0 ? (
               products.map((product: any) => (
