@@ -10,12 +10,13 @@ import { QUICK_FILTERS } from '@/constants/categoryData';
 
 function HomeContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sort, setSort] = useState(searchParams.get('sort') || '');
-  const searchParams = useSearchParams();
+
   const keyword = searchParams.get('keyword') || '';
   const category = searchParams.get('category') || '';
   const pageNumber = searchParams.get('pageNumber') || '1';
