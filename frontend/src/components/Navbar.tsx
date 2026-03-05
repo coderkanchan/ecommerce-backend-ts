@@ -6,7 +6,7 @@ import { RootState } from '@/redux/store';
 import { logout } from '@/redux/slices/authSlice';
 import { clearCartItems } from '@/redux/slices/cartSlice';
 import Link from 'next/link';
-import { ShoppingCart, User, Menu, LogOut, HelpCircle, ChevronRight, X , Settings } from 'lucide-react';
+import { ShoppingCart, User, Menu, LogOut, HelpCircle, ChevronRight, X, Settings } from 'lucide-react';
 import SearchBox from './SearchBox';
 import { QUICK_FILTERS } from '@/constants/categoryData';
 
@@ -140,6 +140,9 @@ export default function Navbar() {
             <p className="text-xs text-gray-400">Hello, {userInfo ? userInfo.name : 'Sign in'}</p>
             <p className="font-bold text-base">Account & Lists</p>
           </div>
+          <button onClick={() => setIsSidebarOpen(false)} className="ml-auto p-1 hover:bg-gray-800 rounded-full">
+            <X size={24} />
+          </button>
         </div>
 
         <div className="py-4 text-gray-800">
