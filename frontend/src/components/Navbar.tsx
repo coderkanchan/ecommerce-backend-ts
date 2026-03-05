@@ -123,7 +123,7 @@ export default function Navbar() {
 
       <div className={`fixed top-0 left-0 h-full w-[280px] sm:w-[350px] bg-white z-[300] transform transition-transform duration-300 ease-in-out shadow-2xl overflow-y-auto ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
 
-        <div className="bg-gray-900 text-white p-4 flex items-center gap-3 sticky top-0 z-10">
+        {/* <div className="bg-gray-900 text-white p-4 flex items-center gap-3 sticky top-0 z-10">
           <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
             <User size={24} />
           </div>
@@ -131,6 +131,15 @@ export default function Navbar() {
           <button onClick={() => setIsSidebarOpen(false)} className="ml-auto p-1 hover:bg-gray-800 rounded-full">
             <X size={24} />
           </button>
+        </div> */}
+        <div className="bg-gray-900 text-white p-5 flex items-center gap-3">
+          <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center font-bold text-xl">
+            {userInfo ? userInfo.name.charAt(0).toUpperCase() : <User />}
+          </div>
+          <div>
+            <p className="text-xs text-gray-400">Hello, {userInfo ? userInfo.name : 'Sign in'}</p>
+            <p className="font-bold text-base">Account & Lists</p>
+          </div>
         </div>
 
         <div className="py-4 text-gray-800">
@@ -148,11 +157,24 @@ export default function Navbar() {
           <div className="px-6 py-2">
             <h3 className="text-lg font-bold mb-2">Shop By Category</h3>
             <ul className="space-y-1">
-              {QUICK_FILTERS.map((cat) => (
+              {/* {QUICK_FILTERS.map((cat) => (
                 <li
                   key={cat}
                   className="flex items-center justify-between p-2 hover:bg-gray-100 rounded cursor-pointer transition"
                   onClick={() => setIsSidebarOpen(false)}
+                >
+                  {cat} <ChevronRight size={16} className="text-gray-400" />
+                </li>
+              ))} */}
+              {QUICK_FILTERS.map((cat) => (
+                <li
+                  key={cat}
+                  className="flex items-center justify-between p-3 hover:bg-gray-100 rounded cursor-pointer transition text-gray-700"
+                  onClick={() => {
+                    setIsSidebarOpen(false);
+                    const url = cat === "All" ? '/' : `/?category=${cat}`;
+                    router.push(url);
+                  }}
                 >
                   {cat} <ChevronRight size={16} className="text-gray-400" />
                 </li>
