@@ -123,15 +123,6 @@ export default function Navbar() {
 
       <div className={`fixed top-0 left-0 h-full w-[280px] sm:w-[350px] bg-white z-[300] transform transition-transform duration-300 ease-in-out shadow-2xl overflow-y-auto ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
 
-        {/* <div className="bg-gray-900 text-white p-4 flex items-center gap-3 sticky top-0 z-10">
-          <div className="w-10 h-10 bg-gray-700 rounded-full flex items-center justify-center">
-            <User size={24} />
-          </div>
-          <span className="font-bold text-lg">Hello, Sign In</span>
-          <button onClick={() => setIsSidebarOpen(false)} className="ml-auto p-1 hover:bg-gray-800 rounded-full">
-            <X size={24} />
-          </button>
-        </div> */}
         <div className="bg-gray-900 text-white p-5 flex items-center gap-3">
           <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center font-bold text-xl">
             {mounted && userInfo ? userInfo.name.charAt(0).toUpperCase() : <User />}
@@ -161,15 +152,7 @@ export default function Navbar() {
           <div className="px-6 py-2">
             <h3 className="text-lg font-bold mb-2">Shop By Category</h3>
             <ul className="space-y-1">
-              {/* {QUICK_FILTERS.map((cat) => (
-                <li
-                  key={cat}
-                  className="flex items-center justify-between p-2 hover:bg-gray-100 rounded cursor-pointer transition"
-                  onClick={() => setIsSidebarOpen(false)}
-                >
-                  {cat} <ChevronRight size={16} className="text-gray-400" />
-                </li>
-              ))} */}
+      
               {QUICK_FILTERS.map((cat) => (
                 <li
                   key={cat}
@@ -187,21 +170,6 @@ export default function Navbar() {
           </div>
 
           <hr className="my-4 border-gray-200" />
-
-          {/* <div className="px-6 py-2 pb-10">
-            <h3 className="text-lg font-bold mb-2">Help & Settings</h3>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded cursor-pointer">
-                <User size={18} /> Your Account
-              </li>
-              <li className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded cursor-pointer">
-                <HelpCircle size={18} /> Customer Service
-              </li>
-              <li className="flex items-center gap-3 p-2 text-red-600 hover:bg-red-50 rounded cursor-pointer font-medium mt-4">
-                <LogOut size={18} /> Sign Out
-              </li>
-            </ul>
-          </div> */}
 
           <div className="px-6 py-2 pb-10">
             <h3 className="text-lg font-bold mb-2">Help & Settings</h3>
