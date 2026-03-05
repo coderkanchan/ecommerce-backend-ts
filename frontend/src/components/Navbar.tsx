@@ -6,7 +6,7 @@ import { RootState } from '@/redux/store';
 import { logout } from '@/redux/slices/authSlice';
 import { clearCartItems } from '@/redux/slices/cartSlice';
 import Link from 'next/link';
-import { ShoppingCart, User, Menu, LogOut, HelpCircle, ChevronRight, X } from 'lucide-react';
+import { ShoppingCart, User, Menu, LogOut, HelpCircle, ChevronRight, X , Settings } from 'lucide-react';
 import SearchBox from './SearchBox';
 import { QUICK_FILTERS } from '@/constants/categoryData';
 
@@ -198,6 +198,17 @@ export default function Navbar() {
               </li>
             </ul>
           </div>
+          {userInfo?.isAdmin && (
+            <div className="px-6 py-2 border-t border-gray-100 mt-2">
+              <h3 className="text-sm font-bold text-gray-500 uppercase mb-2">Admin Tools</h3>
+              <li
+                onClick={() => { setIsSidebarOpen(false); router.push('/admin/dashboard'); }}
+                className="flex items-center gap-3 p-2 hover:bg-blue-50 text-blue-700 rounded cursor-pointer"
+              >
+                <Settings size={18} /> Management Dashboard
+              </li>
+            </div>
+          )}
         </div>
       </div>
     </>
