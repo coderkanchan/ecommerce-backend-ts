@@ -143,7 +143,7 @@ export default function Navbar() {
           <button onClick={() => setIsSidebarOpen(false)} className="ml-auto p-1 hover:bg-gray-800 rounded-full">
             <X size={24} />
           </button>
-          
+
         </div>
 
         <div className="py-4 text-gray-800">
@@ -188,7 +188,7 @@ export default function Navbar() {
 
           <hr className="my-4 border-gray-200" />
 
-          <div className="px-6 py-2 pb-10">
+          {/* <div className="px-6 py-2 pb-10">
             <h3 className="text-lg font-bold mb-2">Help & Settings</h3>
             <ul className="space-y-3">
               <li className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded cursor-pointer">
@@ -198,6 +198,32 @@ export default function Navbar() {
                 <HelpCircle size={18} /> Customer Service
               </li>
               <li className="flex items-center gap-3 p-2 text-red-600 hover:bg-red-50 rounded cursor-pointer font-medium mt-4">
+                <LogOut size={18} /> Sign Out
+              </li>
+            </ul>
+          </div> */}
+
+          <div className="px-6 py-2 pb-10">
+            <h3 className="text-lg font-bold mb-2">Help & Settings</h3>
+            <ul className="space-y-3">
+              <li
+                onClick={() => { setIsSidebarOpen(false); router.push('/profile'); }}
+                className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded cursor-pointer transition"
+              >
+                <User size={18} /> Your Account
+              </li>
+
+              <li className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded cursor-pointer transition">
+                <HelpCircle size={18} /> Customer Service
+              </li>
+
+              <li
+                onClick={() => {
+                  setIsSidebarOpen(false);
+                  logoutHandler();
+                }}
+                className="flex items-center gap-3 p-2 text-red-600 hover:bg-red-50 rounded cursor-pointer font-medium mt-4 transition"
+              >
                 <LogOut size={18} /> Sign Out
               </li>
             </ul>
