@@ -137,6 +137,7 @@ export default function Navbar() {
             <X size={24} />
           </button>
         </div>
+        
         <div className="py-4 text-gray-800">
 
           <div className="px-6 py-2">
@@ -152,7 +153,7 @@ export default function Navbar() {
           <div className="px-6 py-2">
             <h3 className="text-lg font-bold mb-2">Shop By Category</h3>
             <ul className="space-y-1">
-      
+
               {QUICK_FILTERS.map((cat) => (
                 <li
                   key={cat}
@@ -196,12 +197,12 @@ export default function Navbar() {
               </li>
             </ul>
           </div>
-          {userInfo?.isAdmin && (
+          {mounted && userInfo?.isAdmin && (
             <div className="px-6 py-2 border-t border-gray-100 mt-2">
               <h3 className="text-sm font-bold text-gray-500 uppercase mb-2">Admin Tools</h3>
               <li
                 onClick={() => { setIsSidebarOpen(false); router.push('/admin/dashboard'); }}
-                className="flex items-center gap-3 p-2 hover:bg-blue-50 text-blue-700 rounded cursor-pointer"
+                className="flex items-center gap-3 p-2 hover:bg-blue-50 text-blue-700 rounded cursor-pointer transition"
               >
                 <Settings size={18} /> Management Dashboard
               </li>
