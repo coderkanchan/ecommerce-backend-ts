@@ -143,6 +143,7 @@ export default function Navbar() {
           <button onClick={() => setIsSidebarOpen(false)} className="ml-auto p-1 hover:bg-gray-800 rounded-full">
             <X size={24} />
           </button>
+          
         </div>
 
         <div className="py-4 text-gray-800">
