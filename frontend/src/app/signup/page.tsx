@@ -24,6 +24,10 @@ export default function Signup() {
     }
   };
 
+  const handleGoogleLogin = () => {
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/users/auth/google`;
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-black">
       <form onSubmit={handleSubmit} className="bg-gray-900 p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-800">
@@ -49,6 +53,15 @@ export default function Signup() {
         <button className="w-full bg-blue-600 text-white py-4 rounded-lg font-bold hover:bg-blue-700 transition">
           Create Account
         </button>
+
+        <button
+          onClick={handleGoogleLogin}
+          className="w-full mt-4 flex items-center justify-center gap-3 bg-white text-black py-3 rounded-lg font-bold hover:bg-gray-100 transition"
+        >
+          <img src="/google-icon.svg" width="20" alt="google" />
+          Continue with Google
+        </button>
+
         <p className="text-gray-400 mt-6 text-center">
           Already have an account? <Link href="/login" className="text-blue-400 hover:underline">Login</Link>
         </p>
