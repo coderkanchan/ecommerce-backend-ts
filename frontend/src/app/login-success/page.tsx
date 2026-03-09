@@ -21,4 +21,4 @@ export default function LoginSuccess() {
   }, []);
 
   return <div className="text-white text-center p-10">Completing Login...</div>;
-}
+};
