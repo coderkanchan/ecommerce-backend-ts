@@ -9,6 +9,8 @@ import productRoutes from './routes/productRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
+import passport from 'passport';
+import { configurePassport } from './config/passport.js';
 
 dotenv.config();
 
@@ -17,6 +19,9 @@ connectDB();
 console.log("Cloudinary Name:", process.env.CLOUDINARY_CLOUD_NAME);
 
 const app = express();
+
+configurePassport();
+app.use(passport.initialize());
 
 app.use(cookieParser());
 
