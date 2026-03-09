@@ -3,6 +3,7 @@ import { useState } from 'react';
 import API from '@/services/api';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { FcGoogle } from "react-icons/fc";
 
 export default function Signup() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
@@ -58,7 +59,7 @@ export default function Signup() {
           onClick={handleGoogleLogin}
           className="w-full mt-4 flex items-center justify-center gap-3 bg-white text-black py-3 rounded-lg font-bold hover:bg-gray-100 transition"
         >
-          <img src="/google-icon.svg" width="20" alt="google" />
+          <FcGoogle />
           Continue with Google
         </button>
 
