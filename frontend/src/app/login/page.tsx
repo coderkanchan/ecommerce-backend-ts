@@ -2,8 +2,8 @@
 import { useState } from 'react';
 import API from '@/services/api';
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux'; 
-import { setCredentials } from '@/redux/slices/authSlice'; 
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '@/redux/slices/authSlice';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -19,10 +19,14 @@ export default function Login() {
 
       alert("Welcome back! Login Successful.");
       router.push('/');
-      
+
     } catch (error: any) {
       alert(error.response?.data?.message || "Login failed");
     }
+  };
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/users/auth/google`;
   };
 
   return (
@@ -48,6 +52,14 @@ export default function Login() {
         <button
           className="w-full bg-blue-600 text-white py-4 rounded-lg font-bold hover:bg-blue-700 transition">
           Login
+        </button>
+
+        <button
+          onClick={handleGoogleLogin}
+          className="w-full mt-4 flex items-center justify-center gap-3 bg-white text-black py-3 rounded-lg font-bold hover:bg-gray-100 transition"
+        >
+          <img src="/google-icon.svg" width="20" alt="google" />
+          Continue with Google
         </button>
       </form>
     </div>
