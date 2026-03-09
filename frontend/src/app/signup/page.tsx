@@ -25,7 +25,7 @@ export default function Signup() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/users/auth/google`;
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/users/google`;
   };
 
   return (
