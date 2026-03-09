@@ -9,6 +9,7 @@ export const configurePassport = () => {
         clientID: process.env.GOOGLE_CLIENT_ID as string,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
         callbackURL: '/api/usersgoogle/callback', 
+        proxy: true
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
