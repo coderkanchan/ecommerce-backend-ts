@@ -10,6 +10,8 @@ import { ShoppingCart, User, Menu, LogOut, HelpCircle, ChevronRight, X, Settings
 import SearchBox from './SearchBox';
 import { QUICK_FILTERS } from '@/constants/categoryData';
 import Image from 'next/image';
+import { toast } from 'sonner';
+
 export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const dispatch = useDispatch();
@@ -23,7 +25,13 @@ export default function Navbar() {
   const logoutHandler = () => {
     dispatch(logout());
     dispatch(clearCartItems());
-    router.push('/login');
+    toast.success('Logged out successfully!', {
+      description: 'Redirecting...', duration: 800
+    });
+    setTimeout(() => {
+      router.push('/login');;
+    }, 800);
+
   };
 
   useEffect(() => {

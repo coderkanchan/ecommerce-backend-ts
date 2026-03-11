@@ -21,11 +21,11 @@ export default function Login() {
       localStorage.setItem('userInfo', JSON.stringify(data));
 
       toast.success('Welcome back!', {
-        description: 'Login Successful. Redirecting...',  duration:200
+        description: 'Login Successful. Redirecting...',  duration:800
       });
       setTimeout(() => {
         router.push('/');;
-      }, 2000);
+      }, 800);
 
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Login Failed. Try again!');
