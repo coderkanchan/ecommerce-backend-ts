@@ -11,6 +11,7 @@ function LoginSuccessHandler() {
 
   useEffect(() => {
     const token = searchParams.get('token');
+    const profileImage = searchParams.get('profileImage');
 
     if (token) {
       const userInfo = {
@@ -18,11 +19,11 @@ function LoginSuccessHandler() {
         name: searchParams.get('name'),
         email: searchParams.get('email'),
         isAdmin: searchParams.get('isAdmin') === 'true',
-        _id: searchParams.get('id')
+        _id: searchParams.get('id'),
+        profileImage,
       };
 
       dispatch(setCredentials(userInfo));
-      localStorage.setItem('userInfo', JSON.stringify(userInfo));
       router.push('/');
     }
   }, [searchParams, dispatch, router]);
