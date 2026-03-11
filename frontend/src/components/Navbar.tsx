@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { ShoppingCart, User, Menu, LogOut, HelpCircle, ChevronRight, X, Settings } from 'lucide-react';
 import SearchBox from './SearchBox';
 import { QUICK_FILTERS } from '@/constants/categoryData';
-
+import Image from 'next/image';
 export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const dispatch = useDispatch();
@@ -78,15 +78,13 @@ export default function Navbar() {
 
                   <Link href="/profile" className="flex items-center gap-2 text-white hover:text-blue-600">
 
-                    {/* <div ><User size={30} /></div>
-
-                    <span className="hidden sm:inline text-sm italic">Hi, {userInfo.name}</span> */}
-
                     {userInfo?.profileImage ? (
-                      <img
+                      <Image
                         src={userInfo.profileImage}
-                        alt="avatar"
-                        className="w-10 h-10 rounded-full border border-gray-100"
+                        alt="User"
+                        width={40}
+                        height={40}
+                        className="rounded-full border border-gray-500"
                       />
                     ) : (
                       <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-xl font-bold text-white">
@@ -94,7 +92,7 @@ export default function Navbar() {
                       </div>
                     )}
                   </Link>
-                  
+
                   <button
                     onClick={logoutHandler}
                     className="bg-red-600  font-semibold rounded-xl text-xl px-4 py-2 text-white transition cursor-pointer"
