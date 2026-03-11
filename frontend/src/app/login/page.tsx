@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setCredentials } from '@/redux/slices/authSlice';
 import { FcGoogle } from "react-icons/fc";
 import Link from 'next/link';
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -20,8 +20,9 @@ export default function Login() {
       dispatch(setCredentials(data));
       localStorage.setItem('userInfo', JSON.stringify(data));
 
-      toast.success('Welcome back! Login Successful', { duration: 800 });
-
+      toast.success('Welcome back!', {
+        description: 'Login Successful. Redirecting...',
+      });
       setTimeout(() => {
         router.push('/');;
       }, 2000);

@@ -4,7 +4,7 @@ import API from '@/services/api';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FcGoogle } from "react-icons/fc";
-import toast from 'react-hot-toast';
+import { toast } from 'sonner';
 
 export default function Signup() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
@@ -17,8 +17,9 @@ export default function Signup() {
 
       localStorage.setItem('userInfo', JSON.stringify(data));
 
-      toast.success('Signup Successful & Logging In!', { duration: 800 });
-
+      toast.success('Signup Successful!', {
+        description: 'Redirecting...',
+      });
       setTimeout(() => {
         router.push('/');;
       }, 2000);
