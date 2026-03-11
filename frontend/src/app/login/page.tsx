@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setCredentials } from '@/redux/slices/authSlice';
 import { FcGoogle } from "react-icons/fc";
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -19,11 +20,11 @@ export default function Login() {
       dispatch(setCredentials(data));
       localStorage.setItem('userInfo', JSON.stringify(data));
 
-      alert("Welcome back! Login Successful.");
+      toast.success('Welcome back! Login Successful');
       router.push('/');
 
     } catch (error: any) {
-      alert(error.response?.data?.message || "Login failed");
+      toast.error(error.response?.data?.message || 'Login Failed. Try again!');
     }
   };
 

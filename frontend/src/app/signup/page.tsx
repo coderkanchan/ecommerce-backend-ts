@@ -4,6 +4,7 @@ import API from '@/services/api';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { FcGoogle } from "react-icons/fc";
+import toast from 'react-hot-toast';
 
 export default function Signup() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
@@ -16,12 +17,12 @@ export default function Signup() {
 
       localStorage.setItem('userInfo', JSON.stringify(data));
 
-      alert("Signup Successful & Logging In!");
+      toast.success('Signup Successful & Logging In!');
 
       router.push('/');
 
     } catch (error: any) {
-      alert(error.response?.data?.message || "Error");
+      toast.error(error.response?.data?.message || 'Signup Failed. Try again!');
     }
   };
 
