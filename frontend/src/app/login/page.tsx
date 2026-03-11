@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '@/redux/slices/authSlice';
 import { FcGoogle } from "react-icons/fc";
+import Link from 'next/link';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -59,9 +60,13 @@ export default function Login() {
           onClick={handleGoogleLogin}
           className="w-full mt-4 flex items-center justify-center gap-3 bg-white text-black py-3 rounded-lg font-bold hover:bg-gray-100 transition"
         >
-         <FcGoogle />
+          <FcGoogle />
           Continue with Google
         </button>
+
+        <p className="text-gray-400 mt-6 text-center">
+          Already have an account? <Link href="/login" className="text-blue-400 hover:underline">Login</Link>
+        </p>
       </form>
     </div>
   );
