@@ -21,7 +21,7 @@ export default function Login() {
       localStorage.setItem('userInfo', JSON.stringify(data));
 
       toast.success('Welcome back!', {
-        description: 'Login Successful. Redirecting...',
+        description: 'Login Successful. Redirecting...',  duration:200
       });
       setTimeout(() => {
         router.push('/');;

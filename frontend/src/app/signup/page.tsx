@@ -18,7 +18,7 @@ export default function Signup() {
       localStorage.setItem('userInfo', JSON.stringify(data));
 
       toast.success('Signup Successful!', {
-        description: 'Redirecting...',
+        description: 'Redirecting...', duration:200
       });
       setTimeout(() => {
         router.push('/');;
