@@ -151,7 +151,11 @@ export default function Navbar() {
 
           <div>
             <p className="text-xs text-gray-400">
-              Hello, {mounted && userInfo ? userInfo.name : 'Sign in'}
+              {mounted && userInfo ? (
+                `Hello, ${userInfo.name}`
+              ) : (
+                'Sign in'
+              )}
             </p>
             <p className="font-bold text-base">Account & Lists</p>
           </div>
