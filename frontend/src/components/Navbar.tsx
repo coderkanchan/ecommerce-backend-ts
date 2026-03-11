@@ -10,13 +10,13 @@ import { ShoppingCart, User, Menu, LogOut, HelpCircle, ChevronRight, X, Settings
 import SearchBox from './SearchBox';
 import { QUICK_FILTERS } from '@/constants/categoryData';
 
+
 export default function Navbar() {
   const [mounted, setMounted] = useState(false);
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const { cartItems } = useSelector((state: RootState) => state.cart);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   const router = useRouter();
 
   const cartCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
@@ -77,13 +77,25 @@ export default function Navbar() {
                     </Link>
                   )}
 
-                  <Link href="/profile" className="flex items-center gap-2 text-white hover:text-blue-600">
+                  {/* <Link href="/profile" className="flex items-center gap-2 text-white hover:text-blue-600">
 
                     <div ><User size={30} /></div>
 
                     <span className="hidden sm:inline text-sm italic">Hi, {userInfo.name}</span>
 
-                  </Link>
+                  </Link> */}
+
+                  {userInfo?.profileImage ? (
+                    <img
+                      src={userInfo.profileImage}
+                      alt="avatar"
+                      className="w-10 h-10 rounded-full border border-gray-100"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-xl font-bold text-white">
+                      {userInfo?.name?.charAt(0).toUpperCase() || '?'}
+                    </div>
+                  )}
 
                   <button
                     onClick={logoutHandler}
@@ -137,7 +149,7 @@ export default function Navbar() {
             <X size={24} />
           </button>
         </div>
-        
+
         <div className="py-4 text-gray-800">
 
           <div className="px-6 py-2">

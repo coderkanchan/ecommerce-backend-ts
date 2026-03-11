@@ -5,6 +5,8 @@ import ProtectedRoute from '@/components/ProtectedRoute';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '@/redux/slices/authSlice';
 import Link from 'next/link';
+import { useSelector } from 'react-redux';
+import Image from 'next/image';
 
 export default function ProfilePage() {
   const [name, setName] = useState('');
@@ -14,6 +16,7 @@ export default function ProfilePage() {
   const [orders, setOrders] = useState([]);
   const router = useRouter();
   const dispatch = useDispatch();
+  const { userInfo } = useSelector((state: any) => state.auth);
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
@@ -82,37 +85,42 @@ export default function ProfilePage() {
     <ProtectedRoute>
 
       <div className="w-full px-3 ">
-
         <div className='max-w-330 mx-auto flex items-center justify-center gap-10'>
-
           <div className="lg:col-span-1 bg-gray-900 p-6 rounded-2xl border border-gray-800 h-fit">
-
+            {userInfo?.profileImage ? (
+              <Image
+                src={userInfo.profileImage}
+                alt={userInfo.name}
+                width={128}
+                height={128}
+                className="rounded-full border-4 border-gray-700 shadow-xl object-cover"
+              />
+            ) : (
+              <div className="w-32 h-32 rounded-full bg-blue-600 flex items-center justify-center text-6xl font-bold text-white shadow-xl border-4 border-gray-700">
+                {userInfo?.name?.charAt(0).toUpperCase() || '?'}
+              </div>
+            )}
             <h2 className="text-2xl font-bold mb-6">User Profile</h2>
 
             <form onSubmit={submitHandler} className="space-y-4">
-
               <div>
                 <label className="block text-gray-400 mb-1">Name</label>
-
                 <input
                   type="text"
                   className="w-full p-3 bg-black border border-gray-700 rounded-lg"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
-
               </div>
 
               <div>
                 <label className="block text-gray-400 mb-1">Email</label>
-
                 <input
                   type="email"
                   className="w-full p-3 bg-black border border-gray-700 rounded-lg"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-
               </div>
 
               <div>
@@ -140,19 +148,14 @@ export default function ProfilePage() {
               <button className="w-full bg-blue-600 py-3 rounded-lg font-bold hover:bg-blue-700 transition">
                 Update Profile
               </button>
-
             </form>
 
           </div>
 
           <div className="lg:col-span-3">
-
             <h2 className="text-2xl font-bold mb-6">My Orders</h2>
-
             <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-x-auto">
-
               <table className=" text-left max-w-200">
-
                 <thead className="bg-gray-800 text-gray-300 uppercase text-sm">
                   <tr>
                     <th className="p-4">ID</th>
@@ -163,9 +166,7 @@ export default function ProfilePage() {
                     <th className="p-4">Action</th>
                   </tr>
                 </thead>
-
                 <tbody className="divide-y divide-gray-800">
-
                   {orders.length === 0 ? (
                     <tr>
                       <td colSpan={6} className="p-10 text-center text-gray-500">
@@ -207,19 +208,12 @@ export default function ProfilePage() {
                       </tr>
                     ))
                   )}
-
                 </tbody>
-
               </table>
-
             </div>
-
           </div>
-
         </div>
-
       </div>
-
     </ProtectedRoute>
   );
 }
