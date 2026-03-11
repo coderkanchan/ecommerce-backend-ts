@@ -70,30 +70,30 @@ export const loginUser = async (req: Request, res: Response) => {
     }
     const user = await User.findOne({ email });
 
-    if (user && (await bcrypt.compare(password, user.password))) {
+     if (user && (await bcrypt.compare(password, user.password))) {
 
-      const token = generateToken(String(user._id));
+    const token = generateToken(String(user._id));
 
-      res.cookie('token', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-      });
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
 
-      res.json({
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        token: token,
-        isAdmin: user.isAdmin,
-      });
-    } else {
-      res.status(401).json({ message: 'Invalid email or password' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      token: token,
+      isAdmin: user.isAdmin,
+    });
+  } else {
+    res.status(401).json({ message: 'Invalid email or password' });
   }
+} catch (error) {
+  res.status(500).json({ message: 'Server Error' });
+}
 };
 
 export const updateUserProfile = async (req: any, res: Response) => {
