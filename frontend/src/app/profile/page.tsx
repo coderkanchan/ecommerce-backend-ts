@@ -95,11 +95,6 @@ export default function ProfilePage() {
                 height={128}
                 className="rounded-full border-4 border-gray-700 shadow-xl object-cover"
               />
-              // <img
-              //   src={userInfo.profileImage}
-              //   alt="avatar"
-              //   className="w-10 h-10 rounded-full border border-gray-100"
-              // />
             ) : (
               <div className="w-32 h-32 rounded-full bg-blue-600 flex items-center justify-center text-6xl font-bold text-white shadow-xl border-4 border-gray-700">
                 {userInfo?.name?.charAt(0).toUpperCase() || '?'}
