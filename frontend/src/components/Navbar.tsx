@@ -132,15 +132,30 @@ export default function Navbar() {
       <div className={`fixed top-0 left-0 h-full w-[280px] sm:w-[350px] bg-white z-[300] transform transition-transform duration-300 ease-in-out shadow-2xl overflow-y-auto ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
 
         <div className="bg-gray-900 text-white p-5 flex items-center gap-3">
-          <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center font-bold text-xl">
-            {mounted && userInfo ? userInfo.name.charAt(0).toUpperCase() : <User />}
+          <div className="w-12 h-12 relative overflow-hidden bg-blue-600 rounded-full flex items-center justify-center font-bold text-xl border border-gray-700">
+            {mounted && userInfo ? (
+              userInfo.profileImage ? (
+                <Image
+                  src={userInfo.profileImage}
+                  alt={userInfo.name}
+                  fill
+                  className="object-cover"
+                />
+              ) : (
+                userInfo.name.charAt(0).toUpperCase()
+              )
+            ) : (
+              <User />
+            )}
           </div>
+
           <div>
             <p className="text-xs text-gray-400">
               Hello, {mounted && userInfo ? userInfo.name : 'Sign in'}
             </p>
             <p className="font-bold text-base">Account & Lists</p>
           </div>
+
           <button onClick={() => setIsSidebarOpen(false)} className="ml-auto p-1 hover:bg-gray-800 rounded-full">
             <X size={24} />
           </button>
