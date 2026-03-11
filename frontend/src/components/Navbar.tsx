@@ -9,7 +9,6 @@ import Link from 'next/link';
 import { ShoppingCart, User, Menu, LogOut, HelpCircle, ChevronRight, X, Settings } from 'lucide-react';
 import SearchBox from './SearchBox';
 import { QUICK_FILTERS } from '@/constants/categoryData';
-import Image from 'next/image';
 
 export default function Navbar() {
   const [mounted, setMounted] = useState(false);
@@ -95,19 +94,7 @@ export default function Navbar() {
                       </div>
                     )}
                   </Link>
-                  {/* 
-                  {userInfo?.profileImage ? (
-                    <img
-                      src={userInfo.profileImage}
-                      alt="avatar"
-                      className="w-10 h-10 rounded-full border border-gray-100"
-                    />
-                  ) : (
-                    <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-xl font-bold text-white">
-                      {userInfo?.name?.charAt(0).toUpperCase() || '?'}
-                    </div>
-                  )} */}
-
+                  
                   <button
                     onClick={logoutHandler}
                     className="bg-red-600  font-semibold rounded-xl text-xl px-4 py-2 text-white transition cursor-pointer"

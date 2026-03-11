@@ -88,12 +88,17 @@ export default function ProfilePage() {
         <div className='max-w-330 mx-auto flex items-center justify-center gap-10'>
           <div className="lg:col-span-1 bg-gray-900 p-6 rounded-2xl border border-gray-800 h-fit">
             {userInfo?.profileImage ? (
-              <Image
+              // <Image
+              //   src={userInfo.profileImage}
+              //   alt={userInfo.name}
+              //   width={128}
+              //   height={128}
+              //   className="rounded-full border-4 border-gray-700 shadow-xl object-cover"
+              // />
+              <img
                 src={userInfo.profileImage}
-                alt={userInfo.name}
-                width={128}
-                height={128}
-                className="rounded-full border-4 border-gray-700 shadow-xl object-cover"
+                alt="avatar"
+                className="w-10 h-10 rounded-full border border-gray-100"
               />
             ) : (
               <div className="w-32 h-32 rounded-full bg-blue-600 flex items-center justify-center text-6xl font-bold text-white shadow-xl border-4 border-gray-700">
