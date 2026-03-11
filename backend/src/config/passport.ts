@@ -8,7 +8,10 @@ export const configurePassport = () => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID as string,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-        callbackURL: '/api/usersgoogle/callback', 
+        // callbackURL: '/api/usersgoogle/callback', 
+        callbackURL: process.env.NODE_ENV === 'production'
+          ? 'https://ecommerce-backend-ts-1f17.onrender.com/api/users/google/callback'
+          : '/api/users/google/callback',
         proxy: true
       },
       async (accessToken, refreshToken, profile, done) => {
