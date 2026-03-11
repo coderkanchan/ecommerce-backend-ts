@@ -17,9 +17,11 @@ export default function Signup() {
 
       localStorage.setItem('userInfo', JSON.stringify(data));
 
-      toast.success('Signup Successful & Logging In!');
+      toast.success('Signup Successful & Logging In!', { duration: 800 });
 
-      router.push('/');
+      setTimeout(() => {
+        router.push('/');;
+      }, 2000);
 
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Signup Failed. Try again!');

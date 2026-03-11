@@ -20,8 +20,11 @@ export default function Login() {
       dispatch(setCredentials(data));
       localStorage.setItem('userInfo', JSON.stringify(data));
 
-      toast.success('Welcome back! Login Successful');
-      router.push('/');
+      toast.success('Welcome back! Login Successful', { duration: 800 });
+
+      setTimeout(() => {
+        router.push('/');;
+      }, 2000);
 
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Login Failed. Try again!');
