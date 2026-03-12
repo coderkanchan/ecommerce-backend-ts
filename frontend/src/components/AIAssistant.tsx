@@ -7,9 +7,11 @@ const AIAssistant = () => {
   const [query, setQuery] = useState('');
   const dispatch = useDispatch<AppDispatch>();
 
-  const { answer, loading } = useSelector((state: RootState) => state.ai);
-  const { products } = useSelector((state: RootState) => state.products); 
+  // const { answer, loading } = useSelector((state: RootState) => state.ai);
+  // const { products } = useSelector((state: RootState) => state.products);
+  const { answer, loading } = useSelector((state: RootState) => state.ai || { answer: null, loading: false });
 
+  const { products } = useSelector((state: RootState) => (state as any).products || { products: [] });
   const handleSearch = () => {
     if (query.trim()) {
       dispatch(askNexusAssistant({ query, products }));
@@ -54,3 +56,5 @@ const AIAssistant = () => {
     </div>
   );
 };
+
+export default AIAssistant;
