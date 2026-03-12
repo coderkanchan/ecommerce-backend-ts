@@ -11,6 +11,7 @@ import orderRoutes from './routes/orderRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 import passport from 'passport';
 import { configurePassport } from './config/passport.js';
+import aiRoutes from './routes/aiRoutes';
 
 dotenv.config();
 
@@ -37,6 +38,8 @@ const __dirname = path.resolve();
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 const PORT = process.env.PORT || 5000;
+
+app.use('/api/ai', aiRoutes);
 
 app.get('/', (req: Request, res: Response) => {
   res.send("API is running...");
