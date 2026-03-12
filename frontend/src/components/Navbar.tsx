@@ -11,6 +11,7 @@ import SearchBox from './SearchBox';
 import { QUICK_FILTERS } from '@/constants/categoryData';
 import Image from 'next/image';
 import { toast } from 'sonner';
+import AIAssistant from './AIAssistant';
 
 export default function Navbar() {
   const [mounted, setMounted] = useState(false);
@@ -62,6 +63,8 @@ export default function Navbar() {
             </div>
 
             <div className=" flex items-center justify-between space-x-6">
+
+                <AIAssistant />
 
               <Link href="/cart" className="relative hover:text-blue-600">
                 <span className=""><ShoppingCart size={40} /></span>
