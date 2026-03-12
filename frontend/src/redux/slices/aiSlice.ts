@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 
 interface AIState {
   answer: string | null;
@@ -16,20 +15,34 @@ const initialState: AIState = {
 export const askNexusAssistant = createAsyncThunk(
   'ai/askAssistant',
   async ({ query, products }: { query: string; products: any[] }) => {
+
     const optimizedProducts = products.map(p => ({
       name: p.name,
       price: p.price,
       category: p.category
     }));
 
-    const response = await axios.post('http://localhost:5000/api/ai/ask-assistant', {
-      userQuery: query,
-      products: optimizedProducts
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+
+    const response = await fetch(`${API_URL}/api/ai/ask-assistant`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userQuery: query,
+        products: optimizedProducts
+      }),
     });
-    return response.data.answer;
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    return data.answer;
   }
 );
-
 const aiSlice = createSlice({
   name: 'ai',
   initialState,
