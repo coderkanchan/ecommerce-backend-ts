@@ -1,50 +1,56 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { askNexusAssistant } from '../redux/slices/aiSlice';
+import { RootState, AppDispatch } from '../redux/store';
 
-const AIAssistant = ({ products }: { products: any[] }) => {
+const AIAssistant = () => {
   const [query, setQuery] = useState('');
-  const [answer, setAnswer] = useState('');
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
 
-  const askAI = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.post('http://localhost:5000/api/ai/ask-assistant', {
-        userQuery: query,
-        products: products 
-      });
-      setAnswer(response.data.answer);
-    } catch (error) {
-      console.error("AI Error:", error);
+  const { answer, loading } = useSelector((state: RootState) => state.ai);
+  const { products } = useSelector((state: RootState) => state.products); 
+
+  const handleSearch = () => {
+    if (query.trim()) {
+      dispatch(askNexusAssistant({ query, products }));
     }
-    setLoading(false);
   };
 
   return (
-    <div className="p-4 border rounded-lg bg-gray-50 shadow-md">
-      <h3 className="text-lg font-bold mb-2">NexusMart Smart Assistant ✨</h3>
-      <input
-        type="text"
-        className="w-full p-2 border rounded"
-        placeholder="Mujhe party ke liye black watch chahiye..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <button
-        onClick={askAI}
-        className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        disabled={loading}
-      >
-        {loading ? 'Thinking...' : 'Ask AI'}
-      </button>
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-xl shadow-lg border border-gray-100">
+      <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
+        <span className="animate-pulse">✨</span> Nexus Assistant
+      </h2>
 
-      {answer && (
-        <div className="mt-4 p-3 bg-white border-l-4 border-blue-500 italic">
+      <div className="mt-4 flex gap-2">
+        <input
+          type="text"
+          className="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder="Ask me: What's the best watch?"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <button
+          onClick={handleSearch}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:bg-blue-300"
+          disabled={loading}
+        >
+          Ask
+        </button>
+      </div>
+
+      {loading && (
+        <div className="mt-4 flex items-center gap-3 text-blue-600">
+          <div className="animate-spin h-5 w-5 border-2 border-blue-600 border-t-transparent rounded-full"></div>
+          <span className="text-sm font-medium">NexusMart AI is thinking...</span>
+        </div>
+      )}
+
+      {answer && !loading && (
+        <div className="mt-4 p-4 bg-blue-50 rounded-lg text-gray-700 text-sm leading-relaxed border-l-4 border-blue-400">
           {answer}
         </div>
       )}
     </div>
   );
 };
-
-export default AIAssistant;
