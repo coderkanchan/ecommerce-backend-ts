@@ -5,8 +5,8 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
 export const handleAIQuery = async (req: Request, res: Response) => {
   try {
-    const { userQuery, products } = req.body; // Frontend se aane wala data
-
+    const { userQuery, products } = req.body; 
+    
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const prompt = `Tum NexusMart ke ek professional shopping assistant ho. 

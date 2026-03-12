@@ -11,7 +11,7 @@ import orderRoutes from './routes/orderRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 import passport from 'passport';
 import { configurePassport } from './config/passport.js';
-import aiRoutes from './routes/aiRoutes';
+import aiRoutes from './routes/aiRoutes.js';
 
 dotenv.config();
 
