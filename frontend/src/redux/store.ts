@@ -5,9 +5,9 @@ import aiReducer from './slices/aiSlice';
 
 export const store = configureStore({
   reducer: {
+    ai: aiReducer,
     cart: cartReducer,
     auth: authReducer,
-    ai: aiReducer,
   },
 });
 
