@@ -58,7 +58,7 @@ const AIAssistant = () => {
           <div className="p-4 bg-white border-t flex gap-2">
             <input
               type="text"
-              className="flex-1 p-2 bg-gray-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+              className="flex-1 p-2 bg-gray-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none text-gray-600"
               placeholder="Type your message..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
