@@ -12,7 +12,7 @@ const AIAssistant = () => {
 
   const { answer, loading } = useSelector((state: RootState) => state.ai);
 
-  const products = useSelector((state) => state.products.products);
+  const { products } = useSelector((state: RootState) => state.products);
 
   const handleSearch = () => {
     if (query.trim()) {
