@@ -35,7 +35,11 @@ const AIAssistant = () => {
           </div>
 
           <div className="h-80 overflow-y-auto p-4 bg-gray-50 flex flex-col gap-3">
-
+            {loading && (
+              <div className="self-end bg-blue-600 text-white p-2 rounded-lg text-sm max-w-[80%]">
+                Processing your request...
+              </div>
+            )}
             {answer ? (
               <div className="self-start bg-blue-100 text-gray-800 p-3 rounded-lg rounded-tl-none border border-blue-200 text-sm max-w-[90%]">
                 {answer}
