@@ -11,22 +11,19 @@ const AIAssistant = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { answer, loading } = useSelector((state: RootState) => state.ai);
-
   const products = useSelector((state: RootState) => state.products.products);
 
   const handleSearch = () => {
-    if (query.trim()) {
-      dispatch(askNexusAssistant({ query, products }));
+    if (query.trim() && !loading) {
+      dispatch(askNexusAssistant({ userQuery: query, products }));
       setQuery('');
     }
   };
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-
       {isOpen && (
-        <div className="mb-4 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300 ease-in-out">
-
+        <div className="mb-4 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300">
           <div className="bg-blue-600 p-4 text-white flex justify-between items-center">
             <div className="flex items-center gap-2">
               <Sparkles size={20} />
@@ -37,20 +34,28 @@ const AIAssistant = () => {
             </button>
           </div>
 
-          <div className="h-80 overflow-y-auto p-4 bg-gray-50">
+          <div className="h-80 overflow-y-auto p-4 bg-gray-50 flex flex-col gap-3">
+            {/* User ka message (Humne abhi handle nahi kiya isliye chat simple hai) */}
+
             {answer ? (
-              <div className="bg-blue-100 text-gray-800 p-3 rounded-lg rounded-tl-none border border-blue-200 text-sm">
+              <div className="self-start bg-blue-100 text-gray-800 p-3 rounded-lg rounded-tl-none border border-blue-200 text-sm max-w-[90%]">
                 {answer}
               </div>
             ) : (
-              <p className="text-gray-500 text-sm text-center mt-10">
-                Hi! Main aapki shopping mein kaise madad kar sakta hoon?
-              </p>
+              !loading && (
+                <p className="text-gray-500 text-sm text-center mt-10 italic">
+                  Hi! Main NexusMart Assistant hoon. Main aapki kya madad kar sakta hoon?
+                </p>
+              )
             )}
 
             {loading && (
-              <div className="flex items-center gap-2 mt-4 text-blue-600 animate-pulse">
-                <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
+              <div className="flex items-center gap-2 text-blue-600 animate-pulse bg-blue-50 p-2 rounded-lg w-fit">
+                <div className="flex gap-1">
+                  <span className="w-1.5 h-1.5 bg-blue-600 rounded-full animate-bounce"></span>
+                  <span className="w-1.5 h-1.5 bg-blue-600 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                  <span className="w-1.5 h-1.5 bg-blue-600 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+                </div>
                 <span className="text-xs font-medium">Nexus is thinking...</span>
               </div>
             )}
@@ -60,14 +65,14 @@ const AIAssistant = () => {
             <input
               type="text"
               className="flex-1 p-2 bg-gray-100 border-none rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none text-gray-600"
-              placeholder="Type your message..."
+              placeholder="Puchiye..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             />
             <button
               onClick={handleSearch}
-              className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition-colors"
+              className={`p-2 rounded-lg transition-colors ${loading ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'} text-white`}
               disabled={loading}
             >
               <Send size={18} />
@@ -78,12 +83,10 @@ const AIAssistant = () => {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`${isOpen ? 'bg-red-500 rotate-90' : 'bg-blue-600 hover:scale-110'
-          } text-white p-4 rounded-full shadow-xl transition-all duration-300 flex items-center justify-center`}
+        className={`${isOpen ? 'bg-red-500 rotate-90' : 'bg-blue-600 hover:scale-110'} text-white p-4 rounded-full shadow-xl transition-all duration-300`}
       >
         {isOpen ? <X size={28} /> : <MessageCircle size={28} />}
       </button>
-
     </div>
   );
 };

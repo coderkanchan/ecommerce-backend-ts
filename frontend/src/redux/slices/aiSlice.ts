@@ -14,7 +14,7 @@ const initialState: AIState = {
 
 export const askNexusAssistant = createAsyncThunk(
   'ai/askAssistant',
-  async ({ query, products }: { query: string; products: any[] }) => {
+  async ({ userQuery, products }: { userQuery: string; products: any[] }) => {
 
     const optimizedProducts = products.map(p => ({
       name: p.name,
@@ -30,7 +30,7 @@ export const askNexusAssistant = createAsyncThunk(
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userQuery: query,
+        userQuery,
         products: optimizedProducts
       }),
     });
