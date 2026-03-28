@@ -1,5 +1,5 @@
 import express from 'express';
-import { handleAIQuery } from '../controllers/aiController.js';
+import { handleAIQuery } from '../controllers/aiController';
 
 const router = express.Router();
 

@@ -11,7 +11,8 @@ const AIAssistant = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { answer, loading } = useSelector((state: RootState) => state.ai);
-  const { products } = useSelector((state: RootState) => (state as any).products || { products: [] });
+
+  const products = useSelector((state) => state.products.products);
 
   const handleSearch = () => {
     if (query.trim()) {
