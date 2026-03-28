@@ -12,8 +12,11 @@ export const handleAIQuery = async (req: Request, res: Response) => {
 
     const genAI = new GoogleGenerativeAI(apiKey);
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
+    //const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash-latest", // Option A (Most recommended)
+      // model: "gemini-pro"            // Option B (Sabse stable purana version)
+    });
     const prompt = `Tum NexusMart ke assistant ho. Products: ${JSON.stringify(products)}. User: ${userQuery}`;
 
     const result = await model.generateContent(prompt);
