@@ -12,8 +12,8 @@ export const handleAIQuery = async (req: Request, res: Response) => {
     }
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+    
     const prompt = `Tum NexusMart ke ek professional shopping assistant ho. 
     Hamare paas ye products hain: ${JSON.stringify(products)}. 
     User ne pucha hai: "${userQuery}". 
