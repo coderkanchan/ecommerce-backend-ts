@@ -35,7 +35,6 @@ const AIAssistant = () => {
           </div>
 
           <div className="h-80 overflow-y-auto p-4 bg-gray-50 flex flex-col gap-3">
-            {/* User ka message (Humne abhi handle nahi kiya isliye chat simple hai) */}
 
             {answer ? (
               <div className="self-start bg-blue-100 text-gray-800 p-3 rounded-lg rounded-tl-none border border-blue-200 text-sm max-w-[90%]">
