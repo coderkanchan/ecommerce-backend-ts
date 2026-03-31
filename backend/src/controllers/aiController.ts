@@ -1,36 +1,29 @@
-import { Request, Response } from 'express';
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-console.log("API KEY:", process.env.GEMINI_API_KEY);
+import { GoogleGenAI } from "@google/genai";
+import { Request, Response } from "express";
 
 export const handleAIQuery = async (req: Request, res: Response) => {
   try {
     const { userQuery, products } = req.body;
 
-    const apiKey = process.env.GEMINI_API_KEY;
-
-    if (!apiKey) {
-      return res.status(500).json({ message: "API key missing" });
-    }
-
-    const genAI = new GoogleGenerativeAI(apiKey);
-
-    const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-flash-latest"
+    const ai = new GoogleGenAI({
+      apiKey: process.env.GEMINI_API_KEY!,
     });
 
     const prompt = `
-    You are a helpful ecommerce assistant.
+You are an ecommerce assistant.
 
-    Products:
-    ${JSON.stringify(products || [])}
+Products:
+${JSON.stringify(products || [])}
 
-    User: ${userQuery}
-    `;
+User: ${userQuery}
+`;
 
-    const result = await model.generateContent(prompt);
+    const result = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: prompt,
+    });
 
-    const text = result.response.text();
+    const text = result.text;
 
     res.status(200).json({ answer: text });
 
@@ -39,5 +32,4 @@ export const handleAIQuery = async (req: Request, res: Response) => {
     res.status(500).json({ message: error.message });
   }
 };
-
 
