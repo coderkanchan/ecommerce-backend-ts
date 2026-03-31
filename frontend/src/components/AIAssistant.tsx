@@ -12,6 +12,7 @@ const AIAssistant = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { answer, loading } = useSelector((state: RootState) => state.ai);
+
   const products = useSelector((state: RootState) => state.products.products);
 
   const handleSearch = () => {
@@ -49,17 +50,6 @@ const AIAssistant = () => {
                 Processing your request...
               </div>
             )}
-            {/* {answer ? (
-              <div className="self-start bg-blue-100 text-gray-800 p-3 rounded-lg rounded-tl-none border border-blue-200 text-sm max-w-[90%]">
-                {answer}
-              </div>
-            ) : (
-              !loading && (
-                <p className="text-gray-500 text-sm text-center mt-10 italic">
-                  Hi! Main NexusMart Assistant hoon. Main aapki kya madad kar sakta hoon?
-                </p>
-              )
-            )} */}
 
             {messages.map((msg, index) => (
               <div

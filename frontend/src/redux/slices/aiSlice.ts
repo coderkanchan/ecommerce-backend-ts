@@ -61,10 +61,6 @@ const aiSlice = createSlice({
         state.loading = false;
         state.answer = action.payload;
       })
-      // .addCase(askNexusAssistant.rejected, (state, action) => {
-      //   state.loading = false;
-      //   state.error = "AI assistant is busy, try again!";
-      // });
       .addCase(askNexusAssistant.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "AI error";
