@@ -8,6 +8,7 @@ import { MessageCircle, X, Send, Sparkles } from 'lucide-react';
 const AIAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const [messages, setMessages] = useState<{ text: string, sender: 'user' | 'ai' }[]>([]);
   const dispatch = useDispatch<AppDispatch>();
 
   const { answer, loading } = useSelector((state: RootState) => state.ai);
@@ -15,15 +16,23 @@ const AIAssistant = () => {
 
   const handleSearch = () => {
     if (query.trim() && !loading) {
-      dispatch(askNexusAssistant({ userQuery: query, products }));
+
+      setMessages(prev => [...prev, { text: query, sender: 'user' }]);
+
+      dispatch(askNexusAssistant({ userQuery: query, products }))
+        .unwrap()
+        .then((res) => {
+          setMessages(prev => [...prev, { text: res, sender: 'ai' }]);
+        });
+
       setQuery('');
     }
   };
-
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
       {isOpen && (
         <div className="mb-4 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden transition-all duration-300">
+
           <div className="bg-blue-600 p-4 text-white flex justify-between items-center">
             <div className="flex items-center gap-2">
               <Sparkles size={20} />
@@ -40,7 +49,7 @@ const AIAssistant = () => {
                 Processing your request...
               </div>
             )}
-            {answer ? (
+            {/* {answer ? (
               <div className="self-start bg-blue-100 text-gray-800 p-3 rounded-lg rounded-tl-none border border-blue-200 text-sm max-w-[90%]">
                 {answer}
               </div>
@@ -50,7 +59,19 @@ const AIAssistant = () => {
                   Hi! Main NexusMart Assistant hoon. Main aapki kya madad kar sakta hoon?
                 </p>
               )
-            )}
+            )} */}
+
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`p-2 rounded-lg text-sm max-w-[80%] ${msg.sender === 'user'
+                    ? 'self-end bg-blue-600 text-white'
+                    : 'self-start bg-gray-200 text-black'
+                  }`}
+              >
+                {msg.text}
+              </div>
+            ))}
 
             {loading && (
               <div className="flex items-center gap-2 text-blue-600 animate-pulse bg-blue-50 p-2 rounded-lg w-fit">
