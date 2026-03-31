@@ -4,6 +4,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 export const handleAIQuery = async (req: Request, res: Response) => {
   try {
     const { userQuery, products } = req.body;
+    console.log("RECV:", userQuery);
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
