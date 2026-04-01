@@ -1,8 +1,13 @@
 import { Request, Response } from "express";
-
 export const handleAIQuery = async (req: Request, res: Response) => {
   try {
-    const { message } = req.body;
+    console.log("REQ BODY:", req.body);
+
+    const message = req.body.message || req.body.query;
+
+    if (!message) {
+      return res.status(400).json({ message: "Message is required" });
+    }
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -11,7 +16,7 @@ export const handleAIQuery = async (req: Request, res: Response) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "llama3-8b-8192", // ✅ FREE + WORKING
+        model: "llama3-8b-8192",
         messages: [
           {
             role: "user",
