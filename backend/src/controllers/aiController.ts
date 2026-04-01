@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
+
 export const handleAIQuery = async (req: Request, res: Response) => {
   try {
     console.log("REQ BODY:", req.body);
 
-    const message = req.body.message || req.body.query;
+    const message = req.body.userQuery || req.body.message || req.body.query;
 
     if (!message) {
       return res.status(400).json({ message: "Message is required" });
@@ -30,8 +31,10 @@ export const handleAIQuery = async (req: Request, res: Response) => {
 
     console.log("AI RESPONSE:", data);
 
-    res.json({
-      answer: data.choices?.[0]?.message?.content || "No response",
+    const aiText = data?.choices?.[0]?.message?.content;
+
+    res.status(200).json({
+      answer: aiText || "No response from AI",
     });
 
   } catch (error) {

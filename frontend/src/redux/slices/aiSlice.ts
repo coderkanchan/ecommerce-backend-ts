@@ -35,11 +35,12 @@ export const askNexusAssistant = createAsyncThunk(
       }),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error(data.message || 'Something went wrong');
     }
 
-    const data = await response.json();
     return data.answer;
   }
 );
@@ -65,7 +66,7 @@ const aiSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "AI error";
       });
-},
+  },
 });
 
 export const { clearAI } = aiSlice.actions;
