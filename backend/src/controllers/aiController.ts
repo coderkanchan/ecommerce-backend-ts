@@ -1,35 +1,36 @@
-import { GoogleGenAI } from "@google/genai";
 import { Request, Response } from "express";
 
 export const handleAIQuery = async (req: Request, res: Response) => {
   try {
-    const { userQuery, products } = req.body;
+    const { message } = req.body;
 
-    const ai = new GoogleGenAI({
-      apiKey: process.env.GEMINI_API_KEY!,
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "llama3-8b-8192", // ✅ FREE + WORKING
+        messages: [
+          {
+            role: "user",
+            content: message,
+          },
+        ],
+      }),
     });
 
-    const prompt = `
-You are an ecommerce assistant.
+    const data = await response.json();
 
-Products:
-${JSON.stringify(products || [])}
+    console.log("AI RESPONSE:", data);
 
-User: ${userQuery}
-`;
-
-    const result = await ai.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: prompt,
+    res.json({
+      answer: data.choices?.[0]?.message?.content || "No response",
     });
 
-    const text = result.text;
-
-    res.status(200).json({ answer: text });
-
-  } catch (error: any) {
+  } catch (error) {
     console.error("❌ AI ERROR:", error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "AI error" });
   }
 };
-
