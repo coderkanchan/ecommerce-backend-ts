@@ -20,6 +20,10 @@ export const handleAIQuery = async (req: Request, res: Response) => {
         model: "llama-3.1-8b-instant",
         messages: [
           {
+            role: "system",
+            content: `You are an AI shopping assistant. Help users find products from this list: ${JSON.stringify(req.body.products)}`
+          },
+          {
             role: "user",
             content: message,
           },
