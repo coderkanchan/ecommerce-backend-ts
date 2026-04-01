@@ -17,7 +17,7 @@ export const handleAIQuery = async (req: Request, res: Response) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "llama3-8b-8192",
+        model: "llama-3.1-8b-instant",
         messages: [
           {
             role: "user",
@@ -36,7 +36,7 @@ export const handleAIQuery = async (req: Request, res: Response) => {
     res.status(200).json({
       answer: aiText || "No response from AI",
     });
-
+    console.log("AI TEXT:", aiText);
   } catch (error) {
     console.error("❌ AI ERROR:", error);
     res.status(500).json({ message: "AI error" });
