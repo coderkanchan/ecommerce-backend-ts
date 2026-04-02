@@ -42,7 +42,7 @@ export const askNexusAssistant = createAsyncThunk(
       throw new Error(data.message || 'Something went wrong');
     }
 
-    return data.answer;
+    return data;
   }
 );
 const aiSlice = createSlice({

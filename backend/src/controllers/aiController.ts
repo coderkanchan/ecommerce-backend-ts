@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { Chat } from "../models/Chat.js";
+import { Chat } from "../models/Chat.js"; 
 
 export const handleAIQuery = async (req: Request, res: Response) => {
   try {
-    const message = req.body.userQuery || req.body.message || req.body.query;
-    const userId = req.body.userId || "demoUser";
+    const message = req.body.userQuery;
+    const products = req.body.products || [];
 
     if (!message) {
       return res.status(400).json({ message: "Message is required" });
@@ -13,7 +13,7 @@ export const handleAIQuery = async (req: Request, res: Response) => {
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -21,11 +21,32 @@ export const handleAIQuery = async (req: Request, res: Response) => {
         messages: [
           {
             role: "system",
-            content:
-              `You are a smart AI shopping assistant. You MUST respond in JSON format only. If user wants to add product: { "action": "add_to_cart",  "productName": "product name" }
-            If user wants recommendation:{ "action": "recommend", "category": "category name" } 
-            If normal question: { "action": "chat", "message": "your answer" }
-             Available products: ${JSON.stringify(req.body.products)}`
+            content: `
+You are a smart AI shopping assistant.
+
+You MUST respond in JSON format only.
+
+If user wants to add product:
+{
+  "action": "add_to_cart",
+  "productName": "product name"
+}
+
+If user wants recommendation:
+{
+  "action": "recommend",
+  "category": "category name"
+}
+
+If normal question:
+{
+  "action": "chat",
+  "message": "your answer"
+}
+
+Available products:
+${JSON.stringify(products)}
+            `,
           },
           {
             role: "user",
@@ -36,28 +57,33 @@ export const handleAIQuery = async (req: Request, res: Response) => {
     });
 
     const data = await response.json();
-    const aiText = data?.choices?.[0]?.message?.content || "No response";
+    const aiText = data?.choices?.[0]?.message?.content;
 
-    let chat = await Chat.findOne({ userId });
+    let parsed;
 
-    if (!chat) {
-      chat = new Chat({
-        userId,
-        messages: [],
-      });
+    try {
+      parsed = JSON.parse(aiText);
+    } catch {
+      parsed = { action: "chat", message: aiText };
     }
 
-    chat.messages.push(
-      { role: "user", content: message },
-      { role: "ai", content: aiText }
+    await Chat.findOneAndUpdate(
+      { user: "demoUser" },
+      {
+        $push: {
+          messages: [
+            { role: "user", content: message },
+            { role: "ai", content: parsed.message || aiText },
+          ],
+        },
+      },
+      { upsert: true }
     );
 
-    await chat.save();
-
-    res.status(200).json({ answer: aiText });
+    return res.json(parsed);
 
   } catch (error) {
-    console.error("AI ERROR:", error);
+    console.error("❌ AI ERROR:", error);
     res.status(500).json({ message: "AI error" });
   }
 };

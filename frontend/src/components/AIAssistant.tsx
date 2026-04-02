@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { askNexusAssistant } from '../redux/slices/aiSlice';
 import { RootState, AppDispatch } from '../redux/store';
 import { MessageCircle, X, Send, Sparkles } from 'lucide-react';
+import { addToCart } from '../redux/slices/cartSlice';
 
 const AIAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +24,34 @@ const AIAssistant = () => {
       dispatch(askNexusAssistant({ userQuery: query, products }))
         .unwrap()
         .then((res) => {
-          setMessages(prev => [...prev, { text: res, sender: 'ai' }]);
+
+          if (res.action === "add_to_cart") {
+
+            const product = products.find(p =>
+              p.name.toLowerCase().includes(res.productName.toLowerCase())
+            );
+
+            if (product) {
+              dispatch(addToCart(product));
+
+              setMessages(prev => [...prev, {
+                text: `${product.name} added to cart 🛒`,
+                sender: 'ai'
+              }]);
+            } else {
+              setMessages(prev => [...prev, {
+                text: "Product not found 😅",
+                sender: 'ai'
+              }]);
+            }
+
+          } else {
+            setMessages(prev => [...prev, {
+              text: res.message || res.answer,
+              sender: 'ai'
+            }]);
+          }
+
         });
 
       setQuery('');
