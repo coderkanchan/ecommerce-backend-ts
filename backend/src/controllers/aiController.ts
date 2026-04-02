@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { Chat } from "../models/Chat.js";
 
 export const handleAIQuery = async (req: Request, res: Response) => {
   try {
@@ -9,6 +10,20 @@ export const handleAIQuery = async (req: Request, res: Response) => {
     if (!message) {
       return res.status(400).json({ message: "Message is required" });
     }
+
+    let chat = await Chat.findOne({ user: "demoUser" });
+
+    if (!chat) {
+      chat = new Chat({
+        user: "demoUser",
+        messages: [],
+      });
+    }
+
+    chat.messages.push({
+      role: "user",
+      content: message,
+    });
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -37,10 +52,19 @@ export const handleAIQuery = async (req: Request, res: Response) => {
 
     const aiText = data?.choices?.[0]?.message?.content;
 
+    chat.messages.push({
+      role: "ai",
+      content: aiText || "No response",
+    });
+
+    await chat.save();
+
     res.status(200).json({
       answer: aiText || "No response from AI",
     });
+
     console.log("AI TEXT:", aiText);
+
   } catch (error) {
     console.error("❌ AI ERROR:", error);
     res.status(500).json({ message: "AI error" });
