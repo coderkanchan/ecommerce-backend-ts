@@ -18,18 +18,17 @@ const messageSchema = new Schema<IMessage>(
   { _id: false }
 );
 
-const chatSchema = new Schema<IChat>(
-  {
-    user: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-    },
-    messages: [messageSchema],
-  },
-  {
-    timestamps: true,
-  }
-);
+const chatSchema = new Schema({
+  userId: { type: String, required: true },
 
-export const Chat = model<IChat>('Chat', chatSchema);
+  messages: [
+    {
+      role: { type: String, enum: ["user", "ai"] },
+      content: String,
+    },
+  ],
+}, { timestamps: true });
+
+export const Chat = model("Chat", chatSchema);
+
+

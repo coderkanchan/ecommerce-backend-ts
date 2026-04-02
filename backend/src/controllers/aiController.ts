@@ -39,7 +39,7 @@ export const handleAIQuery = async (req: Request, res: Response) => {
     if (!chat) {
       chat = new Chat({
         userId,
-        messages: []
+        messages: [],
       });
     }
 
