@@ -38,3 +38,15 @@ export const getChat = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error fetching chat" });
   }
 };
+
+export const clearChat = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+
+    await Chat.findOneAndDelete({ user: userId });
+
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ message: "Error clearing chat" });
+  }
+};

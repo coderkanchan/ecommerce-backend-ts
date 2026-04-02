@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { askNexusAssistant } from '../redux/slices/aiSlice';
 import { RootState, AppDispatch } from '../redux/store';
@@ -10,10 +11,9 @@ const AIAssistant = () => {
   const [query, setQuery] = useState('');
   const [messages, setMessages] = useState<{ text: string, sender: 'user' | 'ai' }[]>([]);
   const dispatch = useDispatch<AppDispatch>();
-
   const { answer, loading } = useSelector((state: RootState) => state.ai);
-
   const products = useSelector((state: RootState) => state.products.products);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
 
   const handleSearch = () => {
     if (query.trim() && !loading) {
@@ -43,6 +43,10 @@ const AIAssistant = () => {
       });
   }, []);
 
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
       {isOpen && (
@@ -57,6 +61,18 @@ const AIAssistant = () => {
               <X size={20} />
             </button>
           </div>
+
+          <button
+            onClick={async () => {
+              await fetch("http://localhost:5000/api/chat/demoUser", {
+                method: "DELETE",
+              });
+              setMessages([]);
+            }}
+            className="text-xs bg-red-500 text-white px-2 py-1 rounded"
+          >
+            Clear
+          </button>
 
           <div className="h-80 overflow-y-auto p-4 bg-gray-50 flex flex-col gap-3">
             {loading && (
@@ -115,6 +131,7 @@ const AIAssistant = () => {
       >
         {isOpen ? <X size={28} /> : <MessageCircle size={28} />}
       </button>
+      <div ref={bottomRef}></div>
     </div>
   );
 };
