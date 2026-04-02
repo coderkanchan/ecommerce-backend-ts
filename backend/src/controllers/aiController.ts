@@ -21,7 +21,11 @@ export const handleAIQuery = async (req: Request, res: Response) => {
         messages: [
           {
             role: "system",
-            content: `You are an AI shopping assistant. Products: ${JSON.stringify(req.body.products)}`
+            content:
+              `You are a smart AI shopping assistant. You MUST respond in JSON format only. If user wants to add product: { "action": "add_to_cart",  "productName": "product name" }
+            If user wants recommendation:{ "action": "recommend", "category": "category name" } 
+            If normal question: { "action": "chat", "message": "your answer" }
+             Available products: ${JSON.stringify(req.body.products)}`
           },
           {
             role: "user",
