@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { askNexusAssistant } from '../redux/slices/aiSlice';
 import { RootState, AppDispatch } from '../redux/store';
@@ -29,6 +29,20 @@ const AIAssistant = () => {
       setQuery('');
     }
   };
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/chat/demoUser")
+      .then(res => res.json())
+      .then(data => {
+        if (data.messages) {
+          setMessages(data.messages.map((m: any) => ({
+            text: m.content,
+            sender: m.role
+          })));
+        }
+      });
+  }, []);
+
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
       {isOpen && (
@@ -55,8 +69,8 @@ const AIAssistant = () => {
               <div
                 key={index}
                 className={`p-2 rounded-lg text-sm max-w-[80%] ${msg.sender === 'user'
-                    ? 'self-end bg-blue-600 text-white'
-                    : 'self-start bg-gray-200 text-black'
+                  ? 'self-end bg-blue-600 text-white'
+                  : 'self-start bg-gray-200 text-black'
                   }`}
               >
                 {msg.text}
