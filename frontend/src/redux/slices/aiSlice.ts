@@ -32,6 +32,7 @@ export const askNexusAssistant = createAsyncThunk(
       body: JSON.stringify({
         userQuery,
         products: optimizedProducts
+        userId: "demoUser"
       }),
     });
 

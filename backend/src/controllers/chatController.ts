@@ -28,24 +28,23 @@ export const saveMessage = async (req: Request, res: Response) => {
 
 export const getChat = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
+    const chat = await Chat.findOne({ userId: req.params.userId });
 
-    const chat = await Chat.findOne({ user: userId });
+    if (!chat) {
+      return res.status(200).json({ messages: [] });
+    }
 
-    res.json(chat || { messages: [] });
-
+    res.json(chat);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Error fetching chat" });
   }
 };
 
 export const clearChat = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
-
-    await Chat.findOneAndDelete({ user: userId });
-
-    res.json({ success: true });
+    await Chat.findOneAndDelete({ userId: req.params.userId });
+    res.json({ message: "Chat cleared" });
   } catch (error) {
     res.status(500).json({ message: "Error clearing chat" });
   }
