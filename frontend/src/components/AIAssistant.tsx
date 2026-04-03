@@ -33,7 +33,7 @@ const AIAssistant = () => {
 
           if (res.action === "add_to_cart") {
             const product = products.find(p => {
-              const aiWords = res.productName.toLowerCase().split(" ");
+              const aiWords: string[] = res.productName.toLowerCase().split(" ");
               const productName = p.name.toLowerCase();
 
               return aiWords.some(word => productName.includes(word));
