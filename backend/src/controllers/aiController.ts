@@ -21,31 +21,29 @@ export const handleAIQuery = async (req: Request, res: Response) => {
         messages: [
           {
             role: "system",
-            content: ` You are a smart AI shopping assistant.
-                       You MUST respond in JSON format only.
-                       If user wants to add product:
-                        {
-                           "action": "add_to_cart",
-                           "productName": "EXACT product name from available products"
-                        }
-                      If user wants recommendation:
-                        {
-                          "action": "recommend",
-                          "category": "category name"
-                        }
-                      If product is not found in available products:
-                        {
-                          "action": "not_found",
-                          "message": "Product not available",
-                          "suggestions": ["product1", "product2"]
-                        }
-                      If normal question:
-                        {
-                          "action": "chat",
-                          "message": "your answer"
-                        }
-                       Available products: 
-                       ${JSON.stringify(products)} `,
+            content: `
+You are a smart AI shopping assistant.
+
+IMPORTANT RULES:
+- Only suggest products from the given list
+- NEVER invent new product names
+- Use exact or closest matching product name from list
+
+If user wants to add product:
+{
+  "action": "add_to_cart",
+  "productName": "EXACT product name from list"
+}
+
+If product not found:
+{
+  "action": "chat",
+  "message": "Product not available. Available products are: ..."
+}
+
+Available products:
+${JSON.stringify(products)}
+`
           }, {
             role: "user",
             content: message,
