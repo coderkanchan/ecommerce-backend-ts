@@ -69,7 +69,7 @@ export const handleAIQuery = async (req: Request, res: Response) => {
     }
 
     await Chat.findOneAndUpdate(
-      { user: "demoUser" },
+      { userId: "demoUser" },
       {
         $push: {
           messages: [
