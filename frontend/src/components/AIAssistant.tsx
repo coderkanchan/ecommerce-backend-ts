@@ -27,19 +27,16 @@ const AIAssistant = () => {
       dispatch(askNexusAssistant({ userQuery: userMessage, products }))
         .unwrap()
         .then((res) => {
-          
+
           console.log("AI Response:", res);
           console.log("Available products:", products);
 
           if (res.action === "add_to_cart") {
             const product = products.find(p => {
-              const aiName = res.productName.toLowerCase();
+              const aiWords = res.productName.toLowerCase().split(" ");
+              const productName = p.name.toLowerCase();
 
-              return (
-                p.name.toLowerCase().includes(aiName) ||
-                aiName.includes(p.name.toLowerCase()) ||
-                p.category.toLowerCase().includes(aiName)
-              );
+              return aiWords.some(word => productName.includes(word));
             });
 
             if (product) {
