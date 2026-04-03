@@ -26,8 +26,8 @@ export const handleAIQuery = async (req: Request, res: Response) => {
                        If user wants to add product:
                         {
                            "action": "add_to_cart",
-                           "productName": "product name"
-                         }
+                           "productName": "EXACT product name from available products"
+                        }
                       If user wants recommendation:
                         {
                           "action": "recommend",
@@ -80,9 +80,7 @@ export const handleAIQuery = async (req: Request, res: Response) => {
       },
       { upsert: true }
     );
-
     return res.json(parsed);
-
   } catch (error) {
     console.error("❌ AI ERROR:", error);
     res.status(500).json({ message: "AI error" });

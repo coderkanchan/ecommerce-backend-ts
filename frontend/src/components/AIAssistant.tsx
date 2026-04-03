@@ -29,9 +29,15 @@ const AIAssistant = () => {
         .then((res) => {
 
           if (res.action === "add_to_cart") {
-            const product = products.find(p =>
-              p.name.toLowerCase().includes(res.productName?.toLowerCase())
-            );
+            const product = products.find(p => {
+              const aiName = res.productName.toLowerCase();
+
+              return (
+                p.name.toLowerCase().includes(aiName) ||
+                aiName.includes(p.name.toLowerCase()) ||
+                p.category.toLowerCase().includes(aiName)
+              );
+            });
 
             if (product) {
               dispatch(addToCart(product));
@@ -134,8 +140,8 @@ const AIAssistant = () => {
               <div
                 key={index}
                 className={`p-2 rounded-lg text-sm max-w-[80%] ${msg.sender === 'user'
-                    ? 'self-end bg-blue-600 text-white'
-                    : 'self-start bg-gray-200 text-black'
+                  ? 'self-end bg-blue-600 text-white'
+                  : 'self-start bg-gray-200 text-black'
                   }`}
               >
                 {msg.text}
