@@ -27,6 +27,9 @@ const AIAssistant = () => {
       dispatch(askNexusAssistant({ userQuery: userMessage, products }))
         .unwrap()
         .then((res) => {
+          
+          console.log("AI Response:", res);
+          console.log("Available products:", products);
 
           if (res.action === "add_to_cart") {
             const product = products.find(p => {
