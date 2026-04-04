@@ -9,10 +9,8 @@ export const handleAIQuery = async (req: Request, res: Response) => {
     if (!message) {
       return res.status(400).json({ message: "Message is required" });
     }
-
+    
     const products = await Product.find().select("name category price");
-
-    const productNames = products.map(p => p.name).join(", ");
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -47,7 +45,7 @@ If not found:
 }
 
 Available products:
-${productNames}
+${JSON.stringify(products)}
 `
           },
           {
@@ -65,6 +63,9 @@ ${productNames}
 
     try {
       parsed = JSON.parse(aiText);
+      if (!parsed.action) {
+        parsed = { action: "chat", message: aiText };
+      }
     } catch {
       parsed = { action: "chat", message: aiText };
     }
