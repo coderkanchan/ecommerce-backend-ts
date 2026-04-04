@@ -6,7 +6,7 @@ import Pagination from '@/components/Pagination';
 import { useSearchParams, useRouter } from 'next/navigation';
 import ProductSkeleton from '@/components/ProductSkeleton';
 import { QUICK_FILTERS } from '@/constants/categoryData';
-
+import { AppDispatch } from '@/redux/store';
 import { useDispatch } from 'react-redux';
 import { fetchProducts } from '@/redux/slices/productSlice';
 
@@ -14,7 +14,7 @@ function HomeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
