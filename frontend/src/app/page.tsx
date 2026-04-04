@@ -3,17 +3,19 @@ import { useEffect, useState, Suspense } from 'react';
 import API from '@/services/api';
 import ProductCard from '@/components/ProductCard';
 import Pagination from '@/components/Pagination';
-import { useSearchParams } from 'next/navigation';
-import { useRouter } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import ProductSkeleton from '@/components/ProductSkeleton';
 import { QUICK_FILTERS } from '@/constants/categoryData';
-import { useDispatch } from "react-redux";
-import { fetchProducts } from "@/redux/slices/productSlice";
+
+import { useDispatch } from 'react-redux';
+import { fetchProducts } from '@/redux/slices/productSlice';
 
 function HomeContent() {
   const router = useRouter();
-  const dispatch = useDispatch();
   const searchParams = useSearchParams();
+
+  const dispatch = useDispatch();
+
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [products, setProducts] = useState([]);
@@ -24,10 +26,12 @@ function HomeContent() {
   const pageNumber = searchParams.get('pageNumber') || '1';
 
   useEffect(() => {
+    dispatch(fetchProducts());
+
     const getProducts = async () => {
       try {
         setLoading(true);
-        const { data } = await API.get(`/products/all?keyword=${keyword}&category=${category}&pageNumber=${pageNumber}`)
+        const { data } = await API.get(`/products/all?keyword=${keyword}&category=${category}&pageNumber=${pageNumber}`);
         setProducts(data.products);
         setPages(data.pages);
         setPage(data.page);
@@ -37,12 +41,9 @@ function HomeContent() {
         setLoading(false);
       }
     };
-    getProducts();
-  }, [keyword, category, pageNumber]);
 
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, []);
+    getProducts();
+  }, [keyword, category, pageNumber, dispatch]);
 
   return (
     <main className="container mx-auto p-4 min-h-screen">

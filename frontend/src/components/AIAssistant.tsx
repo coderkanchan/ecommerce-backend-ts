@@ -16,19 +16,11 @@ const AIAssistant = () => {
   const products = useSelector((state: RootState) => state.products.products);
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
-  
-  if (!products || products.length === 0) {
-    setMessages(prev => [...prev, {
-      text: "Products loading ho rahe hain... thoda wait karo 😅",
-      sender: "ai"
-    }]);
-    return;
-  }
+
   const handleSearch = () => {
     if (query.trim() && !loading) {
 
       const userMessage = query;
-
       setMessages(prev => [...prev, { text: userMessage, sender: 'user' }]);
 
       dispatch(askNexusAssistant({ userQuery: userMessage, products }))
@@ -36,13 +28,18 @@ const AIAssistant = () => {
         .then((res) => {
 
           console.log("AI Response:", res);
-          console.log("Available products:", products);
-          if (res.action === "add_to_cart") {
-            const aiName = res.productName.toLowerCase();
+          console.log("Redux products:", products);
 
-            const product = products.find(p =>
-              p.name.toLowerCase().includes(aiName)
-            );
+          if (res.action === "add_to_cart") {
+            const product = products.find(p => {
+              const ai = res.productName.toLowerCase();
+              const name = p.name.toLowerCase();
+
+              return (
+                name.includes(ai) ||
+                ai.includes(name)
+              );
+            });
 
             if (product) {
               dispatch(addToCart(product));
@@ -145,8 +142,8 @@ const AIAssistant = () => {
               <div
                 key={index}
                 className={`p-2 rounded-lg text-sm max-w-[80%] ${msg.sender === 'user'
-                  ? 'self-end bg-blue-600 text-white'
-                  : 'self-start bg-gray-200 text-black'
+                    ? 'self-end bg-blue-600 text-white'
+                    : 'self-start bg-gray-200 text-black'
                   }`}
               >
                 {msg.text}
@@ -155,11 +152,6 @@ const AIAssistant = () => {
 
             {loading && (
               <div className="flex items-center gap-2 text-blue-600 animate-pulse bg-blue-50 p-2 rounded-lg w-fit">
-                <div className="flex gap-1">
-                  <span className="w-1.5 h-1.5 bg-blue-600 rounded-full animate-bounce"></span>
-                  <span className="w-1.5 h-1.5 bg-blue-600 rounded-full animate-bounce [animation-delay:0.2s]"></span>
-                  <span className="w-1.5 h-1.5 bg-blue-600 rounded-full animate-bounce [animation-delay:0.4s]"></span>
-                </div>
                 <span className="text-xs font-medium">Nexus is thinking...</span>
               </div>
             )}
