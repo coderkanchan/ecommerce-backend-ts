@@ -7,9 +7,12 @@ import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import ProductSkeleton from '@/components/ProductSkeleton';
 import { QUICK_FILTERS } from '@/constants/categoryData';
+import { useDispatch } from "react-redux";
+import { fetchProducts } from "@/redux/slices/productSlice";
 
 function HomeContent() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
@@ -35,7 +38,11 @@ function HomeContent() {
       }
     };
     getProducts();
-  }, [keyword, category, pageNumber]); 
+  }, [keyword, category, pageNumber]);
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, []);
 
   return (
     <main className="container mx-auto p-4 min-h-screen">
