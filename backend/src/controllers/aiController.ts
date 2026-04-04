@@ -9,8 +9,10 @@ export const handleAIQuery = async (req: Request, res: Response) => {
     if (!message) {
       return res.status(400).json({ message: "Message is required" });
     }
-    
+
     const products = await Product.find().select("name category price");
+
+    const productNames = products.map(p => p.name);
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -27,25 +29,28 @@ export const handleAIQuery = async (req: Request, res: Response) => {
 You are a smart AI shopping assistant.
 
 STRICT RULES:
-- Only use products from list
-- Never create new product names
-- Always return exact match from list
+- ONLY return valid JSON
+- DO NOT write any extra text
+- DO NOT explain anything
+- ONLY use given products
 
 If user wants to add product:
+Return ONLY:
 {
   "action": "add_to_cart",
-  "productName": "EXACT NAME FROM LIST"
+  "productName": "EXACT NAME"
 }
 
-If not found:
+If product not found:
+Return ONLY:
 {
   "action": "not_found",
   "message": "Product not available",
-  "suggestions": ["product1", "product2"]
+  "suggestions": ["${productNames.slice(0, 3).join('","')}"]
 }
 
 Available products:
-${JSON.stringify(products)}
+${productNames.join(", ")}
 `
           },
           {
@@ -57,15 +62,13 @@ ${JSON.stringify(products)}
     });
 
     const data = await response.json();
-    const aiText = data?.choices?.[0]?.message?.content;
+    let aiText = data?.choices?.[0]?.message?.content;
+
+    aiText = aiText.replace(/```json|```/g, "").trim();
 
     let parsed;
-
     try {
       parsed = JSON.parse(aiText);
-      if (!parsed.action) {
-        parsed = { action: "chat", message: aiText };
-      }
     } catch {
       parsed = { action: "chat", message: aiText };
     }
