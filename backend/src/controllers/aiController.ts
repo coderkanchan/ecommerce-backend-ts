@@ -1,10 +1,12 @@
 import { Request, Response } from "express";
 import { Chat } from "../models/Chat.js";
+import { Product } from "../models/Product.js";
+
 
 export const handleAIQuery = async (req: Request, res: Response) => {
   try {
     const message = req.body.userQuery;
-    const products = req.body.products || [];
+    const products = await Product.find().select("name category price");
 
     if (!message) {
       return res.status(400).json({ message: "Message is required" });
