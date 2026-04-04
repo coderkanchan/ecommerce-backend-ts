@@ -16,7 +16,14 @@ const AIAssistant = () => {
   const products = useSelector((state: RootState) => state.products.products);
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
-
+  
+  if (!products || products.length === 0) {
+    setMessages(prev => [...prev, {
+      text: "Products loading ho rahe hain... thoda wait karo 😅",
+      sender: "ai"
+    }]);
+    return;
+  }
   const handleSearch = () => {
     if (query.trim() && !loading) {
 
@@ -30,14 +37,12 @@ const AIAssistant = () => {
 
           console.log("AI Response:", res);
           console.log("Available products:", products);
-
           if (res.action === "add_to_cart") {
-            const product = products.find(p => {
-              const aiWords: string[] = res.productName.toLowerCase().split(" ");
-              const productName = p.name.toLowerCase();
+            const aiName = res.productName.toLowerCase();
 
-              return aiWords.some(word => productName.includes(word));
-            });
+            const product = products.find(p =>
+              p.name.toLowerCase().includes(aiName)
+            );
 
             if (product) {
               dispatch(addToCart(product));

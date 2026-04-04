@@ -2,15 +2,17 @@ import { Request, Response } from "express";
 import { Chat } from "../models/Chat.js";
 import { Product } from "../models/Product.js";
 
-
 export const handleAIQuery = async (req: Request, res: Response) => {
   try {
     const message = req.body.userQuery;
-    const products = await Product.find().select("name category price");
 
     if (!message) {
       return res.status(400).json({ message: "Message is required" });
     }
+
+    const products = await Product.find().select("name category price");
+
+    const productNames = products.map(p => p.name).join(", ");
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -27,9 +29,9 @@ export const handleAIQuery = async (req: Request, res: Response) => {
 You are a smart AI shopping assistant.
 
 STRICT RULES:
-- You MUST only use product names from the given list
-- NEVER create new names
-- ALWAYS return EXACT product name from list
+- Only use products from list
+- Never create new product names
+- Always return exact match from list
 
 If user wants to add product:
 {
@@ -37,7 +39,7 @@ If user wants to add product:
   "productName": "EXACT NAME FROM LIST"
 }
 
-If product not found:
+If not found:
 {
   "action": "not_found",
   "message": "Product not available",
@@ -45,9 +47,10 @@ If product not found:
 }
 
 Available products:
-${products.map((p: any) => p.name).join(", ")}
+${productNames}
 `
-          }, {
+          },
+          {
             role: "user",
             content: message,
           },
@@ -62,9 +65,6 @@ ${products.map((p: any) => p.name).join(", ")}
 
     try {
       parsed = JSON.parse(aiText);
-      if (!parsed.action) {
-        parsed = { action: "chat", message: aiText };
-      }
     } catch {
       parsed = { action: "chat", message: aiText };
     }
@@ -81,7 +81,9 @@ ${products.map((p: any) => p.name).join(", ")}
       },
       { upsert: true }
     );
+
     return res.json(parsed);
+
   } catch (error) {
     console.error("❌ AI ERROR:", error);
     res.status(500).json({ message: "AI error" });
