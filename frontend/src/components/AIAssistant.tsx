@@ -16,79 +16,77 @@ const AIAssistant = () => {
   const products = useSelector((state: RootState) => state.products.products);
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
-  
-  if (!products || products.length === 0) {
-    setMessages(prev => [...prev, {
-      text: "Products loading ho rahe hain... thoda wait karo 😅",
-      sender: "ai"
-    }]);
-    return;
-  }
+
   const handleSearch = () => {
-    if (query.trim() && !loading) {
+    if (!query.trim() || loading) return;
 
-      const userMessage = query;
+    const userMessage = query;
 
-      setMessages(prev => [...prev, { text: userMessage, sender: 'user' }]);
+    setMessages(prev => [...prev, { text: userMessage, sender: 'user' }]);
 
-      dispatch(askNexusAssistant({ userQuery: userMessage, products }))
-        .unwrap()
-        .then((res) => {
+    dispatch(askNexusAssistant({ userQuery: userMessage, products }))
+      .unwrap()
+      .then((res) => {
+        console.log("AI Response:", res);
+        console.log("Available products:", products);
 
-          console.log("AI Response:", res);
-          console.log("Available products:", products);
-          if (res.action === "add_to_cart") {
-            const aiName = res.productName.toLowerCase();
+        if (res.action === "add_to_cart") {
 
-            const product = products.find(p =>
-              p.name.toLowerCase().includes(aiName)
+          const product = products.find(p => {
+            const ai = res.productName.toLowerCase();
+            const name = p.name.toLowerCase();
+
+            return (
+              name.includes(ai) ||
+              ai.includes(name) ||
+              ai.split(" ").some((word: string) => name.includes(word))
             );
+          });
 
-            if (product) {
-              dispatch(addToCart(product));
-
-              setMessages(prev => [...prev, {
-                text: `${product.name} added to cart 🛒`,
-                sender: 'ai'
-              }]);
-            } else {
-              const suggestions = products.slice(0, 2);
-
-              setMessages(prev => [...prev, {
-                text: `Product not found 😅\nTry: ${suggestions.map(p => p.name).join(", ")}`,
-                sender: 'ai'
-              }]);
-            }
-          }
-
-          else if (res.action === "not_found") {
-            const suggestions = res.suggestions?.length
-              ? res.suggestions
-              : products.slice(0, 2).map(p => p.name);
+          if (product) {
+            dispatch(addToCart(product));
 
             setMessages(prev => [...prev, {
-              text: `${res.message}\nTry: ${suggestions.join(", ")}`,
+              text: `${product.name} added to cart 🛒`,
+              sender: 'ai'
+            }]);
+          } else {
+            const suggestions = products.slice(0, 2);
+
+            setMessages(prev => [...prev, {
+              text: `Product not found 😅\nTry: ${suggestions.map(p => p.name).join(", ")}`,
               sender: 'ai'
             }]);
           }
+        }
 
-          else {
-            setMessages(prev => [...prev, {
-              text: res.message || res.answer || "🤖 No response",
-              sender: 'ai'
-            }]);
-          }
+        else if (res.action === "not_found") {
+          const suggestions = res.suggestions?.length
+            ? res.suggestions
+            : products.slice(0, 2).map(p => p.name);
 
-        })
-        .catch(() => {
           setMessages(prev => [...prev, {
-            text: "Something went wrong 😅",
+            text: `${res.message}\nTry: ${suggestions.join(", ")}`,
             sender: 'ai'
           }]);
-        });
+        }
 
-      setQuery('');
-    }
+        else {
+          setMessages(prev => [...prev, {
+            text: res.message || res.answer || "🤖 No response",
+            sender: 'ai'
+          }]);
+        }
+
+      })
+      .catch(() => {
+        setMessages(prev => [...prev, {
+          text: "Something went wrong 😅",
+          sender: 'ai'
+        }]);
+      });
+
+    setQuery('');
   };
 
   useEffect(() => {
@@ -145,8 +143,8 @@ const AIAssistant = () => {
               <div
                 key={index}
                 className={`p-2 rounded-lg text-sm max-w-[80%] ${msg.sender === 'user'
-                  ? 'self-end bg-blue-600 text-white'
-                  : 'self-start bg-gray-200 text-black'
+                    ? 'self-end bg-blue-600 text-white'
+                    : 'self-start bg-gray-200 text-black'
                   }`}
               >
                 {msg.text}
@@ -191,7 +189,8 @@ const AIAssistant = () => {
 
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`${isOpen ? 'bg-red-500 rotate-90' : 'bg-blue-600 hover:scale-110'} text-white p-4 rounded-full shadow-xl transition-all duration-300`}
+        className={`${isOpen ? 'bg-red-500 rotate-90' : 'bg-blue-600 hover:scale-110'
+          } text-white p-4 rounded-full shadow-xl transition-all duration-300`}
       >
         {isOpen ? <X size={28} /> : <MessageCircle size={28} />}
       </button>
