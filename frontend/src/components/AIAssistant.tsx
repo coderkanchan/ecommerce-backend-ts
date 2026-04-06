@@ -34,6 +34,14 @@ const AIAssistant = () => {
             p => p.name.toLowerCase().trim() === res.productName.toLowerCase().trim()
           );
 
+          if (!product) {
+            setMessages(prev => [...prev, {
+              text: "❌ AI mismatch. Please try again.",
+              sender: 'ai'
+            }]);
+            return;
+          }
+
           if (product) {
             const productWithQty = {
               ...product,
