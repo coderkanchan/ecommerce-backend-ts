@@ -35,6 +35,8 @@ RULES:
 - ONLY use product names EXACTLY from the list
 - DO NOT modify names
 - DO NOT guess
+- productName MUST be EXACTLY one of the names from the list
+- do not change casing, spelling, or spacing
 
 If user wants to add product:
 {
