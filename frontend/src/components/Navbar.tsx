@@ -20,8 +20,10 @@ export default function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const router = useRouter();
 
-  const cartCount = cartItems.reduce((acc, item) => acc + (item.qty || 0), 0);
-
+  const cartCount = cartItems.reduce(
+    (acc, item) => acc + (item.qty || 0),
+    0
+  );
   const logoutHandler = () => {
     dispatch(logout());
     dispatch(clearCartItems());
