@@ -30,19 +30,11 @@ const AIAssistant = () => {
 
         if (res.action === "add_to_cart") {
 
-          const product = products.find(p => {
-            const ai = res.productName.toLowerCase();
-            const name = p.name.toLowerCase();
-
-            return (
-              name.includes(ai) ||
-              ai.includes(name) ||
-              ai.split(" ").some((word: string) => name.includes(word))
-            );
-          });
+          const product = products.find(
+            p => p.name.toLowerCase().trim() === res.productName.toLowerCase().trim()
+          );
 
           if (product) {
-
             const productWithQty = {
               ...product,
               qty: 1
@@ -143,8 +135,8 @@ const AIAssistant = () => {
             {messages.map((msg, index) => (
               <div key={index}
                 className={`p-2 rounded-lg text-sm max-w-[80%] ${msg.sender === 'user'
-                    ? 'self-end bg-blue-600 text-white'
-                    : 'self-start bg-gray-200 text-black'
+                  ? 'self-end bg-blue-600 text-white'
+                  : 'self-start bg-gray-200 text-black'
                   }`}>
                 {msg.text}
               </div>
@@ -155,13 +147,14 @@ const AIAssistant = () => {
           <div className="p-4 bg-white border-t flex gap-2">
             <input
               type="text"
-              className="flex-1 p-2 bg-gray-100 rounded-lg text-sm"
+              className="flex-1 p-2 bg-gray-100 rounded-lg border border-gray-500 outline-none focus:ring focus:ring-blue-700 focus:border-none text-sm text-gray-500"
               value={query}
+              placeholder='Ask anything'
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
             />
-            <button onClick={handleSearch}>
-              <Send size={18} />
+            <button onClick={handleSearch} className='text-blue-700'>
+              <Send size={20} />
             </button>
           </div>
         </div>
