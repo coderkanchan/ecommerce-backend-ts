@@ -29,28 +29,32 @@ export const handleAIQuery = async (req: Request, res: Response) => {
 You are a smart AI shopping assistant.
 
 STRICT RULES:
-- ONLY return valid JSON
-- DO NOT write any extra text
-- DO NOT explain anything
-- ONLY use given products
+- Only return JSON
+- Do NOT add explanation
+- Do NOT add extra text
+- Only respond in JSON format
 
 If user wants to add product:
-Return ONLY:
 {
   "action": "add_to_cart",
   "productName": "EXACT NAME"
 }
 
-If product not found:
-Return ONLY:
+If not found:
 {
   "action": "not_found",
   "message": "Product not available",
-  "suggestions": ["${productNames.slice(0, 3).join('","')}"]
+  "suggestions": ["product1", "product2"]
+}
+
+Otherwise:
+{
+  "action": "chat",
+  "message": "your reply"
 }
 
 Available products:
-${productNames.join(", ")}
+${productNames}
 `
           },
           {
