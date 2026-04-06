@@ -30,10 +30,12 @@ const AIAssistant = () => {
 
         if (res.action === "add_to_cart") {
 
-          const product = products.find(
-            p => p.name.toLowerCase().trim() === res.productName.toLowerCase().trim()
-          );
+          const normalize = (str: string) =>
+            str.toLowerCase().replace(/[^a-z0-9 ]/g, "").trim();
 
+          const product = products.find(
+            p => normalize(p.name) === normalize(res.productName)
+          );
           if (!product) {
             setMessages(prev => [...prev, {
               text: "❌ AI mismatch. Please try again.",
