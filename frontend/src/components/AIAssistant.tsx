@@ -44,6 +44,9 @@ const AIAssistant = () => {
             return;
           }
 
+          console.log("AI product:", res.productName);
+          console.log("Matched product:", product);
+
           if (product) {
             const productWithQty = {
               ...product,
