@@ -12,8 +12,8 @@ export const handleAIQuery = async (req: Request, res: Response) => {
 
     const products = await Product.find().select("name category price");
 
-    const productNames = products.map(p => p.name);
-
+    const productNames = JSON.stringify(products.map(p => p.name));
+    
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
