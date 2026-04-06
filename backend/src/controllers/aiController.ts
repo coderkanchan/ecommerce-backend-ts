@@ -13,7 +13,7 @@ export const handleAIQuery = async (req: Request, res: Response) => {
     const products = await Product.find().select("name category price");
 
     const productNames = JSON.stringify(products.map(p => p.name));
-    
+
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -26,18 +26,20 @@ export const handleAIQuery = async (req: Request, res: Response) => {
           {
             role: "system",
             content: `
-You are a smart AI shopping assistant.
+You are a strict AI shopping assistant.
 
-STRICT RULES:
-- Only return JSON
-- Do NOT add explanation
-- Do NOT add extra text
-- Only respond in JSON format
+RULES:
+- ONLY return JSON
+- DO NOT add explanation
+- DO NOT add extra text
+- ONLY use product names EXACTLY from the list
+- DO NOT modify names
+- DO NOT guess
 
 If user wants to add product:
 {
   "action": "add_to_cart",
-  "productName": "EXACT NAME"
+  "productName": "EXACT NAME FROM LIST"
 }
 
 If not found:
