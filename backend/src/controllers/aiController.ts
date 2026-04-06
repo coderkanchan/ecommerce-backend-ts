@@ -38,7 +38,17 @@ RULES:
 - productName MUST be EXACTLY one of the names from the list
 - do not change casing, spelling, or spacing
 
-If user wants to add product:
+If user says:
+- add
+- buy
+- purchase
+- cart
+- add to cart
+- le lo
+- chahiye
+- de do
+
+THEN ALWAYS return:
 {
   "action": "add_to_cart",
   "productName": "EXACT NAME FROM LIST"
@@ -70,7 +80,7 @@ ${productNames}
     });
 
     const data = await response.json();
-    
+
     let aiText = data?.choices?.[0]?.message?.content;
 
     aiText = aiText.replace(/```json|```/g, "").trim();
