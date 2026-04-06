@@ -70,6 +70,7 @@ ${productNames}
     });
 
     const data = await response.json();
+    
     let aiText = data?.choices?.[0]?.message?.content;
 
     aiText = aiText.replace(/```json|```/g, "").trim();
