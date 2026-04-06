@@ -68,11 +68,11 @@ ${productNames.join(", ")}
 
     let parsed;
     try {
-      parsed = JSON.parse(aiText);
+      const jsonMatch = aiText.match(/\{[\s\S]*\}/);
+      parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : { action: "chat", message: aiText };
     } catch {
       parsed = { action: "chat", message: aiText };
     }
-
     await Chat.findOneAndUpdate(
       { userId: "demoUser" },
       {
