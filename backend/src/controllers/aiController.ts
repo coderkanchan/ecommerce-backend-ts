@@ -98,17 +98,38 @@ ${productNames}
         $push: {
           messages: [
             { role: "user", content: message },
-            { role: "ai", content: parsed.message || aiText },
+            let aiMessageToSave = "";
+
+          if(parsed.action === "add_to_cart") {
+      aiMessageToSave = `${parsed.productName} added to cart 🛒`;
+    } else if (parsed.action === "not_found") {
+      aiMessageToSave = parsed.message;
+    } else {
+      aiMessageToSave = parsed.message || aiText;
+    }
+
+    await Chat.findOneAndUpdate(
+      { userId: "demoUser" },
+      {
+        $push: {
+          messages: [
+            { role: "user", content: message },
+            { role: "ai", content: aiMessageToSave },
           ],
         },
       },
       { upsert: true }
     );
+          ],
+        },
+      },
+{ upsert: true }
+    );
 
-    return res.json(parsed);
+return res.json(parsed);
 
   } catch (error) {
-    console.error("❌ AI ERROR:", error);
-    res.status(500).json({ message: "AI error" });
-  }
+  console.error("❌ AI ERROR:", error);
+  res.status(500).json({ message: "AI error" });
+}
 };
