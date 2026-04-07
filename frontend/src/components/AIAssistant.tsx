@@ -30,8 +30,11 @@ const AIAssistant = () => {
 
         if (res.action === "add_to_cart") {
 
+          const normalize = (str: string) =>
+            str.toLowerCase().trim();
+
           const product = products.find(
-            p => p.name === res.productName
+            p => normalize(p.name) === normalize(res.productName)
           );
           if (!product) {
             setMessages(prev => [...prev, {
