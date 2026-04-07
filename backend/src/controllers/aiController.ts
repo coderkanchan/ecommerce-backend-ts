@@ -31,24 +31,9 @@ You are a strict AI shopping assistant.
 RULES:
 - ONLY return JSON
 - DO NOT add explanation
-- DO NOT add extra text
 - ONLY use product names EXACTLY from the list
-- DO NOT modify names
-- DO NOT guess
-- productName MUST be EXACTLY one of the names from the list
-- do not change casing, spelling, or spacing
 
-If user says:
-- add
-- buy
-- purchase
-- cart
-- add to cart
-- le lo
-- chahiye
-- de do
-
-THEN ALWAYS return:
+If user wants to add product:
 {
   "action": "add_to_cart",
   "productName": "EXACT NAME FROM LIST"
@@ -81,7 +66,7 @@ ${productNames}
 
     const data = await response.json();
 
-    let aiText = data?.choices?.[0]?.message?.content;
+    let aiText = data?.choices?.[0]?.message?.content || "";
 
     aiText = aiText.replace(/```json|```/g, "").trim();
 
@@ -92,15 +77,10 @@ ${productNames}
     } catch {
       parsed = { action: "chat", message: aiText };
     }
-    await Chat.findOneAndUpdate(
-      { userId: "demoUser" },
-      {
-        $push: {
-          messages: [
-            { role: "user", content: message },
-            let aiMessageToSave = "";
 
-          if(parsed.action === "add_to_cart") {
+    let aiMessageToSave = "";
+
+    if (parsed.action === "add_to_cart") {
       aiMessageToSave = `${parsed.productName} added to cart 🛒`;
     } else if (parsed.action === "not_found") {
       aiMessageToSave = parsed.message;
@@ -120,16 +100,11 @@ ${productNames}
       },
       { upsert: true }
     );
-          ],
-        },
-      },
-{ upsert: true }
-    );
 
-return res.json(parsed);
+    return res.json(parsed);
 
   } catch (error) {
-  console.error("❌ AI ERROR:", error);
-  res.status(500).json({ message: "AI error" });
-}
+    console.error("❌ AI ERROR:", error);
+    res.status(500).json({ message: "AI error" });
+  }
 };
