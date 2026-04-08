@@ -10,6 +10,7 @@ const AIAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [query, setQuery] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
   const [messages, setMessages] = useState<{ text: string, sender: 'user' | 'ai' }[]>([]);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -45,10 +46,7 @@ const AIAssistant = () => {
 
           dispatch(addToCart({ ...product, qty: 1 }));
 
-          setMessages(prev => [...prev, {
-            text: `${product.name} added to cart 🛒`,
-            sender: 'ai'
-          }]);
+          typeMessage(`${product.name} added to cart 🛒`);
         }
 
         else if (res.action === "not_found") {
@@ -96,6 +94,37 @@ const AIAssistant = () => {
       });
   }, []);
 
+  const typeMessage = (text: string) => {
+    let index = 0;
+    let currentText = "";
+
+    setIsTyping(true);
+
+    const interval = setInterval(() => {
+      if (index < text.length) {
+        currentText += text[index];
+        index++;
+
+        setMessages(prev => {
+          const last = prev[prev.length - 1];
+
+          if (last && last.sender === 'ai') {
+            return [
+              ...prev.slice(0, -1),
+              { text: currentText, sender: 'ai' }
+            ];
+          }
+
+          return [...prev, { text: currentText, sender: 'ai' }];
+        });
+
+      } else {
+        clearInterval(interval);
+        setIsTyping(false);
+      }
+    }, 20);
+  };
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -111,7 +140,6 @@ const AIAssistant = () => {
             }`}
         >
 
-          {/* HEADER */}
           <div className="bg-blue-600 p-4 text-white flex justify-between items-center">
             <div className="flex items-center gap-2">
               <Sparkles size={20} />
@@ -129,7 +157,6 @@ const AIAssistant = () => {
             </div>
           </div>
 
-          {/* CLEAR CHAT */}
           <button
             onClick={async () => {
               await fetch("http://localhost:5000/api/chat/demoUser", { method: "DELETE" });
@@ -140,7 +167,6 @@ const AIAssistant = () => {
             Clear Chat
           </button>
 
-          {/* CHAT AREA */}
           <div
             className={`overflow-y-auto p-4 bg-gray-50 flex flex-col gap-3
             ${isExpanded ? 'h-[calc(100vh-140px)]' : 'h-80'}
@@ -160,7 +186,6 @@ const AIAssistant = () => {
             <div ref={bottomRef}></div>
           </div>
 
-          {/* INPUT */}
           <div
             className={`p-4 bg-white border-t flex gap-2
             ${isExpanded ? 'sticky bottom-0' : ''}
@@ -181,7 +206,6 @@ const AIAssistant = () => {
         </div>
       )}
 
-      {/* FLOAT BUTTON */}
       <button onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? <X size={28} /> : <MessageCircle size={28} />}
       </button>
