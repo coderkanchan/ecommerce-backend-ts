@@ -3,14 +3,21 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { askNexusAssistant } from '../redux/slices/aiSlice';
 import { RootState, AppDispatch } from '../redux/store';
-import { MessageCircle, X, Send, Sparkles, Maximize2, Minimize2 } from 'lucide-react';
+import {
+  MessageCircle,
+  X,
+  Send,
+  Sparkles,
+  Maximize2,
+  Minimize2
+} from 'lucide-react';
 import { addToCart } from '../redux/slices/cartSlice';
 
 const AIAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
-  const [query, setQuery] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [query, setQuery] = useState('');
   const [messages, setMessages] = useState<{ text: string, sender: 'user' | 'ai' }[]>([]);
 
   const dispatch = useDispatch<AppDispatch>();
@@ -18,81 +25,6 @@ const AIAssistant = () => {
   const products = useSelector((state: RootState) => state.products.products);
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
-
-  const handleSearch = () => {
-    if (!query.trim() || loading) return;
-
-    const userMessage = query;
-
-    setMessages(prev => [...prev, { text: userMessage, sender: 'user' }]);
-
-    dispatch(askNexusAssistant({ userQuery: userMessage, products }))
-      .unwrap()
-      .then((res) => {
-
-        if (res.action === "add_to_cart") {
-
-          const product = products.find(
-            p => p.name === res.productName
-          );
-
-          if (!product) {
-            setMessages(prev => [...prev, {
-              text: "❌ AI mismatch. Please try again.",
-              sender: 'ai'
-            }]);
-            return;
-          }
-
-          dispatch(addToCart({ ...product, qty: 1 }));
-
-          typeMessage(`${product.name} added to cart 🛒`);
-        }
-
-        else if (res.action === "not_found") {
-          const suggestions = res.suggestions?.length
-            ? res.suggestions
-            : products.slice(0, 2).map(p => p.name);
-
-          setMessages(prev => [...prev, {
-            text: `${res.message}\nTry: ${suggestions.join(", ")}`,
-            sender: 'ai'
-          }]);
-        }
-
-        else {
-          setMessages(prev => [...prev, {
-            text: res.message || res.answer || "🤖 No response",
-            sender: 'ai'
-          }]);
-        }
-
-      })
-      .catch(() => {
-        setMessages(prev => [...prev, {
-          text: "Something went wrong 😅",
-          sender: 'ai'
-        }]);
-      });
-
-    setQuery('');
-  };
-
-  useEffect(() => {
-    fetch("http://localhost:5000/api/chat/demoUser")
-      .then(res => res.json())
-      .then(data => {
-        if (data.messages) {
-          setMessages(data.messages.map((m: any) => ({
-            text: m.content,
-            sender: m.role
-          })));
-        }
-      })
-      .catch(() => {
-        console.log("No previous chat");
-      });
-  }, []);
 
   const typeMessage = (text: string) => {
     let index = 0;
@@ -124,6 +56,66 @@ const AIAssistant = () => {
       }
     }, 20);
   };
+
+  const handleSearch = () => {
+    if (!query.trim() || loading) return;
+
+    const userMessage = query;
+
+    setMessages(prev => [...prev, { text: userMessage, sender: 'user' }]);
+
+    dispatch(askNexusAssistant({ userQuery: userMessage, products }))
+      .unwrap()
+      .then((res) => {
+
+        if (res.action === "add_to_cart") {
+          const product = products.find(p => p.name === res.productName);
+
+          if (!product) {
+            typeMessage("❌ AI mismatch. Please try again.");
+            return;
+          }
+
+          dispatch(addToCart({ ...product, qty: 1 }));
+
+          typeMessage(`${product.name} added to cart 🛒`);
+        }
+
+        else if (res.action === "not_found") {
+          const suggestions = res.suggestions?.length
+            ? res.suggestions
+            : products.slice(0, 2).map(p => p.name);
+
+          typeMessage(`${res.message}\nTry: ${suggestions.join(", ")}`);
+        }
+
+        else {
+          typeMessage(res.message || res.answer || "🤖 No response");
+        }
+
+      })
+      .catch(() => {
+        typeMessage("Something went wrong 😅");
+      });
+
+    setQuery('');
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/chat/demoUser")
+      .then(res => res.json())
+      .then(data => {
+        if (data.messages) {
+          setMessages(data.messages.map((m: any) => ({
+            text: m.content,
+            sender: m.role
+          })));
+        }
+      })
+      .catch(() => {
+        console.log("No previous chat");
+      });
+  }, []);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -176,13 +168,20 @@ const AIAssistant = () => {
               <div
                 key={index}
                 className={`p-2 rounded-lg text-sm max-w-[80%] ${msg.sender === 'user'
-                  ? 'self-end bg-blue-600 text-white'
-                  : 'self-start bg-gray-200 text-black'
+                    ? 'self-end bg-blue-600 text-white'
+                    : 'self-start bg-gray-200 text-black'
                   }`}
               >
                 {msg.text}
               </div>
             ))}
+
+            {isTyping && (
+              <div className="self-start bg-gray-200 text-black px-3 py-2 rounded-lg text-sm animate-pulse">
+                AI is typing...
+              </div>
+            )}
+
             <div ref={bottomRef}></div>
           </div>
 
