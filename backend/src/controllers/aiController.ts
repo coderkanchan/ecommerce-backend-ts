@@ -4,15 +4,23 @@ import { Product } from "../models/Product.js";
 
 export const handleAIQuery = async (req: Request, res: Response) => {
   try {
-    const message = req.body.userQuery;
+    const { userQuery, userId = "demoUser" } = req.body;
 
-    if (!message) {
+    if (!userQuery) {
       return res.status(400).json({ message: "Message is required" });
     }
 
     const products = await Product.find().select("name category price");
+    const productNames = products.map(p => p.name);
 
-    const productNames = JSON.stringify(products.map(p => p.name));
+    const previousChat = await Chat.findOne({ userId });
+
+    const historyMessages = previousChat
+      ? previousChat.messages.slice(-5).map(m => ({
+        role: m.role === "ai" ? "assistant" : "user",
+        content: m.content
+      }))
+      : [];
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -26,39 +34,29 @@ export const handleAIQuery = async (req: Request, res: Response) => {
           {
             role: "system",
             content: `
-You are a strict AI shopping assistant.
+You are a smart AI shopping assistant.
 
-RULES:
+STRICT RULES:
 - ONLY return JSON
-- DO NOT add explanation
-- ONLY use product names EXACTLY from the list
+- NO explanation text
+- productName MUST EXACTLY match from list
+- NEVER guess product name
 
-If user wants to add product:
-{
-  "action": "add_to_cart",
-  "productName": "EXACT NAME FROM LIST"
-}
-
-If not found:
-{
-  "action": "not_found",
-  "message": "Product not available",
-  "suggestions": ["product1", "product2"]
-}
-
-Otherwise:
-{
-  "action": "chat",
-  "message": "your reply"
-}
+INTENT RULES:
+- If user clearly wants to buy/add → action = add_to_cart
+- If product not found → action = not_found
+- Otherwise → action = chat
 
 Available products:
-${productNames}
+${JSON.stringify(productNames)}
 `
           },
+
+          ...historyMessages,
+
           {
             role: "user",
-            content: message,
+            content: userQuery,
           },
         ],
       }),
@@ -67,15 +65,28 @@ ${productNames}
     const data = await response.json();
 
     let aiText = data?.choices?.[0]?.message?.content || "";
-
     aiText = aiText.replace(/```json|```/g, "").trim();
 
     let parsed;
+
     try {
       const jsonMatch = aiText.match(/\{[\s\S]*\}/);
-      parsed = jsonMatch ? JSON.parse(jsonMatch[0]) : { action: "chat", message: aiText };
+      parsed = jsonMatch
+        ? JSON.parse(jsonMatch[0])
+        : { action: "chat", message: aiText };
     } catch {
       parsed = { action: "chat", message: aiText };
+    }
+
+    if (
+      parsed.action === "add_to_cart" &&
+      !productNames.includes(parsed.productName)
+    ) {
+      parsed = {
+        action: "not_found",
+        message: "Product not available",
+        suggestions: productNames.slice(0, 2),
+      };
     }
 
     let aiMessageToSave = "";
@@ -83,17 +94,17 @@ ${productNames}
     if (parsed.action === "add_to_cart") {
       aiMessageToSave = `${parsed.productName} added to cart 🛒`;
     } else if (parsed.action === "not_found") {
-      aiMessageToSave = parsed.message;
+      aiMessageToSave = `${parsed.message}`;
     } else {
       aiMessageToSave = parsed.message || aiText;
     }
 
     await Chat.findOneAndUpdate(
-      { userId: "demoUser" },
+      { userId },
       {
         $push: {
           messages: [
-            { role: "user", content: message },
+            { role: "user", content: userQuery },
             { role: "ai", content: aiMessageToSave },
           ],
         },
