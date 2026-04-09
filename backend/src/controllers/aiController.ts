@@ -10,7 +10,7 @@ export const handleAIQuery = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Message is required" });
     }
 
-    const products = await Product.find().select("name category price");
+    const products = await Product.find().select("name");
     const productNames = products.map(p => p.name);
 
     const previousChat = await Chat.findOne({ userId });
@@ -37,27 +37,27 @@ export const handleAIQuery = async (req: Request, res: Response) => {
 You are a smart AI shopping assistant.
 
 STRICT RULES:
-- ONLY return JSON
-- NO explanation text
-- productName MUST EXACTLY match from list
-- NEVER guess product name
-
-INTENT RULES:
-- If user clearly wants to buy/add → action = add_to_cart
-- If product not found → action = not_found
-- Otherwise → action = chat
+- ALWAYS return JSON
+- NO extra text
+- productName MUST match EXACTLY
 
 Available products:
 ${JSON.stringify(productNames)}
+
+Response formats:
+
+1. Add to cart:
+{ "action": "add_to_cart", "productName": "..." }
+
+2. Not found:
+{ "action": "not_found", "message": "Product not available" }
+
+3. Chat:
+{ "action": "chat", "message": "..." }
 `
           },
-
           ...historyMessages,
-
-          {
-            role: "user",
-            content: userQuery,
-          },
+          { role: "user", content: userQuery }
         ],
       }),
     });
@@ -84,31 +84,27 @@ ${JSON.stringify(productNames)}
     ) {
       parsed = {
         action: "not_found",
-        message: "Product not available",
-        suggestions: productNames.slice(0, 2),
+        message: "Product not available"
       };
     }
 
-    let aiMessageToSave = "";
+    const getMessage = () => {
+      switch (parsed.action) {
+        case "add_to_cart":
+          return `${parsed.productName} added to cart 🛒`;
 
-    if (parsed.action === "add_to_cart") {
-      aiMessageToSave = `${parsed.productName} added to cart 🛒`;
-    } else if (parsed.action === "not_found") {
-      aiMessageToSave = `${parsed.message}`;
-    } else {
-      if (parsed.action === "add_to_cart") {
-        aiMessageToSave = `${parsed.productName} added to cart 🛒`;
+        case "not_found":
+          return parsed.message || "Product not available";
 
-      } else if (parsed.action === "not_found") {
-        aiMessageToSave = parsed.message || "Product not available";
+        case "chat":
+          return parsed.message || "How can I help you?";
 
-      } else if (parsed.action === "chat") {
-        aiMessageToSave = parsed.message || "How can I help you?";
-
-      } else {
-        aiMessageToSave = "Something went wrong";
+        default:
+          return "Something went wrong";
       }
-    }
+    };
+
+    const aiMessage = getMessage();
 
     await Chat.findOneAndUpdate(
       { userId },
@@ -116,14 +112,18 @@ ${JSON.stringify(productNames)}
         $push: {
           messages: [
             { role: "user", content: userQuery },
-            { role: "ai", content: aiMessageToSave },
+            { role: "ai", content: aiMessage },
           ],
         },
       },
       { upsert: true }
     );
 
-    return res.json(parsed);
+    return res.json({
+      action: parsed.action,
+      message: aiMessage,
+      productName: parsed.productName || null
+    });
 
   } catch (error) {
     console.error("❌ AI ERROR:", error);
