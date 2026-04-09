@@ -92,6 +92,25 @@ const AIAssistant = () => {
       });
   }, []);
 
+  const streamText = async (text: string) => {
+    let current = "";
+
+    for (let i = 0; i < text.length; i++) {
+      current += text[i];
+
+      setMessages(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1] = {
+          text: current,
+          sender: 'ai'
+        };
+        return updated;
+      });
+
+      await new Promise(res => setTimeout(res, 15));
+    }
+  };
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -101,9 +120,9 @@ const AIAssistant = () => {
 
       {isOpen && (
         <div className={`${isExpanded ? "w-[90vw] h-[80vh]" : "w-80 sm:w-96 h-[500px]"}
-          bg-white rounded-2xl shadow-2xl border flex flex-col`}>
+          bg-fuchsia-200 rounded-2xl shadow-2xl border flex flex-col`}>
 
-          <div className="bg-blue-600 p-4 text-white flex justify-between">
+          <div className="bg-blue-600 rounded-t-2xl p-4 text-white flex justify-between">
             <div className="flex gap-2 items-center">
               <Sparkles size={20} />
               <span>Nexus Assistant</span>
@@ -124,7 +143,7 @@ const AIAssistant = () => {
               await fetch("http://localhost:5000/api/chat/demoUser", { method: "DELETE" });
               setMessages([]);
             }}
-            className="text-xs bg-red-500 text-white px-2 py-1 m-2 rounded"
+            className="max-w-20 text-xs bg-red-500 text-white px-2 py-1 m-2 rounded"
           >
             Clear Chat
           </button>
@@ -133,8 +152,8 @@ const AIAssistant = () => {
             {messages.map((msg, i) => (
               <div key={i}
                 className={`p-2 rounded-lg max-w-[80%] ${msg.sender === 'user'
-                    ? 'self-end bg-blue-600 text-white'
-                    : 'self-start bg-gray-200'
+                  ? 'self-end bg-blue-600 text-white'
+                  : 'self-start bg-gray-200 text-gray-800'
                   }`}>
                 {msg.text}
               </div>
@@ -142,16 +161,16 @@ const AIAssistant = () => {
             <div ref={bottomRef}></div>
           </div>
 
-          <div className="p-3 flex gap-2 border-t">
+          <div className="p-3 flex gap-2 border-t bg-gray-100">
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-              className="flex-1 p-2 border rounded"
+              className="flex-1 p-2 border-2 border-gray-400 rounded-lg outline-none focus:border-blue-500 text-gray-500 "
               placeholder="Ask anything..."
             />
-            <button onClick={handleSearch}>
-              <Send size={20} />
+            <button onClick={handleSearch} className='text-blue-500'>
+              <Send size={30} />
             </button>
           </div>
         </div>
