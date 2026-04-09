@@ -124,7 +124,7 @@ const AIAssistant = () => {
               await fetch("http://localhost:5000/api/chat/demoUser", { method: "DELETE" });
               setMessages([]);
             }}
-            className="w-20 text-xs bg-red-500 text-white px-2 py-1 m-2 rounded"
+            className="text-xs bg-red-500 text-white px-2 py-1 m-2 rounded"
           >
             Clear Chat
           </button>
@@ -133,8 +133,8 @@ const AIAssistant = () => {
             {messages.map((msg, i) => (
               <div key={i}
                 className={`p-2 rounded-lg max-w-[80%] ${msg.sender === 'user'
-                  ? 'self-end bg-blue-600 text-white'
-                  : 'self-start bg-gray-200 text-gray-800'
+                    ? 'self-end bg-blue-600 text-white'
+                    : 'self-start bg-gray-200'
                   }`}>
                 {msg.text}
               </div>
@@ -147,17 +147,17 @@ const AIAssistant = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-              className="flex-1 p-2 border-2 rounded-lg text-gray-600 outline-none border-gray-400"
+              className="flex-1 p-2 border rounded"
               placeholder="Ask anything..."
             />
-            <button onClick={handleSearch} className='text-blue-500 '>
+            <button onClick={handleSearch}>
               <Send size={20} />
             </button>
           </div>
         </div>
       )}
 
-      <button onClick={() => setIsOpen(!isOpen)} className=''>
+      <button onClick={() => setIsOpen(!isOpen)}>
         {isOpen ? <X size={28} /> : <MessageCircle size={28} />}
       </button>
     </div>
