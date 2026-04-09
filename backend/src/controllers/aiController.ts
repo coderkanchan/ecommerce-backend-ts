@@ -25,7 +25,7 @@ export const handleAIQuery = async (req: Request, res: Response) => {
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
+        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -39,20 +39,21 @@ You are a smart AI shopping assistant.
 STRICT RULES:
 - ALWAYS return JSON
 - NO extra text
-- productName MUST match EXACTLY
+- productName MUST match EXACTLY from list
+
+INTENT:
+- "yes", "ok", "add it" → add last suggested product
+- buying intent → add_to_cart
+- unknown → chat
+- not found → not_found
 
 Available products:
 ${JSON.stringify(productNames)}
 
 Response formats:
 
-1. Add to cart:
 { "action": "add_to_cart", "productName": "..." }
-
-2. Not found:
 { "action": "not_found", "message": "Product not available" }
-
-3. Chat:
 { "action": "chat", "message": "..." }
 `
           },
@@ -70,12 +71,10 @@ Response formats:
     let parsed;
 
     try {
-      const jsonMatch = aiText.match(/\{[\s\S]*\}/);
-      parsed = jsonMatch
-        ? JSON.parse(jsonMatch[0])
-        : { action: "chat", message: aiText };
+      const match = aiText.match(/\{[\s\S]*\}/);
+      parsed = match ? JSON.parse(match[0]) : { action: "chat", message: aiText };
     } catch {
-      parsed = { action: "chat", message: aiText };
+      parsed = { action: "chat", message: "Sorry, something went wrong" };
     }
 
     if (
@@ -88,23 +87,17 @@ Response formats:
       };
     }
 
-    const getMessage = () => {
-      switch (parsed.action) {
-        case "add_to_cart":
-          return `${parsed.productName} added to cart 🛒`;
+    const formatResponse = (data: any) => {
+      const map: any = {
+        add_to_cart: `${data.productName} added to cart 🛒`,
+        not_found: data.message || "Product not available",
+        chat: data.message || "How can I help you?"
+      };
 
-        case "not_found":
-          return parsed.message || "Product not available";
-
-        case "chat":
-          return parsed.message || "How can I help you?";
-
-        default:
-          return "Something went wrong";
-      }
+      return map[data.action] || "Something went wrong";
     };
 
-    const aiMessage = getMessage();
+    const aiMessage = formatResponse(parsed);
 
     await Chat.findOneAndUpdate(
       { userId },
