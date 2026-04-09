@@ -96,7 +96,18 @@ ${JSON.stringify(productNames)}
     } else if (parsed.action === "not_found") {
       aiMessageToSave = `${parsed.message}`;
     } else {
-      aiMessageToSave = parsed.message || aiText;
+      if (parsed.action === "add_to_cart") {
+        aiMessageToSave = `${parsed.productName} added to cart 🛒`;
+
+      } else if (parsed.action === "not_found") {
+        aiMessageToSave = parsed.message || "Product not available";
+
+      } else if (parsed.action === "chat") {
+        aiMessageToSave = parsed.message || "How can I help you?";
+
+      } else {
+        aiMessageToSave = "Something went wrong";
+      }
     }
 
     await Chat.findOneAndUpdate(

@@ -154,7 +154,7 @@ const AIAssistant = () => {
           <div className="p-4 bg-white border-t flex gap-2">
             <input
               type="text"
-              className="flex-1 p-2 bg-gray-100 rounded-lg border border-gray-400 outline-none text-sm"
+              className="flex-1 p-2 text-gray-600 focus:border-2 focus:border-blue-500 bg-gray-100 rounded-lg border border-gray-400 outline-none text-sm"
               value={query}
               placeholder='Ask anything...'
               onChange={(e) => setQuery(e.target.value)}
