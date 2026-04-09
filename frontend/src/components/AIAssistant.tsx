@@ -11,6 +11,7 @@ const AIAssistant = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [query, setQuery] = useState('');
   const [messages, setMessages] = useState<{ text: string, sender: 'user' | 'ai' }[]>([]);
+  const [lastSuggestedProduct, setLastSuggestedProduct] = useState<string | null>(null);
 
   const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: RootState) => state.ai);
@@ -22,7 +23,6 @@ const AIAssistant = () => {
     if (!query.trim() || loading) return;
 
     const userMessage = query;
-
     setMessages(prev => [...prev, { text: userMessage, sender: 'user' }]);
 
     dispatch(askNexusAssistant({ userQuery: userMessage, products }))
@@ -30,45 +30,44 @@ const AIAssistant = () => {
       .then((res) => {
 
         if (res.action === "add_to_cart") {
+          const product = products.find(p => p.name === res.productName);
 
-          const product = products.find(
-            p => p.name === res.productName
-          );
-
-          if (!product) {
+          if (product) {
+            dispatch(addToCart({ ...product, qty: 1 }));
             setMessages(prev => [...prev, {
-              text: "❌ AI mismatch. Please try again.",
+              text: `${product.name} added to cart 🛒`,
               sender: 'ai'
             }]);
-            return;
+            setLastSuggestedProduct(null);
+          } else {
+            setMessages(prev => [...prev, {
+              text: "❌ Product not found",
+              sender: 'ai'
+            }]);
           }
-
-          dispatch(addToCart({ ...product, qty: 1 }));
-
-          setMessages(prev => [...prev, {
-            text: `${product.name} added to cart 🛒`,
-            sender: 'ai'
-          }]);
         }
 
         else if (res.action === "not_found") {
-          const suggestions = res.suggestions?.length
-            ? res.suggestions
-            : products.slice(0, 2).map(p => p.name);
-
           setMessages(prev => [...prev, {
-            text: `${res.message}\nTry: ${suggestions.join(", ")}`,
+            text: res.message,
             sender: 'ai'
           }]);
         }
 
         else {
           setMessages(prev => [...prev, {
-            text: res.message || "🤖 No response",
+            text: res.message,
             sender: 'ai'
           }]);
-        }
 
+          const foundProduct = products.find(p =>
+            res.message?.toLowerCase().includes(p.name.toLowerCase())
+          );
+
+          if (foundProduct) {
+            setLastSuggestedProduct(foundProduct.name);
+          }
+        }
       })
       .catch(() => {
         setMessages(prev => [...prev, {
@@ -90,9 +89,6 @@ const AIAssistant = () => {
             sender: m.role
           })));
         }
-      })
-      .catch(() => {
-        console.log("No previous chat");
       });
   }, []);
 
@@ -104,17 +100,16 @@ const AIAssistant = () => {
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
 
       {isOpen && (
-        <div className={`mb-4 
-          ${isExpanded ? "w-[90vw] h-[80vh]" : "w-80 sm:w-96 h-[500px]"} 
-          bg-white rounded-2xl shadow-2xl border flex flex-col transition-all duration-300`}>
+        <div className={`${isExpanded ? "w-[90vw] h-[80vh]" : "w-80 sm:w-96 h-[500px]"}
+          bg-white rounded-2xl shadow-2xl border flex flex-col`}>
 
-          <div className="bg-blue-600 p-4 text-white flex justify-between items-center">
-            <div className="flex items-center gap-2">
+          <div className="bg-blue-600 p-4 text-white flex justify-between">
+            <div className="flex gap-2 items-center">
               <Sparkles size={20} />
-              <span className="font-semibold">Nexus Smart Assistant</span>
+              <span>Nexus Assistant</span>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex gap-2">
               <button onClick={() => setIsExpanded(prev => !prev)}>
                 {isExpanded ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
               </button>
@@ -129,38 +124,33 @@ const AIAssistant = () => {
               await fetch("http://localhost:5000/api/chat/demoUser", { method: "DELETE" });
               setMessages([]);
             }}
-            className="text-xs bg-red-500 hover:bg-red-600 text-white px-2 py-1 m-2 rounded w-fit"
+            className="text-xs bg-red-500 text-white px-2 py-1 m-2 rounded"
           >
             Clear Chat
           </button>
 
-          <div className="flex-1 overflow-y-auto p-4 bg-gray-100 flex flex-col gap-3">
-
-            {messages.map((msg, index) => (
-              <div
-                key={index}
-                className={`p-2 rounded-lg text-sm max-w-[80%] ${msg.sender === 'user'
+          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
+            {messages.map((msg, i) => (
+              <div key={i}
+                className={`p-2 rounded-lg max-w-[80%] ${msg.sender === 'user'
                   ? 'self-end bg-blue-600 text-white'
-                  : 'self-start bg-gray-300 text-gray-900'
-                  }`}
-              >
+                  : 'self-start bg-gray-200'
+                  }`}>
                 {msg.text}
               </div>
             ))}
-
             <div ref={bottomRef}></div>
           </div>
 
-          <div className="p-4 bg-white border-t flex gap-2">
+          <div className="p-3 flex gap-2 border-t">
             <input
-              type="text"
-              className="flex-1 p-2 text-gray-600 focus:border-2 focus:border-blue-500 bg-gray-100 rounded-lg border border-gray-400 outline-none text-sm"
               value={query}
-              placeholder='Ask anything...'
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              className="flex-1 p-2 border rounded"
+              placeholder="Ask anything..."
             />
-            <button onClick={handleSearch} className='text-blue-700'>
+            <button onClick={handleSearch}>
               <Send size={20} />
             </button>
           </div>
