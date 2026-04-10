@@ -3,6 +3,7 @@ import { registerUser, loginUser, updateUserProfile, googleAuthSuccess } from '.
 import { protect, admin } from '../middleware/authMiddleware.js';
 import { getUsers } from '../controllers/authController.js';
 import passport from 'passport';
+import { makeUserSeller } from '../controllers/authController.js';
 
 const router = express.Router();
 
@@ -15,6 +16,8 @@ router.get('/google', passport.authenticate('google', {
   scope: ['profile', 'email'],
   session: false
 }));
+
+router.put('/become-seller', protect, makeUserSeller);
 
 router.get('/google/callback',
   passport.authenticate('google', {

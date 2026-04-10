@@ -16,7 +16,7 @@ export const googleAuthSuccess = (req: any, res: Response) => {
     const token = generateToken(req.user._id.toString());
 
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-   
+
     res.redirect(`${frontendUrl}/login-success?token=${token}&id=${req.user._id}&name=${req.user.name}&email=${req.user.email}&profileImage=${req.user.profileImage}&isAdmin=${req.user.isAdmin}`);
   } else {
     res.status(401).json({ message: "Google Authentication Failed" });
@@ -131,4 +131,26 @@ export const updateUserProfile = async (req: any, res: Response) => {
 export const getUsers = async (req: any, res: Response) => {
   const users = await User.find({});
   res.json(users);
+};
+
+export const makeUserSeller = async (req: any, res: Response) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+      user.role = 'seller';
+      const updatedUser = await user.save();
+
+      res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        role: updatedUser.role,
+        message: "Congratulations! You are now a seller."
+      });
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
 };
