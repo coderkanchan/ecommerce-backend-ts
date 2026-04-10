@@ -7,6 +7,7 @@ export interface IUser extends Document {
   password?: string;
   profileImage?: string;
   isAdmin: boolean;
+  role: 'buyer' | 'seller' | 'admin';
 }
 
 const userSchema = new Schema<IUser>({
@@ -15,6 +16,12 @@ const userSchema = new Schema<IUser>({
   password: { type: String, required: false },
   profileImage: { type: String, required: false },
   isAdmin: { type: Boolean, required: true, default: false },
+  role: {
+    type: String,
+    required: true,
+    enum: ['buyer', 'seller', 'admin'],
+    default: 'buyer' 
+  },
 }, { timestamps: true });
 
 

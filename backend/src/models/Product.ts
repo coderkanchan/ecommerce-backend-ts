@@ -17,6 +17,7 @@ export interface IProduct extends Document {
   reviews: IReview[];
   rating: number;
   numReviews: number;
+  seller: Types.ObjectId;
 }
 
 const reviewSchema = new Schema<IReview>({
@@ -33,9 +34,14 @@ const productSchema = new Schema<IProduct>({
   category: { type: String, required: true },
   stock: { type: Number, required: true, default: 0 },
   imageUrl: { type: String, required: true },
-  reviews: [reviewSchema], 
+  reviews: [reviewSchema],
   rating: { type: Number, required: true, default: 0 },
   numReviews: { type: Number, required: true, default: 0 },
+  seller: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: 'User'
+  },
 }, {
   timestamps: true
 });
