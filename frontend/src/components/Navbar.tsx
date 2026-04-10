@@ -7,6 +7,7 @@ import { logout } from '@/redux/slices/authSlice';
 import { clearCartItems } from '@/redux/slices/cartSlice';
 import Link from 'next/link';
 import { ShoppingCart, User, Menu, LogOut, HelpCircle, ChevronRight, X, Settings } from 'lucide-react';
+
 import SearchBox from './SearchBox';
 import { QUICK_FILTERS } from '@/constants/categoryData';
 import Image from 'next/image';
@@ -158,7 +159,25 @@ export default function Navbar() {
               <User />
             )}
           </div>
+          {/* Admin Panel Button ke baad ya pehle ye add karein */}
+          {mounted && userInfo && !userInfo.isAdmin && userInfo.role !== 'seller' && (
+            <Link
+              href="/become-seller"
+              className="bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-xl text-sm font-bold text-white transition flex items-center gap-2"
+            >
+              <Store size={18} /> Sell on NexusMart
+            </Link>
+          )}
 
+          {/* Agar user already SELLER hai toh Dashboard link */}
+          {mounted && userInfo && userInfo.role === 'seller' && (
+            <Link
+              href="/seller/dashboard"
+              className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-xl text-sm font-bold text-white transition"
+            >
+              Seller Dashboard
+            </Link>
+          )}
           <div>
             <p className="text-xs text-gray-400">
               {mounted && userInfo ? (
