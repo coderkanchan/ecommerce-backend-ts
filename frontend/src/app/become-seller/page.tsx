@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
@@ -27,9 +27,16 @@ const BecomeSellerPage = () => {
     }
   };
 
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+    if (!userInfo || !userInfo.token) {
+      router.push('/login?redirect=/become-seller');
+    }
+  }, [router]);
+
   return (
     <div className="bg-white min-h-screen">
-      {/* Hero Section */}
+
       <div className="bg-blue-600 py-16 px-4 text-center text-white">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">Becho NexusMart Par</h1>
         <p className="text-xl opacity-90 max-w-2xl mx-auto">
