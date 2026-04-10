@@ -135,9 +135,21 @@ export const getOrderSummary = async (req: any, res: any) => {
       usersCount,
       salesData,
       recentOrders,
-      lowStockCount 
+      lowStockCount
     });
   } catch (error) {
     res.status(500).json({ message: "Error fetching summary", error });
+  }
+};
+
+export const getSellerOrders = async (req: any, res: Response) => {
+  try {
+    const orders = await Order.find({
+      'orderItems.seller': req.user._id
+    }).populate('user', 'name email');
+
+    res.json(orders);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching seller orders" });
   }
 };

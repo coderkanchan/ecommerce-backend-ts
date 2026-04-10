@@ -11,8 +11,8 @@ import {
   getOrderSummary
 }
   from '../controllers/orderController.js';
-
-import { protect, admin } from '../middleware/authMiddleware.js';
+import { getSellerOrders } from '../controllers/orderController.js';
+import { protect, admin, seller } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
@@ -30,5 +30,7 @@ router.route('/:id').get(protect, getOrderById);
 router.route('/').get(protect, admin, getOrders);
 
 router.route('/:id/deliver').put(protect, admin, updateOrderToDelivered);
+
+router.route('/sellerorders').get(protect, seller, getSellerOrders);
 
 export default router;

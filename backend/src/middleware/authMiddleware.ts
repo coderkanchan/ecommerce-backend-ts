@@ -37,3 +37,11 @@ export const admin = (req: AuthRequest, res: Response, next: NextFunction) => {
     res.status(403).json({ message: 'Not authorized as an admin' });
   }
 };
+
+export const seller = (req: AuthRequest, res: Response, next: NextFunction) => {
+  if (req.user && (req.user.role === 'seller' || req.user.role === 'admin')) {
+    next();
+  } else {
+    res.status(403).json({ message: 'Not authorized as a seller' });
+  }
+};
