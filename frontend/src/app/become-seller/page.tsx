@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { toast } from 'react-hot-toast'; 
+import { toast } from 'react-hot-toast';
+import { ShoppingBag, Zap, ShieldCheck, BarChart3 } from 'lucide-react';
 
 const BecomeSellerPage = () => {
   const [loading, setLoading] = useState(false);
@@ -11,57 +12,65 @@ const BecomeSellerPage = () => {
   const handleUpgrade = async () => {
     try {
       setLoading(true);
-
       const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
       const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo.token}`,
-        },
+        headers: { Authorization: `Bearer ${userInfo.token}` },
       };
 
       await axios.put('http://localhost:5000/api/auth/become-seller', {}, config);
-
-      toast.success("Mubarak ho! Ab aap ek Seller hain.");
-
+      toast.success("Welcome to the Seller Family!");
       router.push('/profile');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Kuch galat hua. Phir se koshish karein.");
+      toast.error("Process failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 p-10 bg-white shadow-xl rounded-2xl border border-gray-100">
-        <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900">NexusMart Seller Center</h2>
-          <p className="mt-4 text-sm text-gray-600">
-            Apne products ko NexusMart par bechna shuru karein aur apne business ko badhayein.
-          </p>
-        </div>
+    <div className="bg-white min-h-screen">
+      {/* Hero Section */}
+      <div className="bg-blue-600 py-16 px-4 text-center text-white">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4">Becho NexusMart Par</h1>
+        <p className="text-xl opacity-90 max-w-2xl mx-auto">
+          Apne products ko lakhon logon tak pahuchaiye aur apna business grow karein.
+        </p>
+        <button
+          onClick={handleUpgrade}
+          disabled={loading}
+          className="mt-8 bg-white text-blue-600 px-8 py-3 rounded-full font-bold text-lg hover:bg-gray-100 transition shadow-lg"
+        >
+          {loading ? "Processing..." : "Start Selling Now"}
+        </button>
+      </div>
 
-        <div className="mt-8 space-y-6">
-          <div className="rounded-md shadow-sm bg-blue-50 p-4 border-l-4 border-blue-500">
-            <p className="text-sm text-blue-700">
-              Upgrading to a <strong>Seller Account</strong> will allow you to add products,
-              track orders, and view your sales analytics.
-            </p>
-          </div>
-
-          <button
-            onClick={handleUpgrade}
-            disabled={loading}
-            className={`group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white ${loading ? "bg-blue-400" : "bg-blue-600 hover:bg-blue-700"
-              } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all`}
-          >
-            {loading ? "Process ho raha hai..." : "Confirm & Become a Seller"}
-          </button>
-        </div>
+      <div className="max-w-6xl mx-auto py-16 px-4 grid md:grid-cols-3 gap-8">
+        <FeatureCard
+          icon={<Zap className="text-blue-500" />}
+          title="Quick Setup"
+          desc="Bas ek click mein apna seller account active karein."
+        />
+        <FeatureCard
+          icon={<ShieldCheck className="text-blue-500" />}
+          title="Secure Payments"
+          desc="Aapki kamayi seedha aapke bank account mein safely pahunchegi."
+        />
+        <FeatureCard
+          icon={<BarChart3 className="text-blue-500" />}
+          title="Analytics"
+          desc="Powerful dashboard se apni sales aur growth track karein."
+        />
       </div>
     </div>
   );
 };
+
+const FeatureCard = ({ icon, title, desc }: { icon: any, title: string, desc: string }) => (
+  <div className="p-6 border rounded-xl hover:shadow-md transition text-center">
+    <div className="flex justify-center mb-4">{icon}</div>
+    <h3 className="text-xl font-semibold mb-2">{title}</h3>
+    <p className="text-gray-600">{desc}</p>
+  </div>
+);
 
 export default BecomeSellerPage;
