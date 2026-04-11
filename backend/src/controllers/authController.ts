@@ -141,16 +141,23 @@ export const makeUserSeller = async (req: any, res: Response) => {
       user.role = 'seller';
       const updatedUser = await user.save();
 
+      const token = generateToken(updatedUser._id.toString());
+
       res.json({
         _id: updatedUser._id,
         name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
         role: updatedUser.role,
+        profileImage: updatedUser.profileImage,
+        token: token,
         message: "Congratulations! You are now a seller."
       });
     } else {
       res.status(404).json({ message: 'User not found' });
     }
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Server Error' });
   }
 };
