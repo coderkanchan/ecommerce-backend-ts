@@ -1,58 +1,50 @@
 "use client";
-import { useEffect, Suspense } from 'react';
+import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '@/redux/slices/authSlice';
+import API from '@/services/api';
 import { toast } from 'sonner';
 
-function LoginSuccessHandler() {
+export default function LoginSuccess() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const dispatch = useDispatch();
-  const router = useRouter();
 
   useEffect(() => {
-    const token = searchParams.get('token');
-    const profileImage = searchParams.get('profileImage');
+    const fetchUserData = async () => {
+      const token = searchParams.get('token');
 
-    if (token) {
-      const userInfo = {
-        token,
-        name: searchParams.get('name'),
-        email: searchParams.get('email'),
-        isAdmin: searchParams.get('isAdmin') === 'true',
-        _id: searchParams.get('id'),
-        profileImage,
-      };
+      if (token) {
+        try {
 
-      dispatch(setCredentials(userInfo));
+          localStorage.setItem('tempToken', token);
 
-      toast.success(`Welcome back, ${name}!`, {
-        description: 'Google Login Successful 🚀',
-      });
+          const config = {
+            headers: { Authorization: `Bearer ${token}` },
+          };
+          const { data } = await API.get('/users/profile', config);
 
-      setTimeout(() => {
-        router.push('/');
-      }, 2000);
-    } else {
-      toast.error('Google Login Failed. Please try again.');
-      router.push('/login');
-    }
+          const userData = { ...data, token };
+          dispatch(setCredentials(userData));
+          localStorage.setItem('userInfo', JSON.stringify(userData));
+          localStorage.removeItem('tempToken');
+
+          toast.success("Google Login Successful!");
+          router.push('/');
+        } catch (error) {
+          toast.error("Failed to sync user data");
+          router.push('/login');
+        }
+      }
+    };
+
+    fetchUserData();
   }, [searchParams, dispatch, router]);
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold mb-4">Authenticating...</h1>
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
-      </div>
+    <div className="min-h-screen flex items-center justify-center bg-black text-white text-xl">
+      Verifying Google Account...
     </div>
-  )
-}
-
-export default function LoginSuccess() {
-  return (
-    <Suspense fallback={<div className="text-white text-center p-10">Loading...</div>}>
-      <LoginSuccessHandler />
-    </Suspense>
   );
 }
