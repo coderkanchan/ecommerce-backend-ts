@@ -65,7 +65,7 @@ export default function Navbar() {
             <div className="flex items-center space-x-6">
 
               <div className="hidden lg:block">
-                {mounted && userInfo && !userInfo.isAdmin && userInfo.role !== 'seller' && (
+                {mounted && (!userInfo || (userInfo.role !== 'seller' && !userInfo.isAdmin)) && (
                   <Link
                     href="/become-seller"
                     className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300 font-semibold transition"
@@ -74,7 +74,8 @@ export default function Navbar() {
                     <span>Sell on NexusMart</span>
                   </Link>
                 )}
-                {mounted && userInfo && userInfo.role === 'seller' && (
+
+                {mounted && userInfo?.role === 'seller' && (
                   <Link
                     href="/seller/dashboard"
                     className="flex items-center gap-2 text-purple-400 hover:text-purple-300 font-semibold transition"
@@ -130,7 +131,7 @@ export default function Navbar() {
                 </div>
               ) : (
                 <div className="flex items-center space-x-4">
-                  <Link href="/login" className="text-gray-300 hover:text-white text-sm">Login</Link>
+                  <Link href="/login" className="text-gray-300 hover:text-white text-sm transition">Login</Link>
                   <Link href="/signup" className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-blue-700 transition">
                     Signup
                   </Link>
@@ -169,7 +170,7 @@ export default function Navbar() {
 
         <div className="py-4 text-gray-800">
 
-          {mounted && userInfo && !userInfo.isAdmin && userInfo.role !== 'seller' && (
+          {mounted && (!userInfo || (userInfo.role !== 'seller' && !userInfo.isAdmin)) && (
             <div className="px-6 mb-4">
               <button
                 onClick={() => { setIsSidebarOpen(false); router.push('/become-seller'); }}
@@ -230,7 +231,7 @@ export default function Navbar() {
                 </li>
               )}
 
-              <li className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded cursor-pointer transition">
+              <li className="flex items-center gap-3 p-2 hover:bg-gray-100 rounded cursor-pointer transition text-gray-700">
                 <HelpCircle size={18} /> Customer Service
               </li>
 
