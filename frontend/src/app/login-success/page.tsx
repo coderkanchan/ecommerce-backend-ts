@@ -1,50 +1,65 @@
 "use client";
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '@/redux/slices/authSlice';
-import API from '@/services/api';
+import API from '@/services/api'; 
 import { toast } from 'sonner';
 
-export default function LoginSuccess() {
-  const router = useRouter();
+function LoginSuccessHandler() {
   const searchParams = useSearchParams();
   const dispatch = useDispatch();
+  const router = useRouter();
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchProfile = async () => {
       const token = searchParams.get('token');
 
       if (token) {
         try {
 
-          localStorage.setItem('tempToken', token);
+          const { data } = await API.get('/users/profile', {
+            headers: { Authorization: `Bearer ${token}` }
+          });
 
-          const config = {
-            headers: { Authorization: `Bearer ${token}` },
-          };
-          const { data } = await API.get('/users/profile', config);
+          const userInfo = { ...data, token };
+          dispatch(setCredentials(userInfo));
+          localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
-          const userData = { ...data, token };
-          dispatch(setCredentials(userData));
-          localStorage.setItem('userInfo', JSON.stringify(userData));
-          localStorage.removeItem('tempToken');
+          toast.success(`Welcome back, ${data.name}!`, {
+            description: 'Google Login Successful 🚀',
+          });
 
-          toast.success("Google Login Successful!");
-          router.push('/');
+          setTimeout(() => {
+            router.push('/');
+          }, 800);
         } catch (error) {
-          toast.error("Failed to sync user data");
+          toast.error('Failed to sync user data.');
           router.push('/login');
         }
+      } else {
+        toast.error('Token not found. Login failed.');
+        router.push('/login');
       }
     };
 
-    fetchUserData();
+    fetchProfile();
   }, [searchParams, dispatch, router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black text-white text-xl">
-      Verifying Google Account...
+    <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
+      <div className="text-center">
+        <h1 className="text-2xl font-bold mb-4">Verifying Session...</h1>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
+      </div>
     </div>
+  );
+}
+
+export default function LoginSuccess() {
+  return (
+    <Suspense fallback={<div className="bg-gray-900 h-screen" />}>
+      <LoginSuccessHandler />
+    </Suspense>
   );
 }
