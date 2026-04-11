@@ -9,9 +9,12 @@ const router = express.Router();
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
-router.route('/profile').put(protect, updateUserProfile);
+router.route('/profile')
+  .get(protect, getUserProfile)
+  .put(protect, updateUserProfile);
+
 router.route('/').get(protect, admin, getUsers);
-router.route('/profile').get(protect, getUserProfile).put(protect, updateUserProfile);
+
 router.get('/google', passport.authenticate('google', {
   scope: ['profile', 'email'],
   session: false
