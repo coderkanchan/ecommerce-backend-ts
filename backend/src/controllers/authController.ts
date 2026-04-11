@@ -21,6 +21,7 @@ export const googleAuthSuccess = (req: any, res: Response) => {
     res.status(401).json({ message: "Google Authentication Failed" });
   }
 };
+
 export const registerUser = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
@@ -157,5 +158,22 @@ export const makeUserSeller = async (req: any, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+export const getUserProfile = async (req: any, res: Response) => {
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      role: user.role,
+      profileImage: user.profileImage,
+    });
+  } else {
+    res.status(404).json({ message: 'User not found' });
   }
 };
