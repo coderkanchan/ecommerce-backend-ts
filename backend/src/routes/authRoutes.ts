@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerUser, loginUser, updateUserProfile, googleAuthSuccess } from '../controllers/authController.js';
+import { registerUser, loginUser, updateUserProfile, googleAuthSuccess, getUserProfile } from '../controllers/authController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 import { getUsers } from '../controllers/authController.js';
 import passport from 'passport';
@@ -11,7 +11,7 @@ router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.route('/profile').put(protect, updateUserProfile);
 router.route('/').get(protect, admin, getUsers);
-
+router.route('/profile').get(protect, getUserProfile).put(protect, updateUserProfile);
 router.get('/google', passport.authenticate('google', {
   scope: ['profile', 'email'],
   session: false
