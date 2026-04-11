@@ -13,26 +13,30 @@ export default function BecomeSellerPage() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.auth);
-
+  
   const handleStartSelling = async () => {
-   
     if (!userInfo) {
-      toast.info("Aapko pehle login karna hoga seller banne ke liye.");
+      toast.info("Please login to start your seller journey");
       router.push('/login?redirect=/become-seller');
       return;
     }
 
     try {
       setLoading(true);
-      const { data } = await API.put('/users/become-seller'); 
+      const config = {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      };
+
+      const { data } = await API.put('/users/become-seller', {}, config);
 
       dispatch(setCredentials(data));
       localStorage.setItem('userInfo', JSON.stringify(data));
 
-      toast.success("Mubarak ho! Aap ab NexusMart ke seller hain.");
-      router.push('/seller/dashboard'); 
+      toast.success("Congratulations! You are now a Seller on NexusMart.");
+
+      router.push('/seller/dashboard');
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Role upgrade failed!");
+      toast.error(error.response?.data?.message || "Something went wrong!");
     } finally {
       setLoading(false);
     }
