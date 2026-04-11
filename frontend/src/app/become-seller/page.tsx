@@ -1,83 +1,81 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { toast } from 'react-hot-toast';
-import { ShoppingBag, Zap, ShieldCheck, BarChart3 } from 'lucide-react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { toast } from 'sonner';
+import { Store, TrendingUp, Globe, ShieldCheck } from 'lucide-react';
 
 const BecomeSellerPage = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { userInfo } = useSelector((state: RootState) => state.auth);
 
-  const handleUpgrade = async () => {
+  const handleStartSelling = async () => {
+  
+    if (!userInfo) {
+      toast.error("Please login first to become a seller");
+      router.push('/login?redirect=/become-seller');
+      return;
+    }
+
     try {
       setLoading(true);
-      const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
       const config = {
         headers: { Authorization: `Bearer ${userInfo.token}` },
       };
 
       await axios.put('http://localhost:5000/api/auth/become-seller', {}, config);
-      toast.success("Welcome to the Seller Family!");
-      router.push('/profile');
+      toast.success("Welcome! Your seller account is now active.");
+      
+      window.location.href = '/seller/dashboard';
     } catch (error: any) {
-      toast.error("Process failed. Please try again.");
+      toast.error(error.response?.data?.message || "Upgrade failed");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
-    if (!userInfo || !userInfo.token) {
-      router.push('/login?redirect=/become-seller');
-    }
-  }, [router]);
-
   return (
     <div className="bg-white min-h-screen">
 
-      <div className="bg-blue-600 py-16 px-4 text-center text-white">
-        <h1 className="text-4xl md:text-5xl font-bold mb-4">Becho NexusMart Par</h1>
-        <p className="text-xl opacity-90 max-w-2xl mx-auto">
-          Apne products ko lakhon logon tak pahuchaiye aur apna business grow karein.
+      <section className="bg-slate-900 text-white py-20 px-4 text-center">
+        <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
+          Sell on <span className="text-blue-500">NexusMart</span>
+        </h1>
+        <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-10">
+          Join thousands of businesses and reach millions of customers across the globe. 
+          Everything you need to sell online is right here.
         </p>
-        <button
-          onClick={handleUpgrade}
+        <button 
+          onClick={handleStartSelling}
           disabled={loading}
-          className="mt-8 bg-white text-blue-600 px-8 py-3 rounded-full font-bold text-lg hover:bg-gray-100 transition shadow-lg"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-lg font-bold text-lg shadow-2xl transition-all transform hover:scale-105"
         >
-          {loading ? "Processing..." : "Start Selling Now"}
+          {loading ? "Setting up..." : "Start Selling"}
         </button>
-      </div>
+      </section>
 
-      <div className="max-w-6xl mx-auto py-16 px-4 grid md:grid-cols-3 gap-8">
-        <FeatureCard
-          icon={<Zap className="text-blue-500" />}
-          title="Quick Setup"
-          desc="Bas ek click mein apna seller account active karein."
-        />
-        <FeatureCard
-          icon={<ShieldCheck className="text-blue-500" />}
-          title="Secure Payments"
-          desc="Aapki kamayi seedha aapke bank account mein safely pahunchegi."
-        />
-        <FeatureCard
-          icon={<BarChart3 className="text-blue-500" />}
-          title="Analytics"
-          desc="Powerful dashboard se apni sales aur growth track karein."
-        />
-      </div>
+      <section className="max-w-7xl mx-auto py-20 px-6 grid md:grid-cols-3 gap-12">
+        <div className="text-center p-8 border rounded-2xl hover:shadow-xl transition">
+          <TrendingUp className="w-12 h-12 text-blue-500 mx-auto mb-4" />
+          <h3 className="text-xl font-bold mb-2">Growth</h3>
+          <p className="text-gray-600">Access millions of customers and scale your brand fast.</p>
+        </div>
+        <div className="text-center p-8 border rounded-2xl hover:shadow-xl transition">
+          <Globe className="w-12 h-12 text-emerald-500 mx-auto mb-4" />
+          <h3 className="text-xl font-bold mb-2">Easy Shipping</h3>
+          <p className="text-gray-600">Our logistics network handles the heavy lifting for you.</p>
+        </div>
+        <div className="text-center p-8 border rounded-2xl hover:shadow-xl transition">
+          <ShieldCheck className="w-12 h-12 text-purple-500 mx-auto mb-4" />
+          <h3 className="text-xl font-bold mb-2">Trust & Safety</h3>
+          <p className="text-gray-600">Secure payments and dedicated seller support 24/7.</p>
+        </div>
+      </section>
     </div>
   );
 };
-
-const FeatureCard = ({ icon, title, desc }: { icon: any, title: string, desc: string }) => (
-  <div className="p-6 border rounded-xl hover:shadow-md transition text-center">
-    <div className="flex justify-center mb-4">{icon}</div>
-    <h3 className="text-xl font-semibold mb-2">{title}</h3>
-    <p className="text-gray-600">{desc}</p>
-  </div>
-);
 
 export default BecomeSellerPage;
