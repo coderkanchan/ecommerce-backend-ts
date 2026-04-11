@@ -14,15 +14,13 @@ const generateToken = (id: string) => {
 export const googleAuthSuccess = (req: any, res: Response) => {
   if (req.user) {
     const token = generateToken(req.user._id.toString());
-
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
 
-    res.redirect(`${frontendUrl}/login-success?token=${token}&id=${req.user._id}&name=${req.user.name}&email=${req.user.email}&profileImage=${req.user.profileImage}&isAdmin=${req.user.isAdmin}`);
+    res.redirect(`${frontendUrl}/login-success?token=${token}`);
   } else {
     res.status(401).json({ message: "Google Authentication Failed" });
   }
 };
-
 export const registerUser = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
