@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Product } from '../models/Product.js';
 
-export const createProduct = async (req: Request, res: Response) => {
+export const createProduct = async (req: any, res: Response) => {
   try {
     const { name, description, price, category, stock, imageUrl } = req.body;
 
@@ -15,6 +15,10 @@ export const createProduct = async (req: Request, res: Response) => {
 
     if (Number(stock) < 0) {
       return res.status(400).json({ message: "Stock cannot be negative" });
+    }
+
+    if (!req.user) {
+      return res.status(401).json({ message: "Not authorized" });
     }
 
     const product = new Product({
