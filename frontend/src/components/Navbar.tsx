@@ -53,8 +53,11 @@ export default function Navbar() {
               >
                 <Menu size={24} />
               </button>
-              <Link href="/" className="text-3xl font-bold text-blue-500 hover:text-blue-400 transition">
-                NexusMart
+              <Link href="/" className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                Nexus
+                <span className="logo-highlight ml-2">
+                  <span className="relative text-white">Mart</span>
+                </span>
               </Link>
             </div>
 

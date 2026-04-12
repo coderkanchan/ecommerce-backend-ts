@@ -19,6 +19,12 @@
   }
 }
 
+@layer components {
+  .logo-highlight {
+    @apply relative inline-block before:absolute before:-inset-1 before:block before:-skew-y-3 before:bg-blue-600 before:content-[''];
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
