@@ -18,7 +18,13 @@ export const createProduct = async (req: Request, res: Response) => {
     }
 
     const product = new Product({
-      name, description, price: Number(price), category, stock: Number(stock), imageUrl
+      name,
+      description,
+      price: Number(price),
+      category,
+      stock: Number(stock),
+      imageUrl,
+      seller: req.user._id,
     });
 
     const savedProduct = await product.save();
