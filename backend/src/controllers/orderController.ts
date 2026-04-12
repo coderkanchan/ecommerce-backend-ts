@@ -153,3 +153,24 @@ export const getSellerOrders = async (req: any, res: Response) => {
     res.status(500).json({ message: "Error fetching seller orders" });
   }
 };
+
+export const getSellerSummary = async (req: any, res: Response) => {
+  try {
+    const sellerId = req.user._id;
+
+    const productsCount = await Product.countDocuments({ seller: sellerId });
+
+    const ordersCount = await Order.countDocuments({
+      "orderItems.seller": sellerId
+    });
+
+    res.json({
+      productsCount,
+      ordersCount,
+      totalSales: 0, 
+      customersCount: 0
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching seller stats" });
+  }
+};
