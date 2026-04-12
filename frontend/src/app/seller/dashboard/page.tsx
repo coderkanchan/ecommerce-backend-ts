@@ -6,37 +6,40 @@ import { RootState } from '@/redux/store';
 import { DollarSign, Package, ShoppingBag, PlusCircle } from 'lucide-react';
 import Link from 'next/link';
 
-const StatCard = ({ title, value, icon: Icon, color }: any) => (
-  <div className="bg-[#111] p-6 rounded-3xl border border-gray-800 hover:border-gray-700 transition-all shadow-2xl relative overflow-hidden group">
-    <div className="flex justify-between items-start relative z-10">
-      <div>
-        <p className="text-gray-500 text-xs font-bold uppercase tracking-widest">{title}</p>
-        <h2 className="text-3xl font-bold mt-2 text-white">{value}</h2>
-      </div>
-      <div className={`p-3 rounded-2xl ${color} bg-opacity-20`}>
-        <Icon size={24} className={color.replace('bg-', 'text-')} />
-      </div>
-    </div>
-  </div>
-);
-
 export default function SellerDashboard() {
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
-  const [isMounted, setIsMounted] = useState(false);
+  const [summary, setSummary] = useState({ productsCount: 0, ordersCount: 0, totalSales: 0 });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setIsMounted(true);
-    if (isMounted && (!userInfo || userInfo.role !== 'seller')) {
-      router.push('/'); 
-    }
-  }, [userInfo, router, isMounted]);
+    const fetchStats = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/seller-summary`, {
+          headers: { Authorization: `Bearer ${userInfo?.token}` },
+        });
+        const data = await res.json();
+        setSummary(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!isMounted || !userInfo) return null;
+    if (userInfo?.role === 'seller') fetchStats();
+  }, [userInfo]);
 
+  const stats = [
+    { label: "Total Revenue", value: `₹${summary.totalSales}`, icon: TrendingUp, color: "text-emerald-500" },
+    { label: "Orders Received", value: summary.ordersCount, icon: ShoppingBag, color: "text-blue-500" },
+    { label: "Active Products", value: summary.productsCount, icon: Package, color: "text-purple-500" },
+    { label: "Total Customers", value: "0", icon: Users, color: "text-orange-500" },
+  ];
+  
   return (
     <div className="min-h-screen bg-black text-white flex">
-     
+
       <main className="flex-1 p-8">
         <div className="flex justify-between items-center mb-10">
           <div>
