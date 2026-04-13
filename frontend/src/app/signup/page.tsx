@@ -1,15 +1,15 @@
 "use client";
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import API from '@/services/api';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { FcGoogle } from "react-icons/fc";
-import { Eye, EyeOff } from 'lucide-react'; 
+import { Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 
-export default function Signup() {
+function SignupContent() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -88,5 +88,14 @@ export default function Signup() {
         </p>
       </form>
     </div>
+  );
+}
+
+
+export default function Signup() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black" />}>
+      <SignupContent />
+    </Suspense>
   );
 }
