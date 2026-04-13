@@ -5,13 +5,13 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '@/redux/slices/authSlice';
 import { FcGoogle } from "react-icons/fc";
-import { Eye, EyeOff } from 'lucide-react'; 
+import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 
 function LoginContent() {
   const [formData, setFormData] = useState({ email: '', password: '' });
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
@@ -84,9 +84,12 @@ function LoginContent() {
           <FcGoogle />
           Continue with Google
         </button>
-
+        
         <p className="text-gray-400 mt-6 text-center">
-          Don't have an account? <Link href="/signup" className="text-blue-400 hover:underline">Sign Up</Link>
+          Don't have an account?
+          <Link href={`/signup?redirect=${redirect}`} className="text-blue-400 hover:underline">
+            Sign Up
+          </Link>
         </p>
       </form>
     </div>
