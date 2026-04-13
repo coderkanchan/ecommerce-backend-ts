@@ -120,7 +120,7 @@ const AIAssistant = () => {
 
       {isOpen && (
         <div className={`${isExpanded ? "w-[90vw] h-[80vh]" : "w-80 sm:w-96 h-[500px]"}
-          bg-fuchsia-200 rounded-2xl shadow-2xl border flex flex-col`}>
+          bg-blue-100 rounded-2xl shadow-2xl border flex flex-col`}>
 
           <div className="bg-blue-600 rounded-t-2xl p-4 text-white flex justify-between">
             <div className="flex gap-2 items-center">

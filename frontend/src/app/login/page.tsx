@@ -1,15 +1,17 @@
 "use client";
-import { useState, Suspense } from 'react'; 
+import { useState, Suspense } from 'react';
 import API from '@/services/api';
-import { useRouter, useSearchParams } from 'next/navigation'; 
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '@/redux/slices/authSlice';
 import { FcGoogle } from "react-icons/fc";
+import { Eye, EyeOff } from 'lucide-react'; 
 import Link from 'next/link';
 import { toast } from 'sonner';
 
 function LoginContent() {
   const [formData, setFormData] = useState({ email: '', password: '' });
+  const [showPassword, setShowPassword] = useState(false); 
   const router = useRouter();
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
@@ -28,7 +30,7 @@ function LoginContent() {
       });
 
       setTimeout(() => {
-        router.push(redirect); 
+        router.push(redirect);
       }, 800);
 
     } catch (error: any) {
@@ -52,13 +54,24 @@ function LoginContent() {
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           required
         />
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full p-4 mb-6 bg-black border border-gray-700 rounded-lg text-white outline-none focus:border-blue-500 transition"
-          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-          required
-        />
+
+        <div className="relative mb-6">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder="Password"
+            className="w-full p-4 bg-black border border-gray-700 rounded-lg text-white outline-none focus:border-blue-500 transition pr-12"
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            required
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white transition"
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
+        </div>
+
         <button className="w-full bg-blue-600 text-white py-4 rounded-lg font-bold hover:bg-blue-700 transition">
           Login
         </button>
