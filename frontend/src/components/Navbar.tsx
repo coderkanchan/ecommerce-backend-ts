@@ -74,7 +74,7 @@ export default function Navbar() {
                     className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300 font-semibold transition"
                   >
                     <Store size={20} />
-                    <span>Sell on NexusMart</span>
+                    <span>become-seller</span>
                   </Link>
                 )}
 

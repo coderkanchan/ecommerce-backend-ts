@@ -12,6 +12,9 @@ function SignupContent() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get('redirect') || '/';
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -21,8 +24,9 @@ function SignupContent() {
       toast.success('Signup Successful!', {
         description: 'Redirecting...', duration: 800
       });
+
       setTimeout(() => {
-        router.push('/');
+        router.push(redirect);
       }, 800);
 
     } catch (error: any) {
@@ -45,7 +49,6 @@ function SignupContent() {
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           required
         />
-
         <input
           type="email" placeholder="Email Address"
           className="w-full p-4 mb-4 bg-black border border-gray-700 rounded-lg text-white outline-none focus:border-blue-500 transition"
@@ -84,13 +87,12 @@ function SignupContent() {
         </button>
 
         <p className="text-gray-400 mt-6 text-center">
-          Already have an account? <Link href="/login" className="text-blue-400 hover:underline">Login</Link>
+          Already have an account? <Link href={`/login?redirect=${redirect}`} className="text-blue-400 hover:underline">Login</Link>
         </p>
       </form>
     </div>
   );
 }
-
 
 export default function Signup() {
   return (
