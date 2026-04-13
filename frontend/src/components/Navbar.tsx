@@ -176,7 +176,14 @@ export default function Navbar() {
           {mounted && (!userInfo || (userInfo.role !== 'seller' && !userInfo.isAdmin)) && (
             <div className="px-6 mb-4">
               <button
-                onClick={() => { setIsSidebarOpen(false); router.push('/become-seller'); }}
+                onClick={() => {
+                  setIsSidebarOpen(false);
+                  if (!userInfo) {
+                    router.push('/login?redirect=/become-seller');
+                  } else {
+                    router.push('/become-seller');
+                  }
+                }}
                 className="w-full bg-emerald-50 text-emerald-700 p-3 rounded-lg flex items-center gap-3 font-bold border border-emerald-200"
               >
                 <Store size={20} /> Sell on NexusMart
