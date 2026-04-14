@@ -18,13 +18,11 @@ export const googleAuthSuccess = (req: any, res: Response) => {
 
     const redirectPath = req.query.state || '/';
 
-    res.redirect(`${frontendUrl}/login-success?token=${token}&redirect=${redirectPath}`);
-
+    res.redirect(`${frontendUrl}/login-success?token=${token}&redirect=${encodeURIComponent(redirectPath)}`);
   } else {
     res.status(401).json({ message: "Google Authentication Failed" });
   }
 };
-
 export const registerUser = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
