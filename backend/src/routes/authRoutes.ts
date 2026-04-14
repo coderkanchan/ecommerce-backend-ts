@@ -8,17 +8,25 @@ import { makeUserSeller } from '../controllers/authController.js';
 const router = express.Router();
 
 router.post('/register', registerUser);
+
 router.post('/login', loginUser);
+
 router.route('/profile')
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
 
 router.route('/').get(protect, admin, getUsers);
 
-router.get('/google', passport.authenticate('google', {
-  scope: ['profile', 'email'],
-  session: false
-}));
+router.get('/google', (req, res, next) => {
+
+  const redirect = req.query.redirect as string || '/';
+
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    session: false,
+    state: redirect
+  })(req, res, next);
+});
 
 router.put('/become-seller', protect, makeUserSeller);
 
