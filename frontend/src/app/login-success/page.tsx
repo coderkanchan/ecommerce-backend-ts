@@ -3,7 +3,7 @@ import { useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '@/redux/slices/authSlice';
-import API from '@/services/api'; 
+import API from '@/services/api';
 import { toast } from 'sonner';
 
 function LoginSuccessHandler() {
@@ -14,10 +14,10 @@ function LoginSuccessHandler() {
   useEffect(() => {
     const fetchProfile = async () => {
       const token = searchParams.get('token');
+      const redirect = searchParams.get('redirect') || '/';
 
       if (token) {
         try {
-
           const { data } = await API.get('/users/profile', {
             headers: { Authorization: `Bearer ${token}` }
           });
@@ -26,26 +26,21 @@ function LoginSuccessHandler() {
           dispatch(setCredentials(userInfo));
           localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
-          toast.success(`Welcome back, ${data.name}!`, {
-            description: 'Google Login Successful 🚀',
-          });
+          toast.success(`Welcome back, ${data.name}!`);
 
           setTimeout(() => {
-            router.push('/');
+            router.push(redirect);
           }, 800);
         } catch (error) {
           toast.error('Failed to sync user data.');
           router.push('/login');
         }
       } else {
-        toast.error('Token not found. Login failed.');
         router.push('/login');
       }
     };
-
     fetchProfile();
   }, [searchParams, dispatch, router]);
-
   return (
     <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
       <div className="text-center">
