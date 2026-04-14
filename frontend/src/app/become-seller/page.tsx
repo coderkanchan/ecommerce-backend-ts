@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import API from '@/services/api';
 import { useRouter } from 'next/navigation';
 import { useSelector, useDispatch } from 'react-redux';
@@ -43,6 +43,15 @@ export default function BecomeSellerPage() {
       router.push('/seller/dashboard');
     }
   };
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const autoStart = searchParams.get('start');
+
+    if (autoStart === 'true' && userInfo && userInfo.role !== 'seller') {
+      handleStartSelling();
+    }
+  }, [userInfo]);
 
   return (
     <div className="bg-white min-h-screen">

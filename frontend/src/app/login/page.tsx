@@ -39,9 +39,8 @@ function LoginContent() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/users/google`;
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/users/google?redirect=${redirect}`;
   };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4">
       <form onSubmit={handleSubmit} className="bg-gray-900 p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-800">
@@ -84,7 +83,7 @@ function LoginContent() {
           <FcGoogle />
           Continue with Google
         </button>
-        
+
         <p className="text-gray-400 mt-6 text-center">
           Don't have an account?
           <Link href={`/signup?redirect=${redirect}`} className="text-blue-400 hover:underline">
