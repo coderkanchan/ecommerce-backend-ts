@@ -16,8 +16,10 @@ export const googleAuthSuccess = (req: any, res: Response) => {
     const token = generateToken(req.user._id.toString());
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
 
-    res.redirect(`${frontendUrl}/login-success?token=${token}`);
-   
+    const redirectPath = req.query.state || '/';
+
+    res.redirect(`${frontendUrl}/login-success?token=${token}&redirect=${redirectPath}`);
+
   } else {
     res.status(401).json({ message: "Google Authentication Failed" });
   }
