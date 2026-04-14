@@ -18,13 +18,12 @@ router.route('/profile')
 router.route('/').get(protect, admin, getUsers);
 
 router.get('/google', (req, res, next) => {
-
-  const redirect = req.query.redirect as string || '/';
-
+  const redirectPath = (req.query.redirect as string) || '/';
+  
   passport.authenticate('google', {
     scope: ['profile', 'email'],
     session: false,
-    state: redirect
+    state: redirectPath 
   })(req, res, next);
 });
 
