@@ -31,7 +31,7 @@ function LoginSuccessHandler() {
           toast.success(`Welcome back, ${data.name}!`);
 
           setTimeout(() => {
-            router.push(redirect);
+            router.push(redirectPath);
           }, 800);
         } catch (error) {
           toast.error('Failed to sync user data.');
