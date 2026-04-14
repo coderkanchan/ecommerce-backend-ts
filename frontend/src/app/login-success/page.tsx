@@ -11,9 +11,11 @@ function LoginSuccessHandler() {
   const dispatch = useDispatch();
   const router = useRouter();
 
+
   useEffect(() => {
     const fetchProfile = async () => {
       const token = searchParams.get('token');
+     
       const redirect = searchParams.get('redirect') || '/';
 
       if (token) {
@@ -41,6 +43,7 @@ function LoginSuccessHandler() {
     };
     fetchProfile();
   }, [searchParams, dispatch, router]);
+
   return (
     <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
       <div className="text-center">
