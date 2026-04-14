@@ -7,7 +7,7 @@ import { FcGoogle } from "react-icons/fc";
 import { Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import { useDispatch } from 'react-redux';
-import { setCredentials } from '@/redux/slices/authSlice'; // Is import ko check karein
+import { setCredentials } from '@/redux/slices/authSlice'; 
 
 function SignupContent() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
@@ -43,7 +43,7 @@ function SignupContent() {
   const handleGoogleLogin = () => {
     window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/users/google?redirect=${redirect}`;
   };
-  
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-black">
       <form onSubmit={handleSubmit} className="bg-gray-900 p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-800">

@@ -17,6 +17,7 @@ export const googleAuthSuccess = (req: any, res: Response) => {
     const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
 
     res.redirect(`${frontendUrl}/login-success?token=${token}`);
+   
   } else {
     res.status(401).json({ message: "Google Authentication Failed" });
   }
