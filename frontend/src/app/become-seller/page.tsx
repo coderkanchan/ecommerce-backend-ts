@@ -17,10 +17,9 @@ export default function BecomeSellerPage() {
   const handleStartSelling = async () => {
     if (!userInfo) {
       toast.info("Please login to start your seller journey");
-      router.push('/login?redirect=/seller/dashboard');
+      router.push('/login?redirect=/become-seller?start=true');
       return;
     }
-
     if (userInfo.role !== 'seller') {
       try {
         setLoading(true);
