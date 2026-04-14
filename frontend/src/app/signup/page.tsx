@@ -2,12 +2,12 @@
 import { useState, Suspense } from 'react';
 import API from '@/services/api';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Dispatch } from '@reduxjs/toolkit';
 import Link from 'next/link';
 import { FcGoogle } from "react-icons/fc";
 import { Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import { useDispatch } from 'react-redux';
+import { setCredentials } from '@/redux/slices/authSlice'; // Is import ko check karein
 
 function SignupContent() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
@@ -18,37 +18,17 @@ function SignupContent() {
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect') || '/';
 
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   try {
-  //     const { data } = await API.post('/users/register', formData);
-  //     localStorage.setItem('userInfo', JSON.stringify(data));
-
-  //     toast.success('Signup Successful!', {
-  //       description: 'Redirecting...', duration: 800
-  //     });
-
-  //     setTimeout(() => {
-  //       router.push(redirect);
-  //     }, 800);
-
-  //   } catch (error: any) {
-  //     toast.error(error.response?.data?.message || 'Signup Failed. Try again!');
-  //   }
-  // };
-
-  // signup/page.tsx ke handleSubmit mein ye change karein:
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const { data } = await API.post('/users/register', formData);
 
-      dispatch(setCredentials(data)); 
+      dispatch(setCredentials(data));
       localStorage.setItem('userInfo', JSON.stringify(data));
 
       toast.success('Account Created!', {
-        description: 'Logging you in automatically...', duration: 800
+        description: 'Logging you in automatically...',
+        duration: 800
       });
 
       setTimeout(() => {
