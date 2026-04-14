@@ -17,7 +17,7 @@ function SignupContent() {
 
   const searchParams = useSearchParams();
   const redirect = searchParams.get('redirect') || '/';
-  
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -41,9 +41,9 @@ function SignupContent() {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/users/google`;
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/users/google?redirect=${redirect}`;
   };
-
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-black">
       <form onSubmit={handleSubmit} className="bg-gray-900 p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-800">
