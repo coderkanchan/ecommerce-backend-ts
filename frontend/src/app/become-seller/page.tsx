@@ -14,6 +14,17 @@ export default function BecomeSellerPage() {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: RootState) => state.auth);
 
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.get('start') === 'true' && userInfo) {
+      if (userInfo.role === 'seller') {
+        router.push('/seller/dashboard');
+      } else {
+        handleStartSelling();
+      }
+    }
+  }, [userInfo, router]);
+
   const handleStartSelling = async () => {
     if (!userInfo) {
       toast.info("Please login to start your seller journey");
@@ -43,15 +54,6 @@ export default function BecomeSellerPage() {
       router.push('/seller/dashboard');
     }
   };
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const autoStart = searchParams.get('start');
-
-    if (autoStart === 'true' && userInfo && userInfo.role !== 'seller') {
-      handleStartSelling();
-    }
-  }, [userInfo]);
 
   return (
     <div className="bg-white min-h-screen">
