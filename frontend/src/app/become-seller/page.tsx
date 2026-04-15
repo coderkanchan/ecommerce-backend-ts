@@ -57,7 +57,6 @@ export default function BecomeSellerPage() {
 
   return (
     <div className="bg-white min-h-screen">
-
       <section className="bg-slate-900 text-white py-20 px-4 text-center">
         <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight">
           Sell on <span className="text-blue-500">NexusMart</span>
