@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { Package, IndianRupee, Tag, Layers, Image as ImageIcon, Loader2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import axios from 'axios';
+
 import { toast } from 'react-hot-toast';
 
 export default function AddProductPage() {
@@ -21,28 +21,7 @@ export default function AddProductPage() {
     stock: '',
     imageUrl: ''
   });
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-
-  //   try {
-  //     const config = {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${userInfo?.token}`,
-  //       },
-  //     };
-
-  //     await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/products/add`, formData, config);
-  //     toast.success('Product added successfully!');
-  //     router.push('/seller/dashboard');
-  //   } catch (err: any) {
-  //     toast.error(err.response?.data?.message || 'Something went wrong');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -71,6 +50,7 @@ export default function AddProductPage() {
       setLoading(false);
     }
   };
+
   return (
     <div className="min-h-screen bg-black text-white p-6 md:p-10">
       <div className="max-w-3xl mx-auto">
