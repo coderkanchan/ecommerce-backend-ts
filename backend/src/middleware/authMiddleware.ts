@@ -38,10 +38,10 @@ export const admin = (req: AuthRequest, res: Response, next: NextFunction) => {
   }
 };
 
-export const seller = (req: AuthRequest, res: Response, next: NextFunction) => {
-  if (req.user && (req.user.role === 'seller' || req.user.role === 'admin')) {
+export const seller = (req: any, res: Response, next: NextFunction) => {
+  if (req.user && (req.user.role === 'seller' || req.user.isAdmin)) {
     next();
   } else {
-    res.status(403).json({ message: 'Not authorized as a seller' });
+    res.status(403).json({ message: "Not authorized as a seller or admin" });
   }
 };
