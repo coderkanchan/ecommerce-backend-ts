@@ -22,28 +22,55 @@ export default function AddProductPage() {
     imageUrl: ''
   });
 
+  // const handleSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setLoading(true);
+
+  //   try {
+  //     const config = {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${userInfo?.token}`,
+  //       },
+  //     };
+
+  //     await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/products/add`, formData, config);
+  //     toast.success('Product added successfully!');
+  //     router.push('/seller/dashboard');
+  //   } catch (err: any) {
+  //     toast.error(err.response?.data?.message || 'Something went wrong');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const config = {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/add`, {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${userInfo?.token}`,
+          'Authorization': `Bearer ${userInfo?.token}`,
         },
-      };
+        body: JSON.stringify(formData), 
+      });
 
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/products/add`, formData, config);
-      toast.success('Product added successfully!');
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Something went wrong');
+      }
+
+      toast.success('Product added successfully! ✨');
       router.push('/seller/dashboard');
     } catch (err: any) {
-      toast.error(err.response?.data?.message || 'Something went wrong');
+      toast.error(err.message || 'Something went wrong');
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <div className="min-h-screen bg-black text-white p-6 md:p-10">
       <div className="max-w-3xl mx-auto">
