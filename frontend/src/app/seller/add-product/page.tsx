@@ -34,7 +34,7 @@ export default function AddProductPage() {
         },
       };
 
-      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, formData, config);
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/api/products/add`, formData, config);
       toast.success('Product added successfully!');
       router.push('/seller/dashboard');
     } catch (err: any) {

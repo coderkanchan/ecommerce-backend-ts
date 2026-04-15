@@ -23,6 +23,7 @@ export const googleAuthSuccess = (req: any, res: Response) => {
     res.status(401).json({ message: "Google Authentication Failed" });
   }
 };
+
 export const registerUser = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
