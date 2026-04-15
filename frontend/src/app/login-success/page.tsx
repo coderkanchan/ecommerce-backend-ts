@@ -15,8 +15,7 @@ function LoginSuccessHandler() {
   useEffect(() => {
     const fetchProfile = async () => {
       const token = searchParams.get('token');
-     
-      const redirect = searchParams.get('redirect') || '/';
+      const redirectPath = searchParams.get('redirect') || '/';
 
       if (token) {
         try {
@@ -34,7 +33,7 @@ function LoginSuccessHandler() {
             router.push(redirectPath);
           }, 800);
         } catch (error) {
-          toast.error('Failed to sync user data.');
+          //toast.error('Failed to sync user data.');
           router.push('/login');
         }
       } else {
