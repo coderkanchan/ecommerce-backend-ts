@@ -11,7 +11,8 @@ import { toast } from 'react-hot-toast';
 export default function AddProductPage() {
   const router = useRouter();
   const { userInfo } = useSelector((state: RootState) => state.auth);
-
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [uploading, setUploading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -21,7 +22,15 @@ export default function AddProductPage() {
     stock: '',
     imageUrl: ''
   });
-  
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file);
+      setFormData({ ...formData, imageUrl: URL.createObjectURL(file) });
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -33,7 +42,7 @@ export default function AddProductPage() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${userInfo?.token}`,
         },
-        body: JSON.stringify(formData), 
+        body: JSON.stringify(formData),
       });
 
       const data = await res.json();

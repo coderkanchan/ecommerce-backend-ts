@@ -8,7 +8,7 @@ export const createProduct = async (req: any, res: Response) => {
     if (!name || !description || !price || !category || stock === undefined || !imageUrl) {
       return res.status(400).json({ message: "All fields are required" });
     }
-
+   
     if (Number(price) <= 0) {
       return res.status(400).json({ message: "Price must be a positive number" });
     }
