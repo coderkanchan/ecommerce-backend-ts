@@ -13,8 +13,11 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const storage = multer.memoryStorage(); 
-const upload = multer({ storage });
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 } 
+});
 
 router.post('/', upload.single('image'), async (req: any, res) => {
   try {
@@ -25,15 +28,16 @@ router.post('/', upload.single('image'), async (req: any, res) => {
     const fileBase64 = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
 
     const uploadResponse = await cloudinary.uploader.upload(fileBase64, {
-      folder: 'ecommerce_products', 
+      folder: 'nexus_mart_products',
+      resource_type: 'auto',
     });
 
     res.send({
-      message: 'Image Uploaded to Cloudinary',
+      message: 'Image Uploaded Successfully',
       image: uploadResponse.secure_url, 
     });
   } catch (error) {
-    console.error(error);
+    console.error("Cloudinary Error:", error);
     res.status(500).send({ message: 'Upload to Cloudinary failed' });
   }
 });
