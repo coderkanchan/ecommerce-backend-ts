@@ -8,7 +8,7 @@ export const createProduct = async (req: any, res: Response) => {
     if (!name || !description || !price || !category || stock === undefined || !imageUrl) {
       return res.status(400).json({ message: "All fields are required" });
     }
-   
+
     if (Number(price) <= 0) {
       return res.status(400).json({ message: "Price must be a positive number" });
     }
@@ -49,9 +49,8 @@ export const getProducts = async (req: Request, res: Response) => {
       : {};
 
     const category = req.query.category && req.query.category !== 'All'
-      ? { category: req.query.category as string }
+      ? { category: { $regex: `^${req.query.category}$`, $options: 'i' } }
       : {};
-
     let sortOrder: any = { createdAt: -1 };
     if (req.query.sort === 'lowest') sortOrder = { price: 1 };
     else if (req.query.sort === 'highest') sortOrder = { price: -1 };
