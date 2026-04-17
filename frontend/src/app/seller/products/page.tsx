@@ -33,7 +33,7 @@ export default function MyProductsPage() {
       <h1 className="text-3xl font-black mb-8">MY PRODUCTS</h1>
       {loading ? <Loader2 className="animate-spin" /> : (
         <div className="grid gap-4">
-          {products.map((product: any) => (
+          {/* {products.map((product: any) => (
             <div key={product._id} className="bg-[#111] border border-gray-800 p-4 rounded-2xl flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <img src={product.imageUrl} alt={product.name} className="w-16 h-16 object-cover rounded-xl" />
@@ -47,7 +47,28 @@ export default function MyProductsPage() {
                 <button className="p-2 hover:bg-red-500/20 text-red-500 rounded-lg"><Trash2 size={18} /></button>
               </div>
             </div>
-          ))}
+          ))} */}
+          {Array.isArray(products) && products.length > 0 ? (
+            products.map((product: any) => (
+              <div key={product._id} className="bg-[#111] border border-gray-800 p-4 rounded-2xl flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <img src={product.imageUrl} alt={product.name} className="w-16 h-16 object-cover rounded-xl" />
+                  <div>
+                    <h3 className="font-bold">{product.name}</h3>
+                    <p className="text-gray-500 text-sm">{product.category} • ₹{product.price}</p>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <button className="p-2 hover:bg-gray-800 rounded-lg"><Edit size={18} /></button>
+                  <button className="p-2 hover:bg-red-500/20 text-red-500 rounded-lg"><Trash2 size={18} /></button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-20 text-gray-500">
+              No products found. Start adding some!
+            </div>
+          )}
         </div>
       )}
     </div>
