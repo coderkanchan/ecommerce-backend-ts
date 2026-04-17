@@ -175,3 +175,12 @@ export const getSuggestions = async (req: any, res: any) => {
   const products = await Product.find(keyword).select("name").limit(6);
   res.json(products);
 };
+
+export const getSellerProducts = async (req: any, res: Response) => {
+  try {
+    const products = await Product.find({ seller: req.user._id });
+    res.json(products); 
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching seller products" });
+  }
+};
