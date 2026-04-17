@@ -4,6 +4,7 @@ import {
   createProductReview,
   createProduct,
   getProducts,
+  getSellerProducts,
   getProductById,
   deleteProduct,
   updateProduct
@@ -18,6 +19,8 @@ router.get('/:id', getProductById);
 router.post('/:id/reviews', protect, createProductReview);
 
 router.post('/add', protect, seller, createProduct);
+
+router.get('/seller', protect, seller, getSellerProducts);
 
 router.route('/:id')
   .delete(protect, seller, deleteProduct)
