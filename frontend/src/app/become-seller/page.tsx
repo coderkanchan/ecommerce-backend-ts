@@ -62,15 +62,15 @@ export default function BecomeSellerPage() {
           Sell on <span className="text-blue-500">NexusMart</span>
         </h1>
         <p className="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-10">
-          Apne products ko NexusMart par list karein aur lakhon customers tak pahunchein.
-          India ke sabse bade e-commerce network ka hissa banein.
+          List your products on NexusMart and reach millions of customers.
+          Beacome part of India's largest e-commerce network.
         </p>
         <button
           onClick={handleStartSelling}
           disabled={loading}
           className="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-lg font-bold text-lg shadow-2xl transition-all transform hover:scale-105 active:scale-95"
         >
-          {loading ? "Process ho raha hai..." : "Start Selling Now"}
+          {loading ? "Processing..." : "Start Selling Now"}
         </button>
       </section>
 
@@ -78,17 +78,17 @@ export default function BecomeSellerPage() {
         <div className="text-center p-8 border rounded-2xl hover:shadow-xl transition-shadow">
           <TrendingUp className="w-12 h-12 text-blue-500 mx-auto mb-4" />
           <h3 className="text-xl font-bold mb-2 text-black">Fast Growth</h3>
-          <p className="text-gray-600">Apni sales ko 10x grow karein hamare analytics aur marketing tools ke sath.</p>
+          <p className="text-gray-600">Grow your sales 10x with our analytics and marketing tools.</p>
         </div>
         <div className="text-center p-8 border rounded-2xl hover:shadow-xl transition-shadow">
           <Globe className="w-12 h-12 text-emerald-500 mx-auto mb-4" />
           <h3 className="text-xl font-bold mb-2 text-black">Logistics Support</h3>
-          <p className="text-gray-600">Shipping aur Delivery ki chinta humein de dein, aap sirf apne business par dhyan dein.</p>
+          <p className="text-gray-600">let us worry about shipping and delivery, and just focus on your business.</p>
         </div>
         <div className="text-center p-8 border rounded-2xl hover:shadow-xl transition-shadow">
           <ShieldCheck className="w-12 h-12 text-purple-500 mx-auto mb-4" />
           <h3 className="text-xl font-bold mb-2 text-black">Secure Payments</h3>
-          <p className="text-gray-600">Harr 7 din mein aapki kamayi seedha aapke bank account mein safely transfer hoti hai.</p>
+          <p className="text-gray-600">Every 7 days, your earnings are safely transferred derectly to your bank account.</p>
         </div>
       </section>
     </div>
