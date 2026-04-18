@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { logout } from '@/redux/slices/authSlice';
-import { useDispatch } from 'react-redux';
+// import { logout } from '@/redux/slices/authSlice';
+// import { useDispatch } from 'react-redux';
 import {
   DollarSign,
   Package,
@@ -36,11 +36,11 @@ const StatCard = ({ title, value, icon: Icon, color }: any) => (
 export default function SellerDashboard() {
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
-  const dispatch = useDispatch();
-  const logoutHandler = () => {
-    dispatch(logout());
-    router.push('/login');
-  };
+  // const dispatch = useDispatch();
+  // const logoutHandler = () => {
+  //   dispatch(logout());
+  //   router.push('/login');
+  // };
 
   const [summary, setSummary] = useState({
     productsCount: 0,
