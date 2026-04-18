@@ -2,12 +2,16 @@ import Link from 'next/link';
 import { logout } from '@/redux/slices/authSlice';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
+import { Package, ShoppingBag, TrendingUp, LogOut } from 'lucide-react';
 
 export default function sideBar() {
+  const { userInfo } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
   const dispatch = useDispatch();
   const logoutHandler = () => {
-    dispatch(logout()); 
+    dispatch(logout());
     router.push('/login');
   };
 
