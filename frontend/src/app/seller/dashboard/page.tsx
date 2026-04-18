@@ -85,7 +85,7 @@ export default function SellerDashboard() {
   return (
     <div className="min-h-screen bg-black text-white flex">
 
-      <aside className="w-64 bg-[#0a0a0a] border-r border-gray-800 hidden lg:flex flex-col p-6">
+      {/* <aside className="w-64 bg-[#0a0a0a] border-r border-gray-800 hidden lg:flex flex-col p-6">
         <div className="text-2xl font-black tracking-tighter text-blue-500 mb-10">
           NEXUS<span className="text-white">MART</span>
         </div>
@@ -118,7 +118,7 @@ export default function SellerDashboard() {
             <LogOut size={20} /> Logout
           </button>
         </div>
-      </aside>
+      </aside> */}
 
       <main className="flex-1 p-8">
         <div className="flex justify-between items-center mb-10">

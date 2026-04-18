@@ -1,5 +1,5 @@
 "use client";
-import Sidebar from '@/components/seller/Sidebar';
+//import Sidebar from '@/components/seller/Sidebar';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { useRouter } from 'next/navigation';
@@ -18,7 +18,7 @@ export default function SellerLayout({ children }: { children: React.ReactNode }
   return (
     <div className="min-h-screen bg-black text-white flex">
   
-      <Sidebar />
+      //<Sidebar />
 
       <main className="flex-1 p-8 overflow-y-auto">
         {children}
