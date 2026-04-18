@@ -13,7 +13,6 @@ export default function MyProductsPage() {
   useEffect(() => {
     const fetchMyProducts = async () => {
       try {
-
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/seller`, {
           headers: { Authorization: `Bearer ${userInfo?.token}` },
         });
@@ -28,7 +27,7 @@ export default function MyProductsPage() {
     fetchMyProducts();
   }, [userInfo]);
 
-  const deleteHandler = async (id: string) => {
+  const deleteHandler = async (id: any) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`, {
@@ -45,7 +44,7 @@ export default function MyProductsPage() {
       }
     }
   };
-  
+
   return (
     <div className="min-h-screen bg-black text-white p-8">
       <h1 className="text-3xl font-black mb-8">MY PRODUCTS</h1>
@@ -63,7 +62,9 @@ export default function MyProductsPage() {
                 </div>
                 <div className="flex gap-2">
                   <button className="p-2 hover:bg-gray-800 rounded-lg"><Edit size={18} /></button>
-                  <button onClick={deleteHandler} className="p-2 hover:bg-red-500/20 text-red-500 rounded-lg"><Trash2 size={18} /></button>
+                  <button
+                    onClick={deleteHandler}
+                    className="p-2 hover:bg-red-500/20 text-red-500 rounded-lg"><Trash2 size={18} /></button>
                 </div>
               </div>
             ))
@@ -77,3 +78,4 @@ export default function MyProductsPage() {
     </div>
   );
 }
+
