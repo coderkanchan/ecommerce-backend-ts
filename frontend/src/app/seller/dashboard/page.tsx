@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { logout } from '@/redux/slices/authSlice';
+import { useDispatch } from 'react-redux';
 import {
   DollarSign,
   Package,
@@ -11,7 +13,7 @@ import {
   Users,
   TrendingUp,
   Loader2,
-  AlertCircle ,
+  AlertCircle,
   LogOut
 } from 'lucide-react';
 import Link from 'next/link';
@@ -34,6 +36,11 @@ const StatCard = ({ title, value, icon: Icon, color }: any) => (
 export default function SellerDashboard() {
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
+  const dispatch = useDispatch();
+  const logoutHandler = () => {
+    dispatch(logout());
+    router.push('/login');
+  };
 
   const [summary, setSummary] = useState({
     productsCount: 0,
@@ -105,7 +112,7 @@ export default function SellerDashboard() {
           </div>
 
           <button
-            //onClick={logoutHandler}
+            onClick={logoutHandler}
             className="w-full flex items-center gap-3 p-3 text-red-500 hover:bg-red-500/10 rounded-xl transition font-bold"
           >
             <LogOut size={20} /> Logout
