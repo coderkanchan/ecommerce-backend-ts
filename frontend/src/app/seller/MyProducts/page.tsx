@@ -31,17 +31,21 @@ export default function MyProductsPage() {
   const deleteHandler = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`, {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${userInfo?.token}` }
         });
-        toast.success("Product deleted successfully");
+
+        if (res.ok) {
+          setProducts(products.filter((p: any) => p._id !== id));
+          toast.success("Product deleted successfully");
+        }
       } catch (err) {
         toast.error("Failed to delete product");
       }
     }
   };
-
+  
   return (
     <div className="min-h-screen bg-black text-white p-8">
       <h1 className="text-3xl font-black mb-8">MY PRODUCTS</h1>
