@@ -11,7 +11,8 @@ import {
   Users,
   TrendingUp,
   Loader2,
-  AlertCircle
+  AlertCircle ,
+  LogOut
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -104,7 +105,7 @@ export default function SellerDashboard() {
           </div>
 
           <button
-            onClick={logoutHandler}
+            //onClick={logoutHandler}
             className="w-full flex items-center gap-3 p-3 text-red-500 hover:bg-red-500/10 rounded-xl transition font-bold"
           >
             <LogOut size={20} /> Logout
