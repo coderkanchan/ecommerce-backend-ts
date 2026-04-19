@@ -184,3 +184,25 @@ export const getSellerProducts = async (req: any, res: Response) => {
     res.status(500).json({ message: "Error fetching seller products" });
   }
 };
+
+export const updateProduct = async (req: any, res: Response) => {
+  try {
+    const { name, price, description, category, imageUrl } = req.body;
+    const product = await Product.findById(req.params.id);
+
+    if (product && product.seller.toString() === req.user._id.toString()) {
+      product.name = name || product.name;
+      product.price = price || product.price;
+      product.description = description || product.description;
+      product.category = category || product.category;
+      product.imageUrl = imageUrl || product.imageUrl;
+
+      const updatedProduct = await product.save();
+      res.json(updatedProduct);
+    } else {
+      res.status(404).json({ message: "Product not found or unauthorized" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server Error" });
+  }
+};
