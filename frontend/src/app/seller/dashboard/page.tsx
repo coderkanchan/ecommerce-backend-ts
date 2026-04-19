@@ -102,7 +102,7 @@ export default function SellerDashboard() {
           </div>
           <h2 className="text-2xl font-bold mb-2 text-white">No Products Found</h2>
           <p className="text-gray-500 mb-8 max-w-sm mx-auto">
-            Aapne abhi tak koi product add nahi kiya hai. Apne business ko grow karne ke liye pehla product add karein.
+            You haven't added any products yet. Start adding your first product to grow your business and reach more customers.
           </p>
           <Link
             href="/seller/add-product"
