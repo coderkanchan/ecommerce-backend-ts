@@ -8,8 +8,16 @@ import Link from 'next/link';
 import { toast } from 'react-hot-toast';
 import ConfirmModal from '@/components/shared/ConfirmModal';
 
+interface Product {
+  _id: string;
+  name: string;
+  price: number;
+  category: string;
+  imageUrl: string;
+}
+
 export default function MyProductsPage() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
