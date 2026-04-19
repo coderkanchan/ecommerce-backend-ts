@@ -14,13 +14,11 @@ export default function SellerLayout({ children }: { children: React.ReactNode }
       router.push('/login');
     }
   }, [userInfo, router]);
-
+  
   return (
-    <div className="min-h-screen bg-black text-white flex">
-
+    <div className="flex min-h-screen bg-black">
       <Sidebar />
-
-      <main className="flex-1 p-8 overflow-y-auto">
+      <main className="flex-1 overflow-y-auto">
         {children}
       </main>
     </div>
