@@ -6,7 +6,7 @@ import { Edit, Trash2, Loader2, PackageSearch, PlusCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
-//import ConfirmModal from '@/components/shared/ConfirmModal';
+import ConfirmModal from '@/components/shared/ConfirmModal';
 
 export default function MyProductsPage() {
   const [products, setProducts] = useState([]);
@@ -111,7 +111,14 @@ export default function MyProductsPage() {
           ))}
         </div>
       )}
-
-    </div>
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={confirmDelete}
+        title="Confirm Deletion"
+        message={`Are you sure you want to delete "${selectedProduct?.name}"? This action is permanent and cannot be undone.`}
+        loading={deleteLoading}
+      />
+    </div >
   );
 }
