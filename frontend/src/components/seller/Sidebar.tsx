@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { Package, ShoppingBag, TrendingUp, LogOut } from 'lucide-react';
 
-export default function sideBar() {
+export default function SideBar() {
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
   const dispatch = useDispatch();
