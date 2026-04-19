@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import { useRouter } from 'next/navigation';
 import { Loader2, Package, Trash2, Edit } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
@@ -9,7 +10,8 @@ export default function MyProductsPage() {
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const router = useRouter();
+  
   useEffect(() => {
     const fetchMyProducts = async () => {
       try {
@@ -61,7 +63,12 @@ export default function MyProductsPage() {
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <button className="p-2 hover:bg-gray-800 rounded-lg"><Edit size={18} /></button>
+                  <button
+                    onClick={() => router.push(`/seller/edit-product/${product._id}`)}
+                    className="p-2 hover:bg-gray-800 rounded-lg"
+                  >
+                    <Edit size={18} />
+                  </button>
                   <button
                     onClick={deleteHandler}
                     className="p-2 hover:bg-red-500/20 text-red-500 rounded-lg"><Trash2 size={18} /></button>
