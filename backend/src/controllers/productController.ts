@@ -143,11 +143,15 @@ export const updateProduct = async (req: any, res: any) => {
     const product = await Product.findById(req.params.id);
 
     if (product) {
+      const isOwner = product.seller.toString() === req.user._id.toString();
+      const isAdmin = req.user.role === 'admin';
+
+      if (!isOwner && !isAdmin) {
+        return res.status(403).json({ message: "You can only edit your own products" });
+      }
+
       if (price !== undefined && Number(price) <= 0) {
         return res.status(400).json({ message: "Price must be positive" });
-      }
-      if (stock !== undefined && Number(stock) < 0) {
-        return res.status(400).json({ message: "Stock cannot be negative" });
       }
 
       product.name = name || product.name;
