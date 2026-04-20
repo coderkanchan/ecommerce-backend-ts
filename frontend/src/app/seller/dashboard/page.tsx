@@ -74,21 +74,23 @@ export default function SellerDashboard() {
   }
 
   return (
-    <div className="p-8">
-      <div className="flex justify-between items-center mb-10">
+    <div className="p-4 sm:p-6 md:p-8 lg:p-10 max-w-7xl mx-auto">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 md:mb-12">
         <div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-white">Seller Central</h1>
-          <p className="text-gray-500 mt-1">Welcome back, {userInfo?.name}. Here is your store summary.</p>
+          <h1 className="text-3xl md:text-5xl font-black tracking-tighter text-white">SELLER CENTRAL</h1>
+          <p className="text-gray-500 mt-2 text-sm md:text-base tracking-tight font-medium">
+            Welcome back, <span className="text-blue-400">{userInfo?.name}</span>. Here's your store snapshot.
+          </p>
         </div>
         <Link
           href="/seller/add-product"
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 transition shadow-lg shadow-blue-600/20"
+          className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-black flex items-center justify-center gap-2 transition-all shadow-lg shadow-blue-600/20 active:scale-95"
         >
-          <PlusCircle size={20} /> Add Product
+          <PlusCircle size={20} /> ADD PRODUCT
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-10">
         <StatCard title="Revenue" value={`₹${summary.totalSales.toFixed(2)}`} icon={DollarSign} color="bg-green-500" />
         <StatCard title="Orders" value={summary.ordersCount} icon={ShoppingBag} color="bg-blue-500" />
         <StatCard title="Products" value={summary.productsCount} icon={Package} color="bg-purple-500" />
@@ -96,25 +98,24 @@ export default function SellerDashboard() {
       </div>
 
       {summary.productsCount === 0 ? (
-        <div className="bg-[#111] border-2 border-dashed border-gray-800 rounded-3xl p-20 text-center">
-          <div className="w-16 h-16 bg-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-6 text-gray-600">
+        <div className="bg-[#050505] border-2 border-dashed border-gray-900 rounded-[2.5rem] p-10 md:p-20 text-center">
+          <div className="w-16 h-16 bg-gray-900 rounded-2xl flex items-center justify-center mx-auto mb-6 text-gray-700">
             <AlertCircle size={32} />
           </div>
-          <h2 className="text-2xl font-bold mb-2 text-white">No Products Found</h2>
-          <p className="text-gray-500 mb-8 max-w-sm mx-auto">
-            You haven't added any products yet. Start adding your first product to grow your business and reach more customers.
+          <h2 className="text-xl md:text-2xl font-bold mb-3 text-white tracking-tight">No Products Found</h2>
+          <p className="text-gray-500 mb-8 max-w-sm mx-auto text-sm md:text-base">
+            Ready to scale? Add your first item to the NexusMart ecosystem.
           </p>
-          <Link
-            href="/seller/add-product"
-            className="text-blue-500 font-bold hover:text-blue-400 underline decoration-2 underline-offset-4"
-          >
-            Start selling today →
+          <Link href="/seller/add-product" className="text-blue-500 font-bold hover:text-blue-400 transition flex items-center justify-center gap-2">
+            Start selling today <PlusCircle size={16} />
           </Link>
         </div>
       ) : (
-        <div className="bg-[#111] p-8 rounded-3xl border border-gray-800">
-          <h3 className="text-xl font-bold mb-4 text-white">Recent Activity</h3>
-          <p className="text-gray-500 italic">Your store is active with {summary.productsCount} products. Check 'Orders' for new sales.</p>
+        <div className="bg-[#0A0A0A] p-6 md:p-8 rounded-[2.5rem] border border-gray-900 shadow-xl overflow-hidden">
+          <h3 className="text-lg font-black mb-2 text-white uppercase tracking-widest text-xs opacity-50">Insights</h3>
+          <p className="text-gray-400 font-medium leading-relaxed">
+            Your inventory is live with <span className="text-white">{summary.productsCount} SKU(s)</span>. Monitoring active sales traffic.
+          </p>
         </div>
       )}
     </div>
