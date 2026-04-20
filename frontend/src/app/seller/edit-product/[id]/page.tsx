@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
-import { Loader2, Save, ArrowLeft } from 'lucide-react';
+import { Loader2, Save, ArrowLeft, Package, Tag, IndianRupee, Layers, Link as LinkIcon, Info } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 export default function EditProductPage() {
@@ -27,7 +27,6 @@ export default function EditProductPage() {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products/${id}`);
         const data = await res.json();
-
         if (res.ok) {
           setFormData({
             name: data.name,
@@ -62,7 +61,6 @@ export default function EditProductPage() {
         },
         body: JSON.stringify(formData)
       });
-
       if (res.ok) {
         toast.success("Product updated successfully!");
         router.push('/seller/products');
@@ -77,93 +75,54 @@ export default function EditProductPage() {
     }
   };
 
-  if (loading) return <div className="flex justify-center p-20"><Loader2 className="animate-spin text-blue-500" size={40} /></div>;
+  if (loading) return <div className="min-h-screen bg-black flex items-center justify-center"><Loader2 className="animate-spin text-blue-500" size={48} /></div>;
 
   return (
-    <div className="max-w-4xl mx-auto p-8">
-      <button onClick={() => router.back()} className="flex items-center gap-2 text-gray-500 hover:text-white mb-6 transition">
-        <ArrowLeft size={18} /> Back to Products
-      </button>
-
-      <h1 className="text-3xl font-black mb-10 text-white">EDIT PRODUCT</h1>
-
-      <form onSubmit={submitHandler} className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#111] p-8 rounded-3xl border border-gray-800">
-        <div className="space-y-2">
-          <label className="text-xs font-bold text-gray-500 uppercase">Product Name</label>
-          <input
-            type="text"
-            className="w-full bg-black border border-gray-800 rounded-xl p-3 focus:border-blue-500 outline-none transition"
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            required
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-xs font-bold text-gray-500 uppercase">Category</label>
-          <input
-            type="text"
-            className="w-full bg-black border border-gray-800 rounded-xl p-3 focus:border-blue-500 outline-none transition"
-            value={formData.category}
-            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-            required
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-xs font-bold text-gray-500 uppercase">Price (₹)</label>
-          <input
-            type="number"
-            className="w-full bg-black border border-gray-800 rounded-xl p-3 focus:border-blue-500 outline-none transition"
-            value={formData.price}
-            onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-            required
-          />
-        </div>
-
-        <div className="space-y-2">
-          <label className="text-xs font-bold text-gray-500 uppercase">Stock</label>
-          <input
-            type="number"
-            className="w-full bg-black border border-gray-800 rounded-xl p-3 focus:border-blue-500 outline-none transition"
-            value={formData.stock}
-            onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
-            required
-          />
-        </div>
-
-        <div className="md:col-span-2 space-y-2">
-          <label className="text-xs font-bold text-gray-500 uppercase">Image URL</label>
-          <input
-            type="text"
-            className="w-full bg-black border border-gray-800 rounded-xl p-3 focus:border-blue-500 outline-none transition"
-            value={formData.imageUrl}
-            onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-            required
-          />
-        </div>
-
-        <div className="md:col-span-2 space-y-2">
-          <label className="text-xs font-bold text-gray-500 uppercase">Description</label>
-          <textarea
-            rows={4}
-            className="w-full bg-black border border-gray-800 rounded-xl p-3 focus:border-blue-500 outline-none transition resize-none"
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            required
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={updating}
-          className="md:col-span-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl flex items-center justify-center gap-2 transition disabled:opacity-50 mt-4"
-        >
-          {updating ? <Loader2 className="animate-spin" /> : <Save size={20} />}
-          Update Product
+    <div className="min-h-screen bg-black p-4 sm:p-6 md:p-10">
+      <div className="max-w-4xl mx-auto">
+        <button onClick={() => router.back()} className="flex items-center gap-2 text-gray-500 hover:text-white mb-6 transition text-xs font-bold uppercase tracking-widest">
+          <ArrowLeft size={18} /> Cancel & Return
         </button>
-      </form>
+
+        <h1 className="text-3xl md:text-5xl font-black mb-8 md:mb-12 text-white italic tracking-tighter">MODIFY ASSET</h1>
+
+        <form onSubmit={submitHandler} className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-[#0A0A0A] p-6 sm:p-10 rounded-[2.5rem] border border-gray-900 shadow-2xl relative overflow-hidden">
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-gray-600 uppercase tracking-widest px-1 flex items-center gap-2"><Package size={12} /> Product Name</label>
+            <input type="text" className="w-full bg-black border border-gray-800 rounded-2xl p-4 focus:border-blue-500 outline-none transition text-sm font-medium" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-gray-600 uppercase tracking-widest px-1 flex items-center gap-2"><Tag size={12} /> Category</label>
+            <input type="text" className="w-full bg-black border border-gray-800 rounded-2xl p-4 focus:border-blue-500 outline-none transition text-sm font-medium" value={formData.category} onChange={(e) => setFormData({ ...formData, category: e.target.value })} required />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-gray-600 uppercase tracking-widest px-1 flex items-center gap-2"><IndianRupee size={12} /> Valuation (₹)</label>
+            <input type="number" className="w-full bg-black border border-gray-800 rounded-2xl p-4 focus:border-blue-500 outline-none transition text-sm font-mono" value={formData.price} onChange={(e) => setFormData({ ...formData, price: e.target.value })} required />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-[10px] font-black text-gray-600 uppercase tracking-widest px-1 flex items-center gap-2"><Layers size={12} /> Current Stock</label>
+            <input type="number" className="w-full bg-black border border-gray-800 rounded-2xl p-4 focus:border-blue-500 outline-none transition text-sm font-mono" value={formData.stock} onChange={(e) => setFormData({ ...formData, stock: e.target.value })} required />
+          </div>
+
+          <div className="md:col-span-2 space-y-2">
+            <label className="text-[10px] font-black text-gray-600 uppercase tracking-widest px-1 flex items-center gap-2"><LinkIcon size={12} /> Media URL Source</label>
+            <input type="text" className="w-full bg-black border border-gray-800 rounded-2xl p-4 focus:border-blue-500 outline-none transition text-sm" value={formData.imageUrl} onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })} required />
+          </div>
+
+          <div className="md:col-span-2 space-y-2">
+            <label className="text-[10px] font-black text-gray-600 uppercase tracking-widest px-1 flex items-center gap-2"><Info size={12} /> Detailed Description</label>
+            <textarea rows={5} className="w-full bg-black border border-gray-800 rounded-2xl p-4 focus:border-blue-500 outline-none transition resize-none text-sm leading-relaxed" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} required />
+          </div>
+
+          <button type="submit" disabled={updating} className="md:col-span-2 bg-blue-600 hover:bg-blue-700 text-white font-black py-5 rounded-[2rem] flex items-center justify-center gap-3 transition shadow-xl shadow-blue-900/20 disabled:opacity-50 mt-6 tracking-tighter text-lg">
+            {updating ? <Loader2 className="animate-spin" /> : <Save size={22} />}
+            UPDATE NEXUS ASSET
+          </button>
+        </form>
+      </div>
     </div>
   );
-  
 }
