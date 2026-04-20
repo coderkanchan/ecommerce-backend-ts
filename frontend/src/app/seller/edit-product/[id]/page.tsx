@@ -7,7 +7,7 @@ import { Loader2, Save, ArrowLeft } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 
 export default function EditProductPage() {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const router = useRouter();
   const { userInfo } = useSelector((state: RootState) => state.auth);
 
@@ -165,4 +165,5 @@ export default function EditProductPage() {
       </form>
     </div>
   );
+  
 }
