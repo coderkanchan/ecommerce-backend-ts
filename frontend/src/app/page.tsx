@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import API from '@/services/api';
 import ProductCard from '@/components/ProductCard';
 import Pagination from '@/components/Pagination';
-import ProductSkeleton from '@/components/ProductSkeleton'; 
+import ProductSkeleton from '@/components/ProductSkeleton';
 import CategoryFilters from '@/components/home/CategoryFilters';
 
 export const metadata = {
@@ -16,7 +16,14 @@ async function ProductGrid({ searchParams }: { searchParams: any }) {
   const pageNumber = searchParams.pageNumber || '1';
 
   try {
-    const { data } = await API.get(`/products/all?keyword=${keyword}&category=${category}&pageNumber=${pageNumber}`);
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    const res = await fetch(
+      `${baseUrl}/api/products/all?keyword=${keyword}&category=${category}&pageNumber=${pageNumber}`,
+      { next: { revalidate: 60 } }
+    );
+
+    if (!res.ok) throw new Error('Failed to fetch');
+    const data = await res.json();
 
     return (
       <>
@@ -42,10 +49,10 @@ async function ProductGrid({ searchParams }: { searchParams: any }) {
       </>
     );
   } catch (error) {
-    return <div className="text-white">Error loading products.</div>;
+    console.error("Fetch error:", error);
+    return <div className="text-white">Error loading products. Check if Backend is running at 5000.</div>;
   }
 }
-
 function SkeletonLoader() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
