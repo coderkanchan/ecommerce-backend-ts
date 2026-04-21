@@ -26,8 +26,11 @@ export default function CategoryFilters({ activeCategory }: { activeCategory: st
             <button
               key={cat}
               onClick={() => {
-                const url = cat === "All" ? '/' : `/?category=${cat}`;
-                router.push(url);
+                const params = new URLSearchParams();
+                if (cat !== "All") {
+                  params.set('category', cat);
+                }
+                router.push(`/?${params.toString()}`);
               }}
               className={`
                 flex items-center gap-2 px-5 py-2.5 rounded-xl border text-sm font-semibold 
