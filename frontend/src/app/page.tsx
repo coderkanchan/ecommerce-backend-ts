@@ -64,11 +64,12 @@ function SkeletonLoader() {
 }
 
 export default async function Home({ searchParams }: { searchParams: any }) {
+  const suspenseKey = JSON.stringify(searchParams);
   return (
     <main className="container mx-auto p-4 min-h-screen">
       <CategoryFilters activeCategory={searchParams.category} />
 
-      <Suspense fallback={<SkeletonLoader />}>
+      <Suspense key={suspenseKey} fallback={<SkeletonLoader />}>
         <ProductGrid searchParams={searchParams} />
       </Suspense>
     </main>
