@@ -160,7 +160,7 @@ export default function Navbar() {
         </div>
 
         <div className="py-6 space-y-6">
-          
+
           {mounted && (!userInfo || (userInfo.role !== 'seller' && !userInfo.isAdmin)) && (
             <div className="px-4">
               <button
@@ -207,7 +207,7 @@ export default function Navbar() {
             {mounted && userInfo?.role === 'seller' && (
               <NavItem
                 icon={<LayoutDashboard size={18} />}
-                label="Seller Dashboard"
+                label="Seller Panel" 
                 variant="purple"
                 onClick={() => { setIsSidebarOpen(false); router.push('/seller/dashboard'); }}
               />
