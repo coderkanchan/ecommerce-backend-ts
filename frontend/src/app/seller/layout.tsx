@@ -22,7 +22,7 @@ export default function SellerLayout({ children }: { children: React.ReactNode }
 
   return (
     <div className="flex min-h-screen bg-black font-sans">
-      {/* Desktop Sidebar - Fixed */}
+     
       <aside className="hidden lg:block w-64 fixed h-full border-r border-gray-900 bg-[#0a0a0a] z-50">
         <Sidebar />
       </aside>
