@@ -51,7 +51,7 @@ export default function CategoryFilters({ activeCategory }: { activeCategory: st
         })}
       </div>
 
-      <div className="absolute right-0 top-0 h-full w-20 bg-gradient-to-l from-[#0a0a0a] to-transparent pointer-events-none" />
+      <div className="absolute right-0 top-0 h-full w-20 bg-linear-to-l from-[#0a0a0a] to-transparent pointer-events-none" />
     </div>
   );
 }
