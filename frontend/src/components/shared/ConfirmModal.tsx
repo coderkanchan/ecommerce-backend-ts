@@ -22,7 +22,7 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, title, messag
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-all duration-300">
+    <div className="fixed inset-0 z-999 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-all duration-300">
       <div
         className="bg-[#0A0A0A] border border-gray-800 w-full max-w-md rounded-[2.5rem] p-6 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.5)] transform transition-all animate-in fade-in zoom-in slide-in-from-bottom-4 duration-300"
       >
