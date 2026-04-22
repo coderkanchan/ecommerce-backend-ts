@@ -31,13 +31,13 @@ async function ProductGrid({ searchParams }: { searchParams: any }) {
 
   return (
     <div className="w-full flex flex-col items-center">
-      <div className="w-full max-w-[1500px]">
+      <div className="w-full max-w-375">
         <h1 className="text-3xl font-bold mb-8 text-white tracking-tight">
           {keyword ? `Search results for "${keyword}"` : category ? `${category} Products` : 'Latest Products'}
         </h1>
       </div>
 
-      <div className="w-full max-w-[1500px] grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+      <div className="w-full max-w-375 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
         {data.products && data.products.length > 0 ? (
           data.products.map((product: any) => (
             <ProductCard key={product._id} product={product} />
@@ -49,7 +49,7 @@ async function ProductGrid({ searchParams }: { searchParams: any }) {
         )}
       </div>
 
-      <div className="mt-12 w-full max-w-[1500px]">
+      <div className="mt-12 w-full max-w-375">
         <Pagination pages={data.pages} page={data.page} />
       </div>
     </div>
@@ -59,7 +59,7 @@ async function ProductGrid({ searchParams }: { searchParams: any }) {
 function SkeletonLoader() {
   return (
     <div className="w-full overflow-x-auto pb-4">
-      <div className="grid grid-cols-4 min-w-[1000px] gap-6">
+      <div className="grid grid-cols-4 min-w-250 gap-6">
         {[...Array(8)].map((_, index) => (
           <ProductSkeleton key={index} />
         ))}
