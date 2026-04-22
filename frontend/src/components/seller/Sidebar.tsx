@@ -56,8 +56,8 @@ export default function SideBar({ onItemClick }: { onItemClick?: () => void }) {
       </nav>
 
       <div className="mt-auto border-t border-gray-900 pt-6">
-        <div className="flex items-center gap-3 px-3 py-4 bg-[#111] rounded-[1.5rem] border border-gray-800 mb-4">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white flex-shrink-0">
+        <div className="flex items-center gap-3 px-3 py-4 bg-[#111] rounded-3xl border border-gray-800 mb-4">
+          <div className="w-10 h-10 rounded-full bg-linear-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white flex-shrink-0">
             {isMounted && userInfo?.name ? userInfo.name.charAt(0).toUpperCase() : '?'}
           </div>
           <div className="flex-1 min-w-0">
