@@ -56,13 +56,16 @@ async function ProductGrid({ searchParams }: { searchParams: any }) {
 
 function SkeletonLoader() {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-6">
-      {[...Array(10)].map((_, index) => (
-        <ProductSkeleton key={index} />
-      ))}
+    <div className="w-full overflow-x-auto pb-4">
+      <div className="grid grid-cols-4 min-w-[1000px] gap-6">
+        {[...Array(8)].map((_, index) => (
+          <ProductSkeleton key={index} />
+        ))}
+      </div>
     </div>
   );
 }
+
 export default async function Home(props: { searchParams: Promise<any> }) {
 
   const searchParams = await props.searchParams;
