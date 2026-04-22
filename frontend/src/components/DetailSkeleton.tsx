@@ -6,7 +6,7 @@ export default function DetailSkeleton() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
       
-        <div className="bg-gray-800 rounded-2xl h-[400px] md:h-[500px] w-full"></div>
+        <div className="bg-gray-800 rounded-2xl h-100px md:h-125 w-full"></div>
 
         <div className="space-y-6">
           <div className="h-10 bg-gray-800 rounded-lg w-3/4"></div> 
