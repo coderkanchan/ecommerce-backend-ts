@@ -19,24 +19,27 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/product/${product._id}`}
-      className="group border border-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition bg-gray-900"
+      className="group border border-gray-800 rounded-2xl overflow-hidden hover:border-gray-600 transition-all bg-[#111] flex flex-col h-full"
     >
-      <div className="h-64 overflow-hidden bg-white relative">
+      <div className="relative aspect-square overflow-hidden bg-white">
         <Image
           src={imageSrc}
           alt={product.name}
-          priority
           fill
-          className="object-contain p-4 group-hover:scale-105 transition duration-300"
-          sizes="(max-width: 768px) 100vw, 25vw"
-          unoptimized={product.imageUrl.includes('placeholder')}
+          className="object-contain p-3 group-hover:scale-105 transition duration-500"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
         />
       </div>
 
-      <div className="p-4">
-        <h2 className="font-semibold text-lg text-white truncate">{product.name}</h2>
-        <p className="text-blue-400 font-bold text-xl mt-2">${product.price}</p>
-        <button className="w-full mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+      <div className="p-3 sm:p-4 flex flex-col flex-grow">
+        <h2 className="font-bold text-xs sm:text-sm md:text-base text-gray-100 truncate line-clamp-1">
+          {product.name}
+        </h2>
+        <p className="text-blue-500 font-black text-sm sm:text-lg mt-1">
+          ${product.price}
+        </p>
+
+        <button className="w-full mt-auto bg-blue-600 text-white py-1.5 sm:py-2 rounded-xl text-[10px] sm:text-sm font-bold hover:bg-blue-700 transition active:scale-95">
           View Details
         </button>
       </div>
