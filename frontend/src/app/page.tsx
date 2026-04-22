@@ -23,7 +23,6 @@ async function getProductsData(searchParams: any) {
     return { products: [], pages: 1, page: 1 };
   }
 }
-
 async function ProductGrid({ searchParams }: { searchParams: any }) {
   const data = await getProductsData(searchParams);
   const keyword = searchParams.keyword;
@@ -35,16 +34,18 @@ async function ProductGrid({ searchParams }: { searchParams: any }) {
         {keyword ? `Search results for "${keyword}"` : category ? `${category} Products` : 'Latest Products'}
       </h1>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-6">
-        {data.products.length > 0 ? (
-          data.products.map((product: any) => (
-            <ProductCard key={product._id} product={product} />
-          ))
-        ) : (
-          <div className="col-span-full py-20 text-center bg-gray-900/50 rounded-3xl border border-dashed border-gray-800 text-white">
-            No Products Found
-          </div>
-        )}
+      <div className="w-full overflow-x-auto pb-4">
+        <div className="grid grid-cols-4 min-w-[1000px] gap-6">
+          {data.products && data.products.length > 0 ? (
+            data.products.map((product: any) => (
+              <ProductCard key={product._id} product={product} />
+            ))
+          ) : (
+            <div className="col-span-full py-20 text-center bg-gray-900/50 rounded-3xl border border-dashed border-gray-800 text-white">
+              No Products Found
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="mt-12">
@@ -69,9 +70,7 @@ function SkeletonLoader() {
 export default async function Home(props: { searchParams: Promise<any> }) {
 
   const searchParams = await props.searchParams;
-
   const category = searchParams.category || '';
-
   const suspenseKey = JSON.stringify(searchParams);
 
   return (
