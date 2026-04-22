@@ -31,7 +31,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         />
       </div>
 
-      <div className="p-3 sm:p-4 flex flex-col flex-grow">
+      <div className="p-3 sm:p-4 flex flex-col grow">
         <h2 className="font-bold text-xs sm:text-sm md:text-base text-gray-100 truncate line-clamp-1">
           {product.name}
         </h2>

@@ -43,11 +43,11 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="bg-gray-900/95 backdrop-blur-md w-full shadow-lg sticky top-0 z-[100] border-b border-gray-800">
+      <nav className="bg-gray-900/95 backdrop-blur-md w-full shadow-lg sticky top-0 z-100 border-b border-gray-800">
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16 sm:h-20 gap-2">
 
-            <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+            <div className="flex items-center gap-2 sm:gap-4 shrink-0">
               <button
                 onClick={() => setIsSidebarOpen(true)}
                 className="p-2 text-white hover:bg-gray-800 rounded-xl transition-all active:scale-95"
@@ -107,7 +107,7 @@ export default function Navbar() {
                           <Image src={userInfo.profileImage} alt="User" width={36} height={36} className="rounded-full object-cover" />
                         </div>
                       ) : (
-                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center text-sm font-bold text-white shadow-lg ring-2 ring-blue-500/30">
+                        <div className="w-9 h-9 rounded-full bg-linear-to-br from-blue-600 to-blue-700 flex items-center justify-center text-sm font-bold text-white shadow-lg ring-2 ring-blue-500/30">
                           {userInfo?.name?.charAt(0).toUpperCase()}
                         </div>
                       )}
