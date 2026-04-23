@@ -33,7 +33,7 @@ async function ProductGrid({ searchParams }: { searchParams: any }) {
 
         <h1 className="text-2xl font-bold mb-6 text-white">Latest Products</h1>
 
-        <div className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-3 sm:gap-5 w-full">
+        <div className="grid grid-cols-3 sm:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-3 sm:gap-4 w-full">
           {data.products && data.products.length > 0 ? (
             data.products.map((product: any) => (
               <ProductCard key={product._id} product={product} />
