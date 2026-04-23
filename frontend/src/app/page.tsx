@@ -4,6 +4,7 @@ import ProductCard from '@/components/ProductCard';
 import Pagination from '@/components/Pagination';
 import ProductSkeleton from '@/components/ProductSkeleton';
 import CategoryFilters from '@/components/home/CategoryFilters';
+import HomeCarousel from '@/components/HomeCarousel';
 
 export const metadata = {
   title: 'NexusMart | Shop Latest Products',
@@ -71,8 +72,12 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
   const suspenseKey = JSON.stringify(searchParams);
 
   return (
-    <main
-      className="max-w-[1400px] mx-auto px-4 w-full">
+    <main className="max-w-[1400px] mx-auto px-4 w-full">
+
+      <div className="mb-8 mt-4">
+        <HomeCarousel />
+      </div>
+
       <CategoryFilters activeCategory={category} />
 
       <Suspense key={suspenseKey} fallback={<SkeletonLoader />}>
