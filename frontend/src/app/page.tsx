@@ -26,30 +26,27 @@ async function getProductsData(searchParams: any) {
 
 async function ProductGrid({ searchParams }: { searchParams: any }) {
   const data = await getProductsData(searchParams);
-  const keyword = searchParams.keyword;
-  const category = searchParams.category;
 
   return (
-    <div className="w-full flex flex-col items-center">
-      <div className="w-full max-w-375">
-        <h1 className="text-3xl font-bold mb-8 text-white tracking-tight">
-          {keyword ? `Search results for "${keyword}"` : category ? `${category} Products` : 'Latest Products'}
-        </h1>
+    <div className="w-full flex flex-col items-center overflow-x-hidden">
+      <div className="w-full max-w-[1500px] px-2 sm:px-6">
+
+        <h1 className="text-2xl font-bold mb-6 text-white">Latest Products</h1>
+
+        <div className="grid grid-cols-2 sm:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-3 sm:gap-5 w-full">
+          {data.products && data.products.length > 0 ? (
+            data.products.map((product: any) => (
+              <ProductCard key={product._id} product={product} />
+            ))
+          ) : (
+            <div className="col-span-full py-20 text-center text-white bg-gray-900/50 rounded-2xl">
+              No Products Found
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="w-full max-w-375 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-        {data.products && data.products.length > 0 ? (
-          data.products.map((product: any) => (
-            <ProductCard key={product._id} product={product} />
-          ))
-        ) : (
-          <div className="col-span-full py-20 text-center bg-gray-900/50 rounded-3xl border border-dashed border-gray-800 text-white">
-            No Products Found
-          </div>
-        )}
-      </div>
-
-      <div className="mt-12 w-full max-w-375">
+      <div className="mt-12 w-full max-w-[1500px] px-6">
         <Pagination pages={data.pages} page={data.page} />
       </div>
     </div>
