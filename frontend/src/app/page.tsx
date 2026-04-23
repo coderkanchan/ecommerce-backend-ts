@@ -72,17 +72,32 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
   const suspenseKey = JSON.stringify(searchParams);
 
   return (
-    <main className="max-w-[1400px] mx-auto px-4 w-full">
 
-      <div className="mb-8 mt-4">
+    <main className="w-full bg-[#EAEDED]"> 
+
+      <div className="relative w-full">
         <HomeCarousel />
+
+        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-[#EAEDED] to-transparent" />
       </div>
 
-      <CategoryFilters activeCategory={category} />
+      <div className="max-w-[1500px] mx-auto px-4 relative z-10 -mt-20 md:-mt-40">
 
-      <Suspense key={suspenseKey} fallback={<SkeletonLoader />}>
-        <ProductGrid searchParams={searchParams} />
-      </Suspense>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <div className="bg-white p-4 shadow-sm">
+            <h2 className="font-bold mb-2">Appliances for your home</h2>
+            <div className="grid grid-cols-2 gap-2">
+
+            </div>
+          </div>
+
+        </div>
+
+        <CategoryFilters activeCategory={category || ""} />
+        <Suspense fallback={<SkeletonLoader />}>
+          <ProductGrid searchParams={searchParams} />
+        </Suspense>
+      </div>
     </main>
   );
 }
