@@ -72,7 +72,9 @@ export default async function Home(props: { searchParams: Promise<any> }) {
   const suspenseKey = JSON.stringify(searchParams);
 
   return (
-    <main className="container mx-auto p-4 min-h-screen">
+    <main
+      //className="container mx-auto p-4 min-h-screen"
+      className="max-w-[1400px] mx-auto px-4 w-full">
       <CategoryFilters activeCategory={category} />
 
       <Suspense key={suspenseKey} fallback={<SkeletonLoader />}>
