@@ -55,9 +55,9 @@ function SearchInput() {
 
   return (
     <div className="relative flex-1 max-w-lg" ref={suggestionRef}>
-      <form onSubmit={(e) => e.preventDefault()} className="flex items-center border border-blue-500 rounded-xl overflow-hidden bg-white shadow-sm">
+      <form onSubmit={(e) => e.preventDefault()} className="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-gray-300 shadow-sm">
         <select
-          className="bg-gray-100 text-gray-700 text-sm px-2 outline-none h-10 border-r border-blue-500"
+          className="max-w-15 text-gray-700 text-sm px-2 outline-none h-10 border-r border-gray-400 bg-gray-300 focus:border"
           value={currentCategory}
           onChange={(e) => router.push(e.target.value === 'All' ? '/' : `/?category=${e.target.value}`)}
         >

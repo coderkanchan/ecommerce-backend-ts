@@ -30,7 +30,7 @@ async function ProductGrid({ searchParams }: { searchParams: any }) {
 
   return (
     <div className="w-full flex flex-col items-center overflow-x-hidden">
-      <div className="w-full max-w-[1500px] px-2 sm:px-6">
+      <div className="w-full max-w-[1500px] px-2">
 
         <h1 className="text-2xl font-bold mb-6 text-white">Latest Products</h1>
 
@@ -73,14 +73,12 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
 
   return (
 
-    <main className="w-full bg-[#EAEDED]"> 
-
+    <main className="w-full bg-[#EAEDED]">
+      <CategoryFilters activeCategory={category || ""} />
       <div className="relative w-full">
         <HomeCarousel />
-
-        <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-[#EAEDED] to-transparent" />
       </div>
-
+      {/* <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-b from-[#216060] to-transparent" /> */}
       <div className="max-w-[1500px] mx-auto px-4 relative z-10 -mt-20 md:-mt-40">
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
@@ -93,7 +91,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
 
         </div>
 
-        <CategoryFilters activeCategory={category || ""} />
+
         <Suspense fallback={<SkeletonLoader />}>
           <ProductGrid searchParams={searchParams} />
         </Suspense>

@@ -3,23 +3,23 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const banners = [
-  { id: 1, image: "/banner1.jpg", link: "/offers/summer" },
-  { id: 2, image: "/banner2.jpg", link: "/category/electronics" },
-  { id: 3, image: "/banner3.jpg", link: "/category/fashion" },
+  { id: 1, image: "/baner1.jpg", link: "/offers/summer" },
+  { id: 2, image: "/baner2.jpg", link: "/category/electronics" },
+  { id: 3, image: "/baner3.jpg", link: "/category/fashion" },
 ];
 
 export default function HomeCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
-    }, 2000); 
-    return () => clearInterval(timer);
-  }, []);
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setCurrentIndex((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
+  //   }, 2000); 
+  //   return () => clearInterval(timer);
+  // }, []);
 
   return (
-    <div className="relative w-full h-[300px] md:h-[450px] overflow-hidden rounded-xl">
+    <div className="relative w-full h-[300px] md:h-[450px] overflow-hidden ">
 
       {banners.map((banner, index) => (
         <div
