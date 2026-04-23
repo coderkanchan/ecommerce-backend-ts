@@ -12,7 +12,7 @@ const ICON_MAP: { [key: string]: any } = {
   Laptops: Laptop,
 };
 
-export default function CategoryFilters({ activeCategory }: { activeCategory: string }) {
+export default function CategoryFilters({ activeCategory }: { activeCategory?: string }) {
   const router = useRouter();
 
   return (
