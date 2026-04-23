@@ -33,7 +33,7 @@ async function ProductGrid({ searchParams }: { searchParams: any }) {
 
         <h1 className="text-2xl font-bold mb-6 text-white">Latest Products</h1>
 
-        <div className="grid grid-cols-3 sm:grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-3 sm:gap-4 w-full">
+        <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 w-full">
           {data.products && data.products.length > 0 ? (
             data.products.map((product: any) => (
               <ProductCard key={product._id} product={product} />
@@ -66,7 +66,7 @@ function SkeletonLoader() {
 }
 
 export default async function Home({ searchParams }: { searchParams: Promise<{ category?: string }> }) {
-  const params = await searchParams; 
+  const params = await searchParams;
   const category = params.category;
   const suspenseKey = JSON.stringify(searchParams);
 
