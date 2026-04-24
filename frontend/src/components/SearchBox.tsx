@@ -83,7 +83,11 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
               if (onFocusChange) onFocusChange(true);
             }}
             onBlur={() => {
-              setTimeout(() => if (onFocusChange) onFocusChange(false), 200);
+              setTimeout(() => {
+                if (onFocusChange) {
+                  onFocusChange(false);
+                }
+              }, 200);
             }}
             onChange={(e) => setKeyword(e.target.value)}
             className="px-4 w-full text-black outline-none h-10 text-sm py-2"
