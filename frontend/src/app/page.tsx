@@ -5,6 +5,8 @@ import Pagination from '@/components/Pagination';
 import ProductSkeleton from '@/components/ProductSkeleton';
 import CategoryFilters from '@/components/home/CategoryFilters';
 import HomeCarousel from '@/components/HomeCarousel';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export const metadata = {
   title: 'NexusMart | Shop Latest Products',
@@ -72,30 +74,53 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
   const suspenseKey = JSON.stringify(searchParams);
 
   return (
+      <main className="w-full bg-[#EAEDED] min-h-screen pb-10">
+        <CategoryFilters activeCategory={category || ""} />
 
-    <main className="w-full bg-[#EAEDED]">
-      <CategoryFilters activeCategory={category || ""} />
-      <div className="relative w-full">
-        <HomeCarousel />
-      </div>
-      {/* <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-b from-[#216060] to-transparent" /> */}
-      <div className="max-w-[1500px] mx-auto px-4 relative z-10 -mt-20 md:-mt-40">
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white p-4 shadow-sm">
-            <h2 className="font-bold mb-2">Appliances for your home</h2>
-            <div className="grid grid-cols-2 gap-2">
-
-            </div>
-          </div>
-
+        <div className="relative w-full">
+          <HomeCarousel />
+          <div className="absolute bottom-0 left-0 w-full h-[150px] md:h-[250px] bg-gradient-to-t from-[#EAEDED] via-[#EAEDED]/60 to-transparent z-10" />
         </div>
 
+        <div className="max-w-[1500px] mx-auto px-4 relative z-20 -mt-32 md:-mt-60 lg:-mt-72">
 
-        <Suspense fallback={<SkeletonLoader />}>
-          <ProductGrid searchParams={searchParams} />
-        </Suspense>
-      </div>
-    </main>
+          {/* 4-Card Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            {HOME_CARDS.map((card) => (
+              <div key={card.id} className="bg-white p-5 shadow-md flex flex-col justify-between">
+                <div>
+                  <h2 className="text-xl font-bold text-gray-800 mb-3 leading-tight h-14 overflow-hidden">
+                    {card.title}
+                  </h2>
+                  <div className="grid grid-cols-2 gap-3">
+                    {card.items.map((item, idx) => (
+                      <Link href={item.link} key={idx} className="group cursor-pointer">
+                        <div className="relative aspect-square bg-gray-100 rounded-sm mb-1 overflow-hidden">
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fill
+                            className="object-contain p-2 transition-transform group-hover:scale-105"
+                          />
+                        </div>
+                        <p className="text-[11px] font-medium text-gray-700 leading-tight group-hover:text-blue-700">
+                          {item.name}
+                        </p>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+                <Link href={card.footerLink} className="text-sm text-blue-600 font-medium mt-5 hover:text-orange-700 hover:underline">
+                  {card.footerLabel}
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <Suspense fallback={<SkeletonLoader />}>
+            <ProductGrid searchParams={searchParams} />
+          </Suspense>
+        </div>
+      </main>
   );
 }
