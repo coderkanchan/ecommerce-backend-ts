@@ -51,7 +51,13 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="bg-gray-800 backdrop-blur-md w-full shadow-lg sticky top-0 z-100 border-b border-gray-800">
+      {isSearchFocused && (
+        <div
+          className="fixed inset-0 bg-black/60 z-10 backdrop-blur-[2px] transition-opacity duration-300"
+          onClick={() => setIsSearchFocused(false)}
+        />
+      )}
+      <nav className="bg-gray-800 backdrop-blur-md w-full shadow-lg sticky top-0 z-20 border-b border-gray-800">
 
         <div className="max-w-[1500px] mx-auto px-3 sm:px-6 lg:px-10">
           <div className="flex justify-between items-center h-16 sm:h-20 gap-2">
@@ -72,10 +78,9 @@ export default function Navbar() {
 
             <div className="hidden md:flex flex-1 px-4 lg:px-12">
               <div className="w-full transform transition-all duration-300 focus-within:scale-[1.01]">
-                <SearchBox />
+                <SearchBox onFocusChange={(val) => setIsSearchFocused(val)} />
               </div>
             </div>
-
             <div className="flex items-center gap-1 sm:gap-5 shrink-0">
               <button
                 onClick={() => setShowMobileSearch(!showMobileSearch)}
