@@ -22,6 +22,7 @@ export default function Navbar() {
   const { cartItems } = useSelector((state: RootState) => state.cart);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const router = useRouter();
 
   const cartCount = cartItems.reduce((acc, item) => acc + (item.qty || 0), 0);
@@ -41,10 +42,19 @@ export default function Navbar() {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isFocused) setIsFocused(false);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isFocused]);
+
   return (
     <>
       <nav className="bg-gray-800 backdrop-blur-md w-full shadow-lg sticky top-0 z-100 border-b border-gray-800">
-        
+
         <div className="max-w-[1500px] mx-auto px-3 sm:px-6 lg:px-10">
           <div className="flex justify-between items-center h-16 sm:h-20 gap-2">
 
