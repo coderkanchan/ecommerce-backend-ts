@@ -6,8 +6,8 @@ export default function CategoryFilters({ activeCategory }: { activeCategory?: s
   const router = useRouter();
 
   return (
-    <div className="relative w-full bg-gray-700">
-      <div className="flex gap-3 overflow-x-auto px-2 py-1.5 no-scrollbar scroll-smooth">
+    <div className="relative w-full bg-gray-800">
+      <div className="flex gap-4 overflow-x-auto px-2 py-1.5 no-scrollbar scroll-smooth">
         {QUICK_FILTERS.map((cat) => {
           const isActive = activeCategory === cat || (cat === "All" && !activeCategory);
 
@@ -22,7 +22,7 @@ export default function CategoryFilters({ activeCategory }: { activeCategory?: s
                 router.push(`/?${params.toString()}`);
               }}
               className={`
-                flex items-center gap-2 px-1 py-0.5 text-sm 
+                flex items-center gap-2 px-1 py-0.5 text-base 
                 transition-all duration-100 whitespace-nowrap group 
                 ${isActive ? "font-semibold scale-105 bg-gray-600 rounded-sm" : "font-medium hover:text-gray-400 "}`}
             >

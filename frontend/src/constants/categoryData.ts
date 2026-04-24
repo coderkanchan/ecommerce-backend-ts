@@ -4,5 +4,5 @@ export const SEARCH_CATEGORIES = [
 ];
 
 export const QUICK_FILTERS = [
-  "All", "Electronics", "Fashion", "Home", "Mobile", "Laptops"
+  "All", "Electronics", "Fashion", "Home", "Mobile", "Laptops" , "Home & Kitchen", "Fashion"
 ];
