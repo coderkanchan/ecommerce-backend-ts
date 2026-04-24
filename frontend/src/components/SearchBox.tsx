@@ -60,7 +60,7 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   return (
     <div className="relative flex-1 max-w-sm" ref={suggestionRef}>
       <form onSubmit={(e) => e.preventDefault()}
-        className={`flex items-center border rounded-lg overflow-hidden bg-gray-100 shadow-sm transition-all ${showSuggestions ? 'ring-2 ring-orange-400 border-transparent' : 'border-gray-300'}`}
+        className="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-gray-100 shadow-sm transition-all duration-200 focus-within:ring-2 focus-within:ring-orange-400 focus-within:border-transparent focus-within:shadow-md"
       >
         <select
           className="max-w-15 text-gray-700 text-sm px-2 outline-none h-10 border-r border-gray-400 bg-gray-300 "
