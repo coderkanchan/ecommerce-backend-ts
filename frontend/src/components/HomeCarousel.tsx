@@ -19,8 +19,7 @@ export default function HomeCarousel() {
   // }, []);
 
   return (
-    <div className="relative w-full h-[300px] md:h-[450px] overflow-hidden ">
-
+    <div className="relative w-full h-[400px] md:h-[600px] overflow-hidden">
       {banners.map((banner, index) => (
         <div
           key={banner.id}
