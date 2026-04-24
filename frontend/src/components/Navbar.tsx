@@ -22,7 +22,6 @@ export default function Navbar() {
   const { cartItems } = useSelector((state: RootState) => state.cart);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
   const router = useRouter();
 
   const cartCount = cartItems.reduce((acc, item) => acc + (item.qty || 0), 0);
@@ -41,15 +40,6 @@ export default function Navbar() {
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (isFocused) setIsFocused(false);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isFocused]);
 
   return (
     <>

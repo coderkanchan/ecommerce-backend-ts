@@ -5,7 +5,11 @@ import { Search, Clock } from 'lucide-react';
 import API from '@/services/api';
 import { SEARCH_CATEGORIES } from '@/constants/categoryData';
 
-function SearchInput() {
+interface SearchInputProps {
+  onFocusChange?: (isFocused: boolean) => void;
+}
+
+function SearchInput({ onFocusChange }: SearchInputProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const suggestionRef = useRef<HTMLDivElement>(null);
@@ -55,7 +59,9 @@ function SearchInput() {
 
   return (
     <div className="relative flex-1 max-w-sm" ref={suggestionRef}>
-      <form onSubmit={(e) => e.preventDefault()} className="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
+      <form onSubmit={(e) => e.preventDefault()}
+        className={`flex items-center border rounded-lg overflow-hidden bg-gray-100 shadow-sm transition-all ${showSuggestions ? 'ring-2 ring-orange-400 border-transparent' : 'border-gray-300'}`}
+      >
         <select
           className="max-w-15 text-gray-700 text-sm px-2 outline-none h-10 border-r border-gray-400 bg-gray-300 "
           value={currentCategory}
@@ -69,10 +75,16 @@ function SearchInput() {
         <div className='w-full flex items-center'>
           <input
             type="text"
-            autoComplete="off" 
+            autoComplete="off"
             id="product-search"
             value={keyword}
-            onFocus={() => keyword.length > 1 && setShowSuggestions(true)}
+            onFocus={() => {
+              if (keyword.length > 1) setShowSuggestions(true);
+              if (onFocusChange) onFocusChange(true);
+            }}
+            onBlur={() => {
+              setTimeout(() => if (onFocusChange) onFocusChange(false), 200);
+            }}
             onChange={(e) => setKeyword(e.target.value)}
             className="px-4 w-full text-black outline-none h-10 text-sm py-2"
             placeholder="Search NexusMart..."
@@ -106,7 +118,7 @@ function SearchInput() {
   );
 }
 
-export default function SearchBox() {
+export default function SearchBox({ onFocusChange }: SearchInputProps) {
   return (
     <Suspense fallback={<div className="h-10 w-64 bg-gray-800 animate-pulse rounded-xl"></div>}>
       <SearchInput />
