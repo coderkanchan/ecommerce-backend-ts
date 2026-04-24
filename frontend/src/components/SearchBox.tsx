@@ -129,7 +129,7 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
 export default function SearchBox({ onFocusChange }: SearchInputProps) {
   return (
     <Suspense fallback={<div className="h-10 w-64 bg-gray-800 animate-pulse rounded-xl"></div>}>
-      <SearchInput />
+      <SearchInput onFocusChange={onFocusChange} />
     </Suspense>
   );
 }
