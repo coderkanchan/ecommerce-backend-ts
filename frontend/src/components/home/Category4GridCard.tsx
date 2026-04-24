@@ -31,7 +31,7 @@ export default function Category4GridCard({ data }: Category4GridCardProps) {
                   src={item.image}
                   alt={item.name}
                   fill
-                  className="object-center transition-transform duration-300 group-hover/item:scale-105" 
+                  className="object-cover transition-transform duration-300 group-hover/item:scale-105" 
                 />
               </div>
               <p className="text-lg text-gray-700 font-bold group-hover/item:text-blue-700">{item.name}</p>

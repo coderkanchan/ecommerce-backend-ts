@@ -27,7 +27,7 @@ export const HOME_CARDS = [
     id: "home_kitchen",
     title: "Revamp your home in style",
     items: [
-      { name: "Cushion covers & bedsheets", image: "/bedsheet.jpg", link: "/search?category=Home Decor" },
+      { name: "Cushion covers & bedsheets", image: "/Carpet.jpg", link: "/search?category=Home Decor" },
       { name: "Figurines & Vases", image: "/vase.jpg", link: "/search?category=Home Decor" },
       { name: "Home storage", image: "/storage.jpg", link: "/search?category=Storage" },
       { name: "Lighting solutions", image: "/lighting.jpg", link: "/search?category=Lighting" },
