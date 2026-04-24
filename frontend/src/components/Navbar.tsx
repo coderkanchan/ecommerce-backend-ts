@@ -23,7 +23,7 @@ export default function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
   const router = useRouter();
-
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const cartCount = cartItems.reduce((acc, item) => acc + (item.qty || 0), 0);
 
   const logoutHandler = () => {
@@ -40,6 +40,14 @@ export default function Navbar() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isSearchFocused) setIsSearchFocused(false);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isSearchFocused]);
 
   return (
     <>
