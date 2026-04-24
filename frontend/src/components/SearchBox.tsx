@@ -79,8 +79,12 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
             id="product-search"
             value={keyword}
             onFocus={() => {
-              if (keyword.length > 1) setShowSuggestions(true);
-              if (onFocusChange) onFocusChange(true);
+              if (keyword.length > 1) {
+                setShowSuggestions(true);
+              }
+              if (onFocusChange) {
+                onFocusChange(true);
+              }
             }}
             onBlur={() => {
               setTimeout(() => {
