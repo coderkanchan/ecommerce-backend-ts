@@ -54,15 +54,15 @@ function SearchInput() {
   }, []);
 
   return (
-    <div className="relative flex-1 max-w-lg" ref={suggestionRef}>
-      <form onSubmit={(e) => e.preventDefault()} className="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-gray-300 shadow-sm">
+    <div className="relative flex-1 max-w-sm" ref={suggestionRef}>
+      <form onSubmit={(e) => e.preventDefault()} className="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-gray-100 shadow-sm">
         <select
-          className="max-w-15 text-gray-700 text-sm px-2 outline-none h-10 border-r border-gray-400 bg-gray-300 focus:border"
+          className="max-w-15 text-gray-700 text-sm px-2 outline-none h-10 border-r border-gray-400 bg-gray-300 "
           value={currentCategory}
           onChange={(e) => router.push(e.target.value === 'All' ? '/' : `/?category=${e.target.value}`)}
         >
           {SEARCH_CATEGORIES.map((cat) => (
-            <option key={cat} value={cat}>{cat}</option>
+            <option key={cat} value={cat} >{cat}</option>
           ))}
         </select>
 
