@@ -100,6 +100,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
                           src={item.image}
                           alt={item.name}
                           fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                           className="object-contain p-2 transition-transform group-hover:scale-105"
                         />
                       </div>
