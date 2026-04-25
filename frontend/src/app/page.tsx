@@ -6,8 +6,6 @@ import ProductSkeleton from '@/components/ProductSkeleton';
 import CategoryFilters from '@/components/home/CategoryFilters';
 import HomeCarousel from '@/components/HomeCarousel';
 import { HOME_CARDS } from '@/constants/homeData';
-// import Image from 'next/image';
-// import Link from 'next/link';
 import Category4GridCard from '@/components/home/Category4GridCard';
 
 export const metadata = {
@@ -99,6 +97,19 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
           ))}
         </div>
 
+        <div className="flex overflow-x-auto pb-4 lg:grid lg:grid-cols-4 gap-4 mb-8 no-scrollbar scroll-smooth px-2">
+          {HOME_CARDS.map((card) => (
+            <div key={card.id} className="min-w-[280px] sm:min-w-[320px] lg:min-w-full flex-shrink-0">
+              <Category4GridCard
+                data={{
+                  title: card.title,
+                  items: card.items,
+                  footerLink: { text: card.footerLabel, url: card.footerLink }
+                }}
+              />
+            </div>
+          ))}
+        </div>
         <Suspense key={suspenseKey} fallback={<SkeletonLoader />}>
           <ProductGrid searchParams={params} />
         </Suspense>
