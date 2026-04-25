@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface GridItem {
-  id: string;
+  id: string | number;
   name: string;
   image: string;
   link: string;
