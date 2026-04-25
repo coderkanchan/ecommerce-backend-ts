@@ -1,6 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react"; 
 
 const banners = [
   { id: 1, image: "/baner1.jpg", link: "/offers/summer" },
@@ -11,36 +12,58 @@ const banners = [
 export default function HomeCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
-    }, 2000);
-    return () => clearInterval(timer);
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
   }, []);
 
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev === 0 ? banners.length - 1 : prev - 1));
+  };
+
+  useEffect(() => {
+    const timer = setInterval(nextSlide, 5000); 
+    return () => clearInterval(timer);
+  }, [nextSlide]);
+
   return (
-    <div className="relative w-full h-[400px] md:h-[600px] overflow-hidden">
+    <div className="relative w-full h-[300px] md:h-[600px] overflow-hidden group">
+      {/* Banners */}
       {banners.map((banner, index) => (
         <div
           key={banner.id}
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentIndex ? "opacity-100" : "opacity-0"
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
             }`}
         >
           <Image
             src={banner.image}
             alt="Promotion"
             fill
-            priority
+            priority={index === 0}
             className="object-cover"
           />
         </div>
       ))}
 
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+      <button
+        onClick={prevSlide}
+        className="absolute left-0 top-0 bottom-0 z-30 px-4 text-white hover:bg-black/10 hidden group-hover:block transition-all"
+      >
+        <ChevronLeft size={48} strokeWidth={1} />
+      </button>
+
+      <button
+        onClick={nextSlide}
+        className="absolute right-0 top-0 bottom-0 z-30 px-4 text-white hover:bg-black/10 hidden group-hover:block transition-all"
+      >
+        <ChevronRight size={48} strokeWidth={1} />
+      </button>
+
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-2 z-30">
         {banners.map((_, i) => (
           <div
             key={i}
-            className={`h-2 w-2 rounded-full ${i === currentIndex ? "bg-white" : "bg-white/50"}`}
+            className={`h-2 w-2 rounded-full transition-all ${i === currentIndex ? "bg-white w-4" : "bg-white/50"
+              }`}
           />
         ))}
       </div>

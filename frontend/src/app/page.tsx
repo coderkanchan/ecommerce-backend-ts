@@ -86,39 +86,6 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
 
       <div className="max-w-[1500px] mx-auto px-4 relative z-20 -mt-32 md:-mt-60 lg:-mt-72">
 
-        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          {HOME_CARDS.map((card) => (
-            <div key={card.id} className="bg-white p-5 shadow-md flex flex-col justify-between">
-              <div>
-                <h2 className="text-xl font-bold text-gray-800 mb-3 leading-tight h-14 overflow-hidden">
-                  {card.title}
-                </h2>
-                <div className="grid grid-cols-2 gap-3">
-                  {card.items.map((item, idx) => (
-                    <Link href={item.link} key={idx} className="group cursor-pointer">
-                      <div className="relative aspect-square bg-gray-100 rounded-sm mb-1 overflow-hidden">
-                        <Image
-                          src={item.image}
-                          alt={item.name}
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                          className="object-contain p-2 transition-transform group-hover:scale-105"
-                        />
-                      </div>
-                      <p className="text-[11px] font-medium text-gray-700 leading-tight group-hover:text-blue-700">
-                        {item.name}
-                      </p>
-                    </Link> 
-                  ))}
-                </div>
-              </div>
-              <Link href={card.footerLink} className="text-sm text-blue-600 font-medium mt-5 hover:text-orange-700 hover:underline">
-                {card.footerLabel}
-              </Link>
-            </div>
-          ))}
-        </div> */}
-
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {HOME_CARDS.map((card) => (
             <Category4GridCard

@@ -32,7 +32,7 @@ export default function Category4GridCard({ data }: Category4GridCardProps) {
                   src={item.image}
                   alt={item.name}
                   fill
-                  sizes="(max-width: 768px) 50vw, 25vw"
+                  //sizes="(max-width: 768px) 50vw, 25vw"
                   className="object-cover transition-transform duration-300 group-hover/item:scale-110"
                 />
               </div>
