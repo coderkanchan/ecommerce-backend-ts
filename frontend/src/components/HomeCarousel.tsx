@@ -1,12 +1,12 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react"; 
-
+import { RiArrowLeftDoubleLine } from "react-icons/ri";
+import { RiArrowRightDoubleFill } from "react-icons/ri";
 const banners = [
-  { id: 1, image: "/baner1.jpg", link: "/offers/summer" },
-  { id: 2, image: "/baner2.jpg", link: "/category/electronics" },
-  { id: 3, image: "/baner3.jpg", link: "/category/fashion" },
+  { id: 1, image: "/banner1.jpg", link: "/offers/summer" },
+  { id: 2, image: "/banner2.jpg", link: "/category/electronics" },
+  { id: 3, image: "/banner3.jpg", link: "/category/fashion" },
 ];
 
 export default function HomeCarousel() {
@@ -21,13 +21,13 @@ export default function HomeCarousel() {
   };
 
   useEffect(() => {
-    const timer = setInterval(nextSlide, 5000); 
+    const timer = setInterval(nextSlide, 5000);
     return () => clearInterval(timer);
   }, [nextSlide]);
 
   return (
     <div className="relative w-full h-[300px] md:h-[600px] overflow-hidden group">
-      {/* Banners */}
+
       {banners.map((banner, index) => (
         <div
           key={banner.id}
@@ -46,27 +46,29 @@ export default function HomeCarousel() {
 
       <button
         onClick={prevSlide}
-        className="absolute left-0 top-0 bottom-0 z-30 px-4 text-white hover:bg-black/10 hidden group-hover:block transition-all"
+        className="absolute left-0 top-30 z-30 px-4 text-black hidden group-hover:block transition-all"
       >
-        <ChevronLeft size={48} strokeWidth={1} />
+        <RiArrowLeftDoubleLine size={50} strokeWidth={1} />
       </button>
 
       <button
         onClick={nextSlide}
-        className="absolute right-0 top-0 bottom-0 z-30 px-4 text-white hover:bg-black/10 hidden group-hover:block transition-all"
+        className="absolute right-0 top-30  z-30 px-4 text-black  hidden group-hover:block transition-all"
       >
-        <ChevronRight size={48} strokeWidth={1} />
+        <RiArrowRightDoubleFill size={50} strokeWidth={1} />
+ 
       </button>
 
       <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-2 z-30">
         {banners.map((_, i) => (
           <div
             key={i}
-            className={`h-2 w-2 rounded-full transition-all ${i === currentIndex ? "bg-white w-4" : "bg-white/50"
+            className={`h-2 w-2 rounded-full transition-all 
+              ${i === currentIndex ? "bg-white w-4" : "bg-white/50"
               }`}
           />
         ))}
       </div>
     </div>
   );
-}
+} 
