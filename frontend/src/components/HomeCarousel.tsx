@@ -11,12 +11,12 @@ const banners = [
 export default function HomeCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // useEffect(() => {
-  //   const timer = setInterval(() => {
-  //     setCurrentIndex((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
-  //   }, 2000); 
-  //   return () => clearInterval(timer);
-  // }, []);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev === banners.length - 1 ? 0 : prev + 1));
+    }, 2000);
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div className="relative w-full h-[400px] md:h-[600px] overflow-hidden">
@@ -26,7 +26,13 @@ export default function HomeCarousel() {
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === currentIndex ? "opacity-100" : "opacity-0"
             }`}
         >
-          <Image src={banner.image} alt="Promotion" fill className="object-cover" />
+          <Image
+            src={banner.image}
+            alt="Promotion"
+            fill
+            priority
+            className="object-cover"
+          />
         </div>
       ))}
 
