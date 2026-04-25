@@ -33,10 +33,10 @@ export default function Category4GridCard({ data }: Category4GridCardProps) {
                   alt={item.name}
                   fill
                   sizes="(max-width: 768px) 50vw, 25vw"
-                  className="object-contain transition-transform duration-300 group-hover/item:scale-105 p-1"
+                  className="object-cover transition-transform duration-300 group-hover/item:scale-110"
                 />
               </div>
-             
+
               <p className="text-[12px] text-[#0F1111] mt-1 font-medium leading-tight h-8 line-clamp-2 group-hover/item:text-[#C7511F]">
                 {item.name}
               </p>
