@@ -18,31 +18,38 @@ interface Category4GridCardProps {
 
 export default function Category4GridCard({ data }: Category4GridCardProps) {
   return (
-    <div className="bg-white  shadow-md flex flex-col justify-between h-full group hover:shadow-xl transition-shadow duration-300">
-
+    <div className="bg-white p-5 shadow-sm flex flex-col justify-between h-full hover:shadow-md transition-shadow duration-200">
       <div>
-        <h2 className="text-xl font-bold text-gray-800 mb-4 h-[60px] line-clamp-2">{data.title}</h2>
+        <h2 className="text-[21px] font-bold text-[#0F1111] mb-2 leading-tight h-[54px] line-clamp-2">
+          {data.title}
+        </h2>
 
-        <div className="grid grid-cols-2 gap-x-3 gap-y-5">
+        <div className="grid grid-cols-2 gap-x-2 gap-y-4">
           {data.items.map((item) => (
-            <Link href={item.link} key={item.id} className="block group/item">
-              <div className="relative aspect-square w-full  mb-1 overflow-hidden rounded-sm bg-gray-50">
+            <Link href={item.link} key={item.id} className="group/item flex flex-col cursor-pointer">
+              <div className="relative aspect-square w-full overflow-hidden bg-white">
                 <Image
                   src={item.image}
                   alt={item.name}
                   fill
-                  priority
-                  className="object-cover transition-transform duration-300 group-hover/item:scale-105" 
+                  sizes="(max-width: 768px) 50vw, 25vw"
+                  className="object-contain transition-transform duration-300 group-hover/item:scale-105 p-1"
                 />
               </div>
-              <p className="text-lg text-gray-700 font-bold group-hover/item:text-blue-700">{item.name}</p>
+             
+              <p className="text-[12px] text-[#0F1111] mt-1 font-medium leading-tight h-8 line-clamp-2 group-hover/item:text-[#C7511F]">
+                {item.name}
+              </p>
             </Link>
           ))}
         </div>
       </div>
 
       {data.footerLink && (
-        <Link href={data.footerLink.url} className="text-sm text-blue-600 font-medium pt-5 hover:text-orange-700 hover:underline">
+        <Link
+          href={data.footerLink.url}
+          className="text-[13px] text-[#007185] font-medium pt-4 hover:text-[#C7511F] hover:underline"
+        >
           {data.footerLink.text}
         </Link>
       )}

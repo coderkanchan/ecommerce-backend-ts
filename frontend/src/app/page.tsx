@@ -107,7 +107,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
                       <p className="text-[11px] font-medium text-gray-700 leading-tight group-hover:text-blue-700">
                         {item.name}
                       </p>
-                    </Link>
+                    </Link> 
                   ))}
                 </div>
               </div>
