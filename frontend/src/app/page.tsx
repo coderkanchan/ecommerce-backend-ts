@@ -6,8 +6,9 @@ import ProductSkeleton from '@/components/ProductSkeleton';
 import CategoryFilters from '@/components/home/CategoryFilters';
 import HomeCarousel from '@/components/HomeCarousel';
 import { HOME_CARDS } from '@/constants/homeData';
-import Image from 'next/image';
-import Link from 'next/link';
+// import Image from 'next/image';
+// import Link from 'next/link';
+import Category4GridCard from '@/components/home/Category4GridCard';
 
 export const metadata = {
   title: 'NexusMart | Shop Latest Products',
@@ -85,7 +86,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
 
       <div className="max-w-[1500px] mx-auto px-4 relative z-20 -mt-32 md:-mt-60 lg:-mt-72">
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {HOME_CARDS.map((card) => (
             <div key={card.id} className="bg-white p-5 shadow-md flex flex-col justify-between">
               <div>
@@ -115,6 +116,19 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
                 {card.footerLabel}
               </Link>
             </div>
+          ))}
+        </div> */}
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {HOME_CARDS.map((card) => (
+            <Category4GridCard
+              key={card.id}
+              data={{
+                title: card.title,
+                items: card.items,
+                footerLink: { text: card.footerLabel, url: card.footerLink }
+              }}
+            />
           ))}
         </div>
 
