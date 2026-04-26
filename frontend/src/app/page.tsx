@@ -74,7 +74,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
   const suspenseKey = JSON.stringify(params);
 
   return (
-    <main className="w-full bg-[#EAEDED] min-h-screen pb-10">
+    <main className="w-full bg-[#EAEDED] min-h-screen pb-10 lg:min-w-[1000px] overflow-x-hidden">
       <CategoryFilters activeCategory={category || ""} />
 
       <div className="relative w-full">
@@ -84,9 +84,9 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
 
       <div className="max-w-[1500px] mx-auto px-4 relative z-20 -mt-32 md:-mt-60 lg:-mt-72">
 
-        <div className="flex overflow-x-auto pb-4 lg:grid lg:grid-cols-4 gap-4 mb-8 no-scrollbar scroll-smooth px-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {HOME_CARDS.map((card) => (
-            <div key={card.id} className="min-w-[280px] sm:min-w-[320px] lg:min-w-full flex-shrink-0">
+            <div key={card.id}>
               <Category4GridCard
                 data={{
                   title: card.title,
@@ -97,6 +97,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
             </div>
           ))}
         </div>
+
         <Suspense key={suspenseKey} fallback={<SkeletonLoader />}>
           <ProductGrid searchParams={params} />
         </Suspense>
