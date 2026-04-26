@@ -20,7 +20,7 @@ export default function Category4GridCard({ data }: Category4GridCardProps) {
   return (
     <div className="bg-white p-4 sm:p-5 shadow-sm flex flex-col justify-between h-full hover:shadow-md transition-shadow duration-200">
       <div>
-        <h2 className="text-[18px] sm:text-[21px] font-bold text-[#0F1111] mb-2 leading-tight h-[50px] sm:h-[54px] line-clamp-2">
+        <h2 className="text-sm sm:text-[21px] font-bold text-[#0F1111] mb-2 leading-tight h-[50px] sm:h-[54px] line-clamp-2">
           {data.title}
         </h2>
 
