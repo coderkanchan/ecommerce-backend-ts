@@ -3,11 +3,16 @@ import { ReduxProvider } from "@/redux/ReduxProvider";
 import Script from 'next/script';
 import { Toaster } from 'sonner';
 import AIAssistant from '../components/AIAssistant';
-import NavbarWrapper from '../components/NavbarWrapper'; 
+import NavbarWrapper from '../components/NavbarWrapper';
 
 export const metadata = {
   title: 'NexusMart | Best E-commerce Platform',
   description: 'Buy and sell products easily',
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
