@@ -84,7 +84,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
 
       <div className="max-w-[1500px] mx-auto px-4 relative z-20 -mt-32 md:-mt-60 lg:-mt-72">
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
           {HOME_CARDS.map((card) => (
             <div key={card.id}>
               <Category4GridCard
