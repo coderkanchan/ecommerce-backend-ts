@@ -18,7 +18,7 @@ export const viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>
+      <body className="min-h-screen pb-10 lg:min-w-[1000px]">
         <ReduxProvider>
 
           <NavbarWrapper />
