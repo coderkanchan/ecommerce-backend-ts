@@ -25,7 +25,7 @@ export default function Category4GridCard({ data }: Category4GridCardProps) {
         </h2>
 
         <div 
-        className="grid grid-cols-2 gap-2 sm:gap-4">
+        className="grid grid-cols-2 gap-1 sm:gap-2 md:gap-3 lg:gap-4">
           {data.items.map((item) => (
             <Link href={item.link} key={item.id} className="group/item flex flex-col cursor-pointer">
               <div className="relative aspect-square w-full overflow-hidden bg-white rounded-sm">
@@ -38,7 +38,7 @@ export default function Category4GridCard({ data }: Category4GridCardProps) {
                 />
               </div>
 
-              <p className="text-[11px] sm:text-[12px] text-[#0F1111] mt-1 font-medium leading-tight h-8 line-clamp-2 group-hover/item:text-[#C7511F]">
+              <p className="text-xs sm:text-[10px] md:text-[12px] text-[#0F1111] mt-1 font-medium leading-tight h-8 line-clamp-2 group-hover/item:text-[#C7511F]">
                 {item.name}
               </p>
             </Link>
