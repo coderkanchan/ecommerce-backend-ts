@@ -82,6 +82,7 @@ export default function Navbar() {
                 <SearchBox onFocusChange={(val) => setIsSearchFocused(val)} />
               </div>
             </div>
+
             <div className="flex items-center gap-1 sm:gap-5 shrink-0">
               <button
                 onClick={() => setShowMobileSearch(!showMobileSearch)}
@@ -90,7 +91,9 @@ export default function Navbar() {
                 <Search size={24} />
               </button>
 
-              <AIAssistant />
+              <div className="flex items-center">
+                <AIAssistant />
+              </div>
 
               <div className="hidden xl:flex items-center gap-4">
                 {mounted && (!userInfo || (userInfo.role !== 'seller' && !userInfo.isAdmin)) && (
