@@ -76,7 +76,7 @@ export default function Navbar() {
               </Link>
             </div>
 
-            <div className="hidden md:flex flex-1 px-4 lg:px-12">
+            <div className="hidden md:flex flex-1 max-w-2xl mx-4 lg:mx-8">
               <div className="w-full transform transition-all duration-300 focus-within:scale-[1.01]">
                 <SearchBox onFocusChange={(val) => setIsSearchFocused(val)} />
               </div>
