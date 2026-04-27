@@ -89,7 +89,7 @@ export default function Navbar() {
                 <Search size={24} />
               </button>
 
-              <div className="hidden lg:flex items-center gap-4">
+              <div className="hidden xl:flex items-center gap-4">
                 {mounted && (!userInfo || (userInfo.role !== 'seller' && !userInfo.isAdmin)) && (
                   <Link href="/become-seller" className="text-emerald-400 hover:text-emerald-300 text-sm font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-400/10 border border-emerald-400/20 transition">
                     <Store size={16} /> <span>Sell</span>
