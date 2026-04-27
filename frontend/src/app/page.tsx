@@ -82,7 +82,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
         <div className="absolute bottom-0 left-0 w-full h-[150px] md:h-[250px] bg-gradient-to-t from-[#EAEDED] via-[#EAEDED]/60 to-transparent z-10" />
       </div>
 
-      <div className="max-w-[1500px] mx-auto px-4 relative z-20 -mt-32 md:-mt-60 lg:-mt-72">
+      <div className="lg:min-w-[1000px] max-w-[1500px] mx-auto px-4 relative z-20 -mt-32 md:-mt-60 lg:-mt-72">
 
         <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
           {HOME_CARDS.map((card) => (

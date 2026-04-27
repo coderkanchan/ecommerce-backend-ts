@@ -22,7 +22,7 @@ export default function CategoryFilters({ activeCategory }: { activeCategory?: s
                 router.push(`/?${params.toString()}`);
               }}
               className={`
-                flex items-center gap-2 px-1 py-0.5 text-base 
+                flex items-center gap-2 px-1 py-0.5 text-xs sm:text-sm lg:text-base 
                 transition-all duration-100 whitespace-nowrap group 
                 ${isActive ? "font-semibold scale-105 bg-gray-600 rounded-sm" : "font-medium hover:text-gray-400 "}`}
             >
