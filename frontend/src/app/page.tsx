@@ -59,7 +59,8 @@ async function ProductGrid({ searchParams }: { searchParams: any }) {
 function SkeletonLoader() {
   return (
     <div className="w-full overflow-x-auto pb-4">
-      <div className="min-w-250 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div
+      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 min-w-[300px]" >
         {[...Array(8)].map((_, index) => (
           <ProductSkeleton key={index} />
         ))}
@@ -79,7 +80,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
       <CategoryFilters activeCategory={category || ""} />
 
       <div className="relative w-full">
-        
+
         <HomeCarousel />
 
         <div className="absolute bottom-0 left-0 w-full h-[150px] md:h-[250px] bg-gradient-to-t from-[#EAEDED] via-[#EAEDED]/60 to-transparent z-10" />
