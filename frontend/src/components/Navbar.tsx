@@ -14,6 +14,7 @@ import SearchBox from './SearchBox';
 import { QUICK_FILTERS } from '@/constants/categoryData';
 import Image from 'next/image';
 import { toast } from 'sonner';
+import AIAssistant from '../components/AIAssistant';
 
 export default function Navbar() {
   const [mounted, setMounted] = useState(false);
@@ -48,7 +49,7 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isSearchFocused]);
- 
+
   return (
     <>
       {isSearchFocused && (
@@ -88,6 +89,8 @@ export default function Navbar() {
               >
                 <Search size={24} />
               </button>
+
+              <AIAssistant />
 
               <div className="hidden xl:flex items-center gap-4">
                 {mounted && (!userInfo || (userInfo.role !== 'seller' && !userInfo.isAdmin)) && (
