@@ -59,7 +59,7 @@ async function ProductGrid({ searchParams }: { searchParams: any }) {
 function SkeletonLoader() {
   return (
     <div className="w-full overflow-x-auto pb-4">
-      <div className="grid grid-cols-4 min-w-250 gap-6">
+      <div className="min-w-250 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {[...Array(8)].map((_, index) => (
           <ProductSkeleton key={index} />
         ))}
