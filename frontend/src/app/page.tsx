@@ -100,13 +100,11 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
             </div>
           ))}
         </div>
-          ))}
-      </div>
 
-      <Suspense key={suspenseKey} fallback={<SkeletonLoader />}>
-        <ProductGrid searchParams={params} />
-      </Suspense>
-    </div>
+        <Suspense key={suspenseKey} fallback={<SkeletonLoader />}>
+          <ProductGrid searchParams={params} />
+        </Suspense>
+      </div>
     </main >
   );
 }
