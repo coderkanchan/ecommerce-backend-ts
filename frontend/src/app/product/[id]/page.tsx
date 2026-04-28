@@ -85,7 +85,20 @@ export default function ProductDetails() {
         <p className="text-gray-400 leading-relaxed">{product.description}</p>
 
         <div className='flex items-center justify-between'>
-
+          <div className="flex items-center gap-4 bg-gray-800 p-3 rounded-xl w-fit">
+            <span className="text-gray-400 font-bold">Quantity:</span>
+            <select
+              value={qty}
+              onChange={(e) => setQty(Number(e.target.value))}
+              className="bg-transparent text-white font-bold outline-none"
+            >
+              {[...Array(product.stock > 10 ? 10 : product.stock).keys()].map((x) => (
+                <option key={x + 1} value={x + 1} className="bg-gray-800">
+                  {x + 1}
+                </option>
+              ))}
+            </select>
+          </div>
           <button
             onClick={handleAddToCart}
             className="bg-blue-600 py-3 px-8 text-white  rounded-lg font-bold hover:bg-blue-700 cursor-pointer">
