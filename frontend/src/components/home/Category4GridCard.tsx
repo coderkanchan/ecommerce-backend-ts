@@ -18,9 +18,9 @@ interface Category4GridCardProps {
 
 export default function Category4GridCard({ data }: Category4GridCardProps) {
   return (
-    <div className="bg-white p-4 sm:p-5 shadow-sm flex flex-col justify-between h-full hover:shadow-md transition-shadow duration-200">
+    <div className="bg-white p-4 sm:p-5 shadow-sm flex flex-col justify-between h-full hover:shadow-md transition-shadow duration-200 rounded-lg">
       <div>
-        <h2 className="text-sm sm:text-[21px] font-bold text-[#0F1111] mb-2 leading-tight h-[50px] sm:h-[54px] line-clamp-2">
+        <h2 className="text-sm sm:text-[21px] font-bold text-[#0F1111] mb-2 leading-tight sm:h-[50px] line-clamp-2">
           {data.title}
         </h2>
 
@@ -41,7 +41,7 @@ export default function Category4GridCard({ data }: Category4GridCardProps) {
                 />
               </div>
 
-              <p className="text-xs sm:text-[10px] md:text-[12px] text-[#0F1111] mt-1 font-medium leading-tight h-8 line-clamp-2 group-hover/item:text-[#C7511F]">
+              <p className="text-xs sm:text-[10px] md:text-[12px] text-[#0F1111] mt-1 mb-1 font-medium leading-tight h- line-clamp-2 group-hover/item:text-[#C7511F]">
                 {item.name}
               </p>
             </Link>
@@ -52,7 +52,7 @@ export default function Category4GridCard({ data }: Category4GridCardProps) {
       {data.footerLink && (
         <Link
           href={data.footerLink.url}
-          className="text-[12px] sm:text-[13px] text-[#007185] font-medium pt-4 hover:text-[#C7511F] hover:underline"
+          className="text-[12px] sm:text-[13px] text-[#007185] font-medium lg:pt-4 hover:text-[#C7511F] hover:underline"
         >
           {data.footerLink.text}
         </Link>
