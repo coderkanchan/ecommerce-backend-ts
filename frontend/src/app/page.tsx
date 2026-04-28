@@ -60,7 +60,7 @@ function SkeletonLoader() {
   return (
     <div className="w-full overflow-x-auto pb-4">
       <div
-      className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 min-w-[300px]" >
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 min-w-[300px]" >
         {[...Array(8)].map((_, index) => (
           <ProductSkeleton key={index} />
         ))}
@@ -87,7 +87,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
       </div>
 
       <div className="lg:min-w-[1000px] max-w-[1500px] mx-auto px-4 relative z-20 -mt-32 md:-mt-60 lg:-mt-72">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {HOME_CARDS.map((card) => (
             <div key={card.id}>
               <Category4GridCard
@@ -100,11 +100,13 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
             </div>
           ))}
         </div>
-
-        <Suspense key={suspenseKey} fallback={<SkeletonLoader />}>
-          <ProductGrid searchParams={params} />
-        </Suspense>
+          ))}
       </div>
-    </main>
+
+      <Suspense key={suspenseKey} fallback={<SkeletonLoader />}>
+        <ProductGrid searchParams={params} />
+      </Suspense>
+    </div>
+    </main >
   );
 }
