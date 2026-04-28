@@ -41,7 +41,7 @@ export default function Category4GridCard({ data }: Category4GridCardProps) {
                 />
               </div>
 
-              <p className="text-xs sm:text-[10px] md:text-[12px] text-[#0F1111] mt-1 mb-1 font-medium leading-tight h- line-clamp-2 group-hover/item:text-[#C7511F]">
+              <p className="text-xs sm:text-[10px] md:text-[12px] text-[#0F1111] mt-1 mb-1 font-medium leading-tight line-clamp-2 group-hover/item:text-[#C7511F]">
                 {item.name}
               </p>
             </Link>
@@ -52,7 +52,7 @@ export default function Category4GridCard({ data }: Category4GridCardProps) {
       {data.footerLink && (
         <Link
           href={data.footerLink.url}
-          className="text-[12px] sm:text-[13px] text-[#007185] font-medium lg:pt-4 hover:text-[#C7511F] hover:underline"
+          className="text-[12px] sm:text-[13px] text-[#007185] font-medium pt-1 xl:pt-2 hover:text-[#C7511F] hover:underline"
         >
           {data.footerLink.text}
         </Link>

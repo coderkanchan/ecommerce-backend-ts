@@ -94,11 +94,10 @@ export default function ProductDetails() {
 
           <button
             onClick={handleBuyNow}
-
+            className="w-full md:w-auto bg-amber-400 py-3 px-8 text-black rounded-lg font-bold hover:bg-amber-500 transition-colors shadow-md active:scale-95"
           >
             Buy Now
           </button>
-
         </div>
       </div>
     </div>
