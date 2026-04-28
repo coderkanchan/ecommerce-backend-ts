@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface GridItem {
-  id: string | number;
+  id?: string | number;
   name: string;
   image: string;
   link: string;
@@ -24,17 +24,20 @@ export default function Category4GridCard({ data }: Category4GridCardProps) {
           {data.title}
         </h2>
 
-        <div 
-        className="grid grid-cols-2 gap-1 sm:gap-2 md:gap-3 lg:gap-4">
-          {data.items.map((item) => (
-            <Link href={item.link} key={item.id} className="group/item flex flex-col cursor-pointer">
+        <div
+          className="grid grid-cols-2 gap-1 sm:gap-2 md:gap-3 lg:gap-4">
+          {data.items.map((item, index) => (
+            <Link
+              href={item.link}
+              key={item.id || index}
+              className="group/item flex flex-col cursor-pointer">
               <div className="relative aspect-square w-full overflow-hidden bg-white rounded-sm">
                 <Image
                   src={item.image}
                   alt={item.name}
                   fill
                   sizes="(max-width: 640px) 40vw, (max-width: 1024px) 20vw, 15vw"
-                  className="object-cover transition-transform duration-300 group-hover/item:scale-110"
+                  className="object-cover transition-transform duration-300 group-hover/item:scale-110 group/item flex flex-col cursor-pointer"
                 />
               </div>
 
