@@ -13,7 +13,7 @@ export const HOME_CARDS = [
   },
   {
     id: "electronics",
-    title: "Laptops & Accessories",
+    title: "Laptops, Desktops & Accessories",
     items: [
       { id: 1, name: "Laptops", image: "/laptopp.jpg", link: "/search?category=Laptops" },
       { id: 2, name: "Mice", image: "/mouse.jpg", link: "/search?category=Mice" },
