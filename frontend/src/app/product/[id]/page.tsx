@@ -8,6 +8,7 @@ import { buyNowRequest } from '@/redux/slices/cartSlice';
 import Image from 'next/image';
 import API from '@/services/api';
 import DetailSkeleton from '@/components/DetailSkeleton';
+import { toast } from 'sonner';
 
 export default function ProductDetails() {
   const dispatch = useDispatch();
@@ -34,8 +35,9 @@ export default function ProductDetails() {
       name: product.name,
       price: product.price,
       imageUrl: product.imageUrl,
-      qty: 1
+      qty: Number(qty)
     }));
+    toast.success("Added to cart!");
   };
 
   const handleBuyNow = () => {
