@@ -3,8 +3,9 @@ import ProductCard from '@/components/ProductCard';
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ category?: string; keyword?: string }> }) {
   const params = await searchParams;
-  const category = params.category || '';
   const keyword = params.keyword || '';
+  const category = searchParams.category;
+  const { data } = await API.get(`/products/all?category=${category}`);
 
   let products = [];
   try {
