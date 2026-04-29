@@ -6,8 +6,12 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   const keyword = params.keyword || '';
   const category = params.category || '';
 
-  let products = [];
-
+  let products = data.products;
+  let suggestions = [];
+  if (products.length === 0) {
+    const { data: suggestionData } = await API.get(`/products/all?category=Electronics`);
+    suggestions = suggestionData.products;
+  }
   try {
     const { data } = await API.get(`/products/all?keyword=${keyword}&category=${category}`);
     products = data.products;

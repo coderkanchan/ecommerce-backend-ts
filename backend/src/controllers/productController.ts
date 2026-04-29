@@ -49,14 +49,9 @@ export const getProducts = async (req: Request, res: Response) => {
   try {
     const pageSize = 8;
     const page = Number(req.query.pageNumber) || 1;
-
     const keyword = req.query.keyword
       ? { name: { $regex: req.query.keyword as string, $options: 'i' } }
       : {};
-
-    // const category = req.query.category && req.query.category !== 'All'
-    //   ? { category: { $regex: `^${req.query.category}$`, $options: 'i' } }
-    //   : {};
     const category = req.query.category && req.query.category !== 'All'
       ? { category: { $regex: req.query.category as string, $options: 'i' } }
       : {};
