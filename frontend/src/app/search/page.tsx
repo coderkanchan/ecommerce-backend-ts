@@ -15,20 +15,27 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   }
 
   return (
-    <div className="max-w-[1500px] mx-auto p-4">
-      <h1 className="text-xl font-bold mb-4">
-        {category ? `Results for "${category}"` : "Search Results"}
-      </h1>
+    <main className="min-h-screen bg-[#EAEDED] py-6">
+      <div className="max-w-[1500px] mx-auto px-4">
+        <div className="bg-white p-4 mb-4 shadow-sm">
+          <h1 className="text-lg font-medium text-[#0F1111]">
+            {products.length} results for <span className="text-[#C7511F] font-bold">"{category || keyword}"</span>
+          </h1>
+        </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {products.length > 0 ? (
-          products.map((product: any) => (
-            <ProductCard key={product._id} product={product} />
-          ))
-        ) : (
-          <p className="col-span-full text-center py-10">No products found in this category.</p>
-        )}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {products.length > 0 ? (
+            products.map((product: any) => (
+              <ProductCard key={product._id} product={product} />
+            ))
+          ) : (
+            <div className="col-span-full flex flex-col items-center justify-center py-20 bg-white shadow-sm rounded-md">
+              <p className="text-xl font-semibold text-gray-600">No products found!</p>
+              <p className="text-gray-400">Try checking a different category or spelling.</p>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </main>
   );
 }
