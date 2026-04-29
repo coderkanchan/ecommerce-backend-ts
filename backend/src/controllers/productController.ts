@@ -54,8 +54,11 @@ export const getProducts = async (req: Request, res: Response) => {
       ? { name: { $regex: req.query.keyword as string, $options: 'i' } }
       : {};
 
+    // const category = req.query.category && req.query.category !== 'All'
+    //   ? { category: { $regex: `^${req.query.category}$`, $options: 'i' } }
+    //   : {};
     const category = req.query.category && req.query.category !== 'All'
-      ? { category: { $regex: `^${req.query.category}$`, $options: 'i' } }
+      ? { category: { $regex: req.query.category as string, $options: 'i' } }
       : {};
     let sortOrder: any = { createdAt: -1 };
     if (req.query.sort === 'lowest') sortOrder = { price: 1 };
