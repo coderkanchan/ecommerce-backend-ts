@@ -66,7 +66,7 @@ export default function Navbar() {
             <div className="flex items-center gap-2 sm:gap-4 shrink-0">
               <button
                 onClick={() => setIsSidebarOpen(true)}
-                className="p-2 text-white hover:bg-gray-800 rounded-xl transition-all active:scale-95"
+                className="p-2 text-white hover:bg-gray-800 rounded-xl transition-all active:scale-95 cursor-pointer"
               >
                 <Menu size={26} />
               </button>
@@ -173,7 +173,7 @@ export default function Navbar() {
               <p className="font-extrabold text-lg leading-tight">{mounted && userInfo ? userInfo.name : 'Sign In Now'}</p>
             </div>
           </div>
-          <button onClick={() => setIsSidebarOpen(false)} className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-full transition">
+          <button onClick={() => setIsSidebarOpen(false)} className="absolute top-4 right-4 p-2 hover:bg-white/10 rounded-full transition cursor-pointer">
             <X size={24} />
           </button>
         </div>

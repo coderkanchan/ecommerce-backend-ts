@@ -63,7 +63,7 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
         className="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-gray-100 shadow-sm transition-all duration-200 focus-within:ring-2 focus-within:ring-orange-400 focus-within:border-transparent focus-within:shadow-md"
       >
         <select
-          className="max-w-15 text-gray-700 text-sm px-2 outline-none h-10 border-r border-gray-400 bg-gray-300 "
+          className="max-w-15 text-gray-700 text-sm px-2 outline-none h-10 border-r border-gray-400 bg-gray-300 cursor-pointer"
           value={currentCategory}
           onChange={(e) => router.push(e.target.value === 'All' ? '/' : `/?category=${e.target.value}`)}
         >

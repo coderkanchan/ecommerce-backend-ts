@@ -46,17 +46,17 @@ export default function HomeCarousel() {
 
       <button
         onClick={prevSlide}
-        className="absolute left-0 top-30 z-30 px-4 text-black hidden group-hover:block transition-all"
+        className="absolute left-0 top-30 z-30 px-4 text-black hidden group-hover:block transition-all cursor-pointer"
       >
         <RiArrowLeftDoubleLine size={50} strokeWidth={1} />
       </button>
 
       <button
         onClick={nextSlide}
-        className="absolute right-0 top-30  z-30 px-4 text-black  hidden group-hover:block transition-all"
+        className="absolute right-0 top-30  z-30 px-4 text-black  hidden group-hover:block transition-all cursor-pointer"
       >
         <RiArrowRightDoubleFill size={50} strokeWidth={1} />
- 
+
       </button>
 
       <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-2 z-30">
