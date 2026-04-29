@@ -4,10 +4,10 @@ import ProductCard from '@/components/ProductCard';
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ category?: string; keyword?: string }> }) {
   const params = await searchParams;
   const keyword = params.keyword || '';
-  const category = searchParams.category;
-  const { data } = await API.get(`/products/all?category=${category}`);
+  const category = params.category || '';
 
   let products = [];
+
   try {
     const { data } = await API.get(`/products/all?keyword=${keyword}&category=${category}`);
     products = data.products;
@@ -18,7 +18,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   return (
     <main className="min-h-screen bg-[#EAEDED] py-6">
       <div className="max-w-[1500px] mx-auto px-4">
-        <div className="bg-white p-4 mb-4 shadow-sm">
+        <div className="bg-white p-4 mb-4 shadow-sm border-b">
           <h1 className="text-lg font-medium text-[#0F1111]">
             {products.length} results for <span className="text-[#C7511F] font-bold">"{category || keyword}"</span>
           </h1>
