@@ -16,6 +16,8 @@ import { protect, admin, seller } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
+router.route('/seller').get(protect, seller, getSellerOrders);
+
 router.get('/seller-summary', protect, seller, getSellerSummary);
 
 router.get('/summary', protect, admin, getOrderSummary);
@@ -33,6 +35,5 @@ router.route('/').get(protect, admin, getOrders);
 
 router.route('/:id/deliver').put(protect, admin, updateOrderToDelivered);
 
-router.route('/seller').get(protect, seller, getSellerOrders);
 
 export default router;
