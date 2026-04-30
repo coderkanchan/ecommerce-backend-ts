@@ -18,17 +18,30 @@ export default function SellerOrdersPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-800">
-            <tr>
-              <td className="px-6 py-4 font-mono text-sm">#ORD12345</td>
-              <td className="px-6 py-4">Air conditioners</td>
-              <td className="px-6 py-4">John Doe</td>
-              <td className="px-6 py-4 text-blue-400">₹35000</td>
-              <td className="px-6 py-4">
-                <span className="bg-yellow-900/30 text-yellow-500 px-3 py-1 rounded-full text-xs">
-                  Processing
-                </span>
-              </td>
-            </tr>
+            {orders.length > 0 ? (
+              orders.map((order) => (
+                <tr key={order._id}>
+                  <td className="px-6 py-4 font-mono text-sm">#{order._id.slice(-6)}</td>
+                  <td className="px-6 py-4">
+                    {order.orderItems.map(item => item.name).join(", ")}
+                  </td>
+                  <td className="px-6 py-4">{order.user?.name || "Unknown"}</td>
+                  <td className="px-6 py-4 text-blue-400">₹{order.totalPrice}</td>
+                  <td className="px-6 py-4">
+                    <span className={`px-3 py-1 rounded-full text-xs ${order.isDelivered ? 'bg-green-900/30 text-green-500' : 'bg-yellow-900/30 text-yellow-500'
+                      }`}>
+                      {order.isDelivered ? 'Delivered' : 'Processing'}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={5} className="py-20 text-center text-gray-500">
+                  No orders received yet.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
 
