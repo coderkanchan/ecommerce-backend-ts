@@ -80,7 +80,7 @@ export default function SellerLayout({ children }: { children: React.ReactNode }
           </div>
         </header>
 
-        <main className="flex-1 p-4 lg:p-10 max-w-[1600px] mx-auto w-full">
+        <main className="flex-1 p-4 lg:p-10 max-w-400 mx-auto w-full">
           {children}
         </main>
       </div>
