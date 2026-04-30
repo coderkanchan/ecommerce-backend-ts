@@ -56,7 +56,7 @@ export default function SellerLayout({ children }: { children: React.ReactNode }
       </div>
 
       <div className="flex-1 flex flex-col lg:ml-64 w-full">
-        <header className="h-16 border-b border-gray-900 flex items-center justify-between px-6 sticky top-0 bg-black/80 backdrop-blur-xl z-[100]">
+        <header className="h-16 border-b border-gray-900 flex items-center justify-between px-6 sticky top-0 bg-black/80 backdrop-blur-xl z-100">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsMobileMenuOpen(true)}
