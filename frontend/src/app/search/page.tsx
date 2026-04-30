@@ -25,7 +25,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
 
   return (
     <main className="min-h-screen bg-[#EAEDED] py-6">
-      <div className="max-w-[1500px] mx-auto px-4">
+      <div className="max-w-375 mx-auto px-4">
         <div className="bg-white p-4 mb-4 shadow-sm border-b">
           <h1 className="text-lg font-medium text-[#0F1111]">
             {isSuggestionMode ? (

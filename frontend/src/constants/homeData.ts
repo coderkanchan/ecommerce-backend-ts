@@ -3,7 +3,7 @@ export const HOME_CARDS = [
     id: "appliances",
     title: "Appliances for your home | Up to 55% off",
     items: [
-      { id: 1, name: "Air conditioners", image: "/ac.jpg", link: "/search?category=Electronics" },
+      { id: 1, name: "Air conditioners", image: "/ac.jpg", link: "/search?category=Air Conditioners" },
       { id: 2, name: "Refrigerators", image: "/fridge.jpg", link: "/search?category=Refrigerators" },
       { id: 3, name: "Microwaves", image: "/micro.jpg", link: "/search?category=Microwaves" },
       { id: 4, name: "Washing machines", image: "/wm.jpg", link: "/search?category=Washing Machines" },
