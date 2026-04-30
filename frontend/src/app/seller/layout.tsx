@@ -16,7 +16,7 @@ export default function SellerLayout({ children }: { children: React.ReactNode }
   useEffect(() => {
     setIsClient(true);
   }, []);
-  
+
   useEffect(() => {
     if (!userInfo || userInfo.role !== 'seller') {
       router.push('/login');
@@ -32,7 +32,7 @@ export default function SellerLayout({ children }: { children: React.ReactNode }
         <Sidebar />
       </aside>
 
-      <div className={`fixed inset-0 z-[200] lg:hidden transition-all duration-500 ${isMobileMenuOpen ? 'visible' : 'invisible'
+      <div className={`fixed inset-0 z-200 lg:hidden transition-all duration-500 ${isMobileMenuOpen ? 'visible' : 'invisible'
         }`}>
 
         <div
