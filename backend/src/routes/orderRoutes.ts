@@ -33,6 +33,6 @@ router.route('/').get(protect, admin, getOrders);
 
 router.route('/:id/deliver').put(protect, admin, updateOrderToDelivered);
 
-router.route('/sellerorders').get(protect, seller, getSellerOrders);
+router.route('/seller').get(protect, seller, getSellerOrders);
 
 export default router;
