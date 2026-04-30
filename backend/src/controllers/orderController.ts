@@ -185,3 +185,11 @@ export const getSellerSummary = async (req: any, res: Response) => {
     res.status(500).json({ message: "Error fetching seller stats" });
   }
 };
+
+export const getSellerOrders = async (req, res) => {
+  const orders = await Order.find({ 'orderItems.seller': req.user._id })
+    .populate('user', 'name email')
+    .sort({ createdAt: -1 });
+
+  res.json(orders);
+};
