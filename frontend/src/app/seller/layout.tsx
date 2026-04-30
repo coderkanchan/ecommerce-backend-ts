@@ -11,7 +11,12 @@ export default function SellerLayout({ children }: { children: React.ReactNode }
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  
   useEffect(() => {
     if (!userInfo || userInfo.role !== 'seller') {
       router.push('/login');
@@ -70,7 +75,7 @@ export default function SellerLayout({ children }: { children: React.ReactNode }
               Dashboard Mode
             </span>
             <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold text-white shadow-lg ring-2 ring-blue-500/20">
-             {isClient ? userInfo?.name?.charAt(0).toUpperCase() : ""}
+              {isClient ? userInfo?.name?.charAt(0).toUpperCase() : ""}
             </div>
           </div>
         </header>
