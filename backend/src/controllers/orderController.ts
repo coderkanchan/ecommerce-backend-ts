@@ -142,18 +142,6 @@ export const getOrderSummary = async (req: any, res: any) => {
   }
 };
 
-export const getSellerOrders = async (req: any, res: Response) => {
-  try {
-    const orders = await Order.find({
-      'orderItems.seller': req.user._id
-    }).populate('user', 'name email');
-
-    res.json(orders);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching seller orders" });
-  }
-};
-
 export const getSellerSummary = async (req: any, res: Response) => {
   try {
     const sellerId = req.user._id;
@@ -186,10 +174,17 @@ export const getSellerSummary = async (req: any, res: Response) => {
   }
 };
 
-export const getSellerOrders = async (req, res) => {
-  const orders = await Order.find({ 'orderItems.seller': req.user._id })
-    .populate('user', 'name email')
-    .sort({ createdAt: -1 });
+export const getSellerOrders = async (req: any, res: Response) => {
+  try {
+    const orders = await Order.find({
+      'orderItems.seller': req.user._id
+    })
+      .populate('user', 'name email')
+      .sort({ createdAt: -1 });
 
-  res.json(orders);
+    res.json(orders);
+  } catch (error) {
+    console.error("Seller Orders Fetch Error:", error);
+    res.status(500).json({ message: "Error fetching seller orders" });
+  }
 };
