@@ -22,14 +22,14 @@ export default function SellerLayout({ children }: { children: React.ReactNode }
 
   return (
     <div className="flex min-h-screen bg-black font-sans">
-     
+
       <aside className="hidden lg:block w-64 fixed h-full border-r border-gray-900 bg-[#0a0a0a] z-50">
         <Sidebar />
       </aside>
 
       <div className={`fixed inset-0 z-[200] lg:hidden transition-all duration-500 ${isMobileMenuOpen ? 'visible' : 'invisible'
         }`}>
-        
+
         <div
           className={`absolute inset-0 bg-black/90 backdrop-blur-sm transition-opacity duration-500 ease-in-out ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0'
             }`}
@@ -70,7 +70,7 @@ export default function SellerLayout({ children }: { children: React.ReactNode }
               Dashboard Mode
             </span>
             <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold text-white shadow-lg ring-2 ring-blue-500/20">
-              {userInfo?.name?.charAt(0).toUpperCase()}
+             {isClient ? userInfo?.name?.charAt(0).toUpperCase() : ""}
             </div>
           </div>
         </header>
