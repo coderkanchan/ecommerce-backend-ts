@@ -1,16 +1,22 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL}/api`,
-  withCredentials: true
+  baseURL: '/api', 
+  withCredentials: true, 
 });
 
 API.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
     const userInfo = localStorage.getItem('userInfo');
     if (userInfo) {
-      const { token } = JSON.parse(userInfo);
-      config.headers.Authorization = `Bearer ${token}`;
+      try {
+        const { token } = JSON.parse(userInfo);
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+      } catch (err) {
+        console.error("Error parsing userInfo from localStorage", err);
+      }
     }
   }
   return config;
@@ -21,20 +27,9 @@ export const fetchProducts = async () => {
   return response.data;
 };
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-
 export const createRazorpayOrder = async (amount: number) => {
-  const response = await fetch(`${API_URL}/api/payment/order`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ amount }),
-  });
-  
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-
-  return response.json();
+  const response = await API.post('/payment/order', { amount });
+  return response.data;
 };
 
 export default API;
