@@ -75,7 +75,7 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ c
   const suspenseKey = JSON.stringify(params);
 
   return (
-    <main className="w-full bg-[#EAEDED] min-h-screen pb-10 lg:min-w-[1000px] overflow-x-hidden">
+    <main className="w-full bg-[#EAEDED] min-h-screen pb-10 lg:min-w-250 overflow-x-hidden">
 
       <CategoryFilters activeCategory={category || ""} />
 
