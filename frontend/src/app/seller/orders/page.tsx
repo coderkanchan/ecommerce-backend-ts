@@ -19,13 +19,13 @@ interface Order {
 }
 
 export default function SellerOrdersPage() {
-  const [orders, setOrders] = useState<Order[]>([]); 
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const { data } = await axios.get("/api/orders/seller");
+        const { data } = await axios.get("/api/orders/seller", { withCredentials: true });
         setOrders(data);
       } catch (error) {
         console.error("Fetch Error:", error);
