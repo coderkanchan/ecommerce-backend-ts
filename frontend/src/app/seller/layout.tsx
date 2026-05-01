@@ -60,7 +60,7 @@ export default function SellerLayout({ children }: { children: React.ReactNode }
           <div className="flex items-center gap-4">
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="lg:hidden p-2 text-white bg-gray-900 rounded-lg active:scale-95 transition-all"
+              className="lg:hidden p-2 text-white bg-gray-900 rounded-lg active:scale-95 transition-all cursor-pointer"
             >
               <Menu size={20} />
             </button>

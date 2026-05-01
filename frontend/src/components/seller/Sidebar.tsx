@@ -55,7 +55,7 @@ export default function SideBar({ onItemClick }: { onItemClick?: () => void }) {
         })}
       </nav>
 
-      <div className="mt-auto border-t border-gray-900 pt-6">
+      <div className="mt-auto border-t border-gray-900 pt-6 cursor-pointer">
         <div className="flex items-center gap-3 px-3 py-4 bg-[#111] rounded-3xl border border-gray-800 mb-4">
           <div className="w-10 h-10 rounded-full bg-linear-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white shrink-0">
             {isMounted && userInfo?.name ? userInfo.name.charAt(0).toUpperCase() : '?'}
@@ -70,7 +70,7 @@ export default function SideBar({ onItemClick }: { onItemClick?: () => void }) {
 
         <button
           onClick={logoutHandler}
-          className="w-full flex items-center gap-3 p-4 text-red-500 hover:bg-red-500/10 rounded-2xl transition-all font-bold active:scale-95"
+          className="w-full flex items-center gap-3 p-4 text-red-500 hover:bg-red-500/10 rounded-2xl transition-all font-bold active:scale-95 cursor-pointer"
         >
           <LogOut size={20} /> Logout
         </button>

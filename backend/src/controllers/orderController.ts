@@ -176,11 +176,7 @@ export const getSellerSummary = async (req: any, res: Response) => {
 
 export const getSellerOrders = async (req: any, res: Response) => {
   try {
-    const orders = await Order.find({
-      'orderItems.seller': req.user._id
-    })
-      .populate('user', 'name email')
-      .sort({ createdAt: -1 });
+    const orders = await Order.find({ "orderItems.seller": req.user._id }).populate('user', 'name email').sort({ createdAt: -1 });
 
     res.json(orders);
   } catch (error) {
