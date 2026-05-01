@@ -32,7 +32,7 @@ async function ProductGrid({ searchParams }: { searchParams: any }) {
 
   return (
     <div className="w-full flex flex-col items-center overflow-x-hidden">
-      <div className="w-full max-w-[1500px] px-2">
+      <div className="w-full max-w-375 px-2">
 
         <h1 className="text-2xl font-bold mb-6 text-white">Latest Products</h1>
 
