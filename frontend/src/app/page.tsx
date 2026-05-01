@@ -60,7 +60,7 @@ function SkeletonLoader() {
   return (
     <div className="w-full overflow-x-auto pb-4">
       <div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 min-w-[300px]" >
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 min-w-75" >
         {[...Array(8)].map((_, index) => (
           <ProductSkeleton key={index} />
         ))}
