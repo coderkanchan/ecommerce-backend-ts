@@ -19,8 +19,8 @@ async function getProductsData(searchParams: any) {
   const pageNumber = searchParams.pageNumber || '1';
 
   try {
-    const { data } = await API.get(`/products/all?keyword=${keyword}&category=${category}&pageNumber=${pageNumber}`);
-    return data;
+    const response = await API.get(`/products/all?keyword=${keyword}&category=${category}&pageNumber=${pageNumber}`);
+    return response.data;
   } catch (error) {
     console.error("Fetch Error:", error);
     return { products: [], pages: 1, page: 1 };
