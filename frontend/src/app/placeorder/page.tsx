@@ -49,7 +49,7 @@ export default function PlaceOrderPage() {
           })),
           shippingAddress: shippingAddress,
           totalPrice: Number(totalPrice),
-          paymentMethod: 'paymentMethod',
+          paymentMethod: paymentMethod,
         }),
       });
 

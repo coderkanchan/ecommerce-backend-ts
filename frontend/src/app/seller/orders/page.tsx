@@ -8,6 +8,7 @@ interface OrderItem {
   qty: number;
   image: string;
   product: string;
+  seller: string;
 }
 
 interface Order {
