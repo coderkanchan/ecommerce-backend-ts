@@ -49,7 +49,7 @@ async function ProductGrid({ searchParams }: { searchParams: any }) {
         </div>
       </div>
 
-      <div className="mt-12 w-full max-w-[1500px] px-6">
+      <div className="mt-12 w-full max-w-375 px-6">
         <Pagination pages={data.pages} page={data.page} />
       </div>
     </div>
