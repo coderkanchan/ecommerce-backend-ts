@@ -2,7 +2,6 @@ import "./globals.css";
 import { ReduxProvider } from "@/redux/ReduxProvider";
 import Script from 'next/script';
 import { Toaster } from 'sonner';
-import AIAssistant from '../components/AIAssistant';
 import NavbarWrapper from '../components/NavbarWrapper';
 
 export const metadata = {
@@ -26,7 +25,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main>
             <Toaster position="top-center" richColors closeButton />
             {children}
-            {/* <AIAssistant /> */}
             <Script
               id="razorpay-checkout-js"
               src="https://checkout.razorpay.com/v1/checkout.js"
