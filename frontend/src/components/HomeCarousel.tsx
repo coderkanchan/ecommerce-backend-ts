@@ -26,7 +26,7 @@ export default function HomeCarousel() {
   }, [nextSlide]);
 
   return (
-    <div className="relative w-full h-[300px] md:h-[600px] overflow-hidden group">
+    <div className="relative w-full h-75 md:h-[600px] overflow-hidden group">
 
       {banners.map((banner, index) => (
         <div
