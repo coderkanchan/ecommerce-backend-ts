@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import API from "@/services/api";
 
 interface OrderItem {
   name: string;
@@ -25,7 +25,7 @@ export default function SellerOrdersPage() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const { data } = await axios.get("/api/orders/seller", { withCredentials: true });
+        const { data } = await API.get("/orders/seller"); 
         setOrders(data);
       } catch (error) {
         console.error("Fetch Error:", error);
