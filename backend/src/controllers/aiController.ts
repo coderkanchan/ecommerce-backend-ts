@@ -150,7 +150,7 @@ RESPONSE FORMAT:
     };
 
     const aiMessage = responseMap[parsed.action] || "Something went wrong";
-
+    const similarProducts = await searchProducts(userQuery);
     await Chat.findOneAndUpdate(
       { userId },
       {
