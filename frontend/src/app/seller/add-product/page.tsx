@@ -108,7 +108,7 @@ export default function AddProductPage() {
                   </div>
                 </div>
               ) : (
-                <div className="relative w-full aspect-video sm:aspect-auto sm:h-64 rounded-[2rem] overflow-hidden border border-gray-800 group shadow-2xl">
+                <div className="relative w-full aspect-video sm:aspect-auto sm:h-64 rounded-4xl overflow-hidden border border-gray-800 group shadow-2xl">
                   <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
                     <button type="button" onClick={removeImage} className="bg-red-500 p-3 rounded-full hover:scale-110 transition shadow-lg">
