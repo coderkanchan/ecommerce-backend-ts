@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
-
 import connectDB from './config/db.js';
 import { configurePassport } from './config/passport.js';
 import uploadRoutes from './routes/uploadRoutes.js';
