@@ -62,7 +62,7 @@ export const handleAIQuery = async (req: Request, res: Response) => {
       model: "gpt-4o-mini",
       messages: [
         {
-          role: "system",
+          role: "system" as const,
           content: `
 You are a professional AI shopping assistant.
 
@@ -91,7 +91,7 @@ RESPONSE FORMAT:
         },
         ...historyMessages,
         {
-          role: "user",
+          role: "user" as const,
           content: userQuery,
         },
       ],
