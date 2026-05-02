@@ -3,6 +3,21 @@ import { Chat } from "../models/Chat.js";
 import { Product } from "../models/Product.js";
 import OpenAI from "openai";
 import { Pinecone } from "@pinecone-database/pinecone";
+import { index } from "../config/pinecone.js";
+
+const searchProducts = async (query: string) => {
+  const embedder = await pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2");
+  const output = await embedder(query);
+  const queryVector = Array.from(output.data);
+
+  const result = await index.query({
+    vector: queryVector,
+    topK: 3,
+    includeMetadata: true,
+  });
+
+  return result.matches.map((m: any) => m.metadata.name);
+};
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
