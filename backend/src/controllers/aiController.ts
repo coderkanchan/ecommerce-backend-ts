@@ -10,17 +10,28 @@ export const handleAIQuery = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Message is required" });
     }
 
-    const products = await Product.find().select("name");
-    const productNames = products.map(p => p.name);
+    const products = await Product.find().select("name description category");
+
+    const productContext = products.map(p => ({
+      name: p.name,
+      context: `${p.name} - ${p.category} - ${p.description}`
+    }));
 
     const previousChat = await Chat.findOne({ userId });
 
     const historyMessages = previousChat
-      ? previousChat.messages.slice(-5).map(m => ({
+      ? previousChat.messages.slice(-6).map(m => ({
         role: m.role === "ai" ? "assistant" : "user",
         content: m.content
       }))
       : [];
+
+    const lastProduct =
+      previousChat?.messages
+        ?.slice()
+        .reverse()
+        .find(m => m.content.includes("added to cart"))
+        ?.content?.split(" added")[0] || null;
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -34,31 +45,38 @@ export const handleAIQuery = async (req: Request, res: Response) => {
           {
             role: "system",
             content: `
-You are a smart AI shopping assistant.
+You are a professional AI shopping assistant.
 
 STRICT RULES:
-- ALWAYS return JSON
+- ONLY return JSON
 - NO extra text
-- productName MUST match EXACTLY from list
 
 INTENT:
-- "yes", "ok", "add it" → add last suggested product
+- "yes", "ok", "add it" → use lastProduct
 - buying intent → add_to_cart
-- unknown → chat
-- not found → not_found
+- product not found → not_found
+- otherwise → chat
 
-Available products:
-${JSON.stringify(productNames)}
+LAST PRODUCT:
+${lastProduct || "none"}
 
-Response formats:
+PRODUCT DATABASE:
+${JSON.stringify(productContext)}
 
-{ "action": "add_to_cart", "productName": "..." }
+RESPONSE FORMAT:
+
+{ "action": "add_to_cart", "productName": "EXACT NAME" }
 { "action": "not_found", "message": "Product not available" }
 { "action": "chat", "message": "..." }
 `
           },
+
           ...historyMessages,
-          { role: "user", content: userQuery }
+
+          {
+            role: "user",
+            content: userQuery,
+          },
         ],
       }),
     });
@@ -74,30 +92,25 @@ Response formats:
       const match = aiText.match(/\{[\s\S]*\}/);
       parsed = match ? JSON.parse(match[0]) : { action: "chat", message: aiText };
     } catch {
-      parsed = { action: "chat", message: "Sorry, something went wrong" };
+      parsed = { action: "chat", message: "Sorry, I didn’t understand that." };
     }
 
-    if (
-      parsed.action === "add_to_cart" &&
-      !productNames.includes(parsed.productName)
-    ) {
+    const validProduct = products.find(p => p.name === parsed.productName);
+
+    if (parsed.action === "add_to_cart" && !validProduct) {
       parsed = {
         action: "not_found",
         message: "Product not available"
       };
     }
 
-    const formatResponse = (data: any) => {
-      const map: any = {
-        add_to_cart: `${data.productName} added to cart 🛒`,
-        not_found: data.message || "Product not available",
-        chat: data.message || "How can I help you?"
-      };
-
-      return map[data.action] || "Something went wrong";
+    const responseMap: Record<string, string> = {
+      add_to_cart: `${parsed.productName} added to cart 🛒`,
+      not_found: parsed.message || "Product not available",
+      chat: parsed.message || "How can I help you?"
     };
 
-    const aiMessage = formatResponse(parsed);
+    const aiMessage = responseMap[parsed.action] || "Something went wrong";
 
     await Chat.findOneAndUpdate(
       { userId },
