@@ -58,17 +58,19 @@ export const createProduct = async (req: any, res: Response) => {
       `${product.name} ${product.description} ${product.category}`
     );
 
-    await index.upsert([
-      {
-        id: savedProduct._id.toString(),
-        values: embedding,
-        metadata: {
-          name: product.name,
-          description: product.description,
-          category: product.category,
+    await index.upsert({
+      records: [
+        {
+          id: savedProduct._id.toString(),
+          values: embedding as number[],
+          metadata: {
+            name: product.name,
+            description: product.description,
+            category: product.category,
+          },
         },
-      },
-    ]);
+      ],
+    });
 
     res.status(201).json(savedProduct);
 
