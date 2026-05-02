@@ -162,7 +162,7 @@ export default function AddProductPage() {
             </div>
           </div>
 
-          <button type="submit" disabled={loading} className="w-full bg-white text-black hover:bg-blue-600 hover:text-white py-5 rounded-[2rem] font-black text-lg tracking-tighter transition-all shadow-[0_0_40px_rgba(255,255,255,0.05)] flex items-center justify-center gap-3 disabled:bg-gray-900 disabled:text-gray-700">
+          <button type="submit" disabled={loading} className="w-full bg-white text-black hover:bg-blue-600 hover:text-white py-5 rounded-4xl font-black text-lg tracking-tighter transition-all shadow-[0_0_40px_rgba(255,255,255,0.05)] flex items-center justify-center gap-3 disabled:bg-gray-900 disabled:text-gray-700">
             {loading ? <Loader2 className="animate-spin" size={24} /> : "PUBLISH TO NEXUSMART"}
           </button>
         </form>
