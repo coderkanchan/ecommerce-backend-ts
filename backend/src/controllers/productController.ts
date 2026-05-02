@@ -177,13 +177,7 @@ export const deleteProduct = async (req: any, res: any) => {
 
   if (product) {
     await product.deleteOne();
-
-    //await index.deleteOne(product._id.toString());
-
-
-
-    
-    await index.delete({
+    await index.deleteMany({
       ids: [product._id.toString()],
     });
     res.json({ message: 'Product removed' });
