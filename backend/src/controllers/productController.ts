@@ -1,17 +1,19 @@
 import { Request, Response } from 'express';
 import { Product } from '../models/Product.js';
 import { index } from "../config/pinecone.js";
-import { pipeline } from "@xenova/transformers";
+import OpenAI from "openai";
 
-let embedder: any;
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY!,
+});
 
-const getEmbedding = async (text: string) => {
-  if (!embedder) {
-    embedder = await pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2");
-  }
+const getEmbedding = async (text: string): Promise<number[]> => {
+  const embeddingRes = await openai.embeddings.create({
+    model: "text-embedding-3-small",
+    input: text,
+  });
 
-  const output = await embedder(text);
-  return Array.from(output.data);
+  return embeddingRes.data[0].embedding;
 };
 
 export const createProduct = async (req: any, res: Response) => {
@@ -51,6 +53,7 @@ export const createProduct = async (req: any, res: Response) => {
     });
 
     const savedProduct = await product.save();
+
     const embedding = await getEmbedding(
       `${product.name} ${product.description} ${product.category}`
     );
@@ -62,10 +65,13 @@ export const createProduct = async (req: any, res: Response) => {
         metadata: {
           name: product.name,
           description: product.description,
+          category: product.category,
         },
       },
     ]);
+
     res.status(201).json(savedProduct);
+
   } catch (error) {
     console.error("Create Product Error:", error);
     res.status(500).json({ message: "Server Error while creating product" });
