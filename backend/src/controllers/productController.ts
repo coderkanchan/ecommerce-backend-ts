@@ -112,6 +112,7 @@ export const getProducts = async (req: Request, res: Response) => {
       page,
       pages: Math.ceil(count / pageSize)
     });
+
   } catch (error) {
     console.error("Fetch Products Error:", error);
     res.status(500).json({ message: "Error fetching products" });
@@ -127,6 +128,7 @@ export const getProductById = async (req: Request, res: Response) => {
     } else {
       res.status(404).json({ message: 'Product not found' });
     }
+
   } catch (error) {
     res.status(500).json({ message: 'Server Error: Invalid ID format' });
   }
@@ -162,6 +164,7 @@ export const createProductReview = async (req: any, res: Response) => {
 
     await product.save();
     res.status(201).json({ message: 'Review added' });
+
   } else {
     res.status(404).json({ message: 'Product not found' });
   }
@@ -172,7 +175,11 @@ export const deleteProduct = async (req: any, res: any) => {
 
   if (product) {
     await product.deleteOne();
+
+    await index.deleteOne(product._id.toString());
+
     res.json({ message: 'Product removed' });
+
   } else {
     res.status(404).json({ message: 'Product not found' });
   }
@@ -204,10 +211,29 @@ export const updateProduct = async (req: any, res: any) => {
       product.stock = stock !== undefined ? Number(stock) : product.stock;
 
       const updatedProduct = await product.save();
+
+      const embedding = await getEmbedding(
+        `${product.name} ${product.description} ${product.category}`
+      );
+
+      await index.upsert([
+        {
+          id: product._id.toString(),
+          values: embedding,
+          metadata: {
+            name: product.name,
+            description: product.description,
+            category: product.category,
+          },
+        },
+      ]);
+
       res.json(updatedProduct);
+
     } else {
       res.status(404).json({ message: 'Product not found' });
     }
+
   } catch (error) {
     res.status(500).json({ message: "Server Error while updating product" });
   }
