@@ -108,7 +108,8 @@ RESPONSE FORMAT:
 { "action": "not_found", "message": "Product not available" }
 { "action": "chat", "message": "..." }
 `
-        },
+        }, Relevant products from database:
+        ${ JSON.stringify(similarProducts) }
 
         ...historyMessages,
 
