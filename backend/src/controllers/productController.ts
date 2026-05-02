@@ -1,10 +1,22 @@
 import { Request, Response } from 'express';
 import { Product } from '../models/Product.js';
+import { index } from "../config/pinecone.js"
+import { pipeline } from "@xenova/transformers";
 
 export const createProduct = async (req: any, res: Response) => {
   try {
     const { name, description, price, category, stock, imageUrl } = req.body;
+    let embedder: any;
 
+    const getEmbedding = async (text: string) => {
+      if (!embedder) {
+        embedder = await pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2");
+      }
+
+      const output = await embedder(text);
+      return Array.from(output.data);
+    };
+    
     if (!name || !description || !price || !category || stock === undefined || !imageUrl) {
       return res.status(400).json({ message: "All fields are required" });
     }
