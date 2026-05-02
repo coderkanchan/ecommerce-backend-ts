@@ -218,17 +218,19 @@ export const updateProduct = async (req: any, res: any) => {
         `${product.name} ${product.description} ${product.category}`
       );
 
-      await index.upsert([
-        {
-          id: product._id.toString(),
-          values: embedding,
-          metadata: {
-            name: product.name,
-            description: product.description,
-            category: product.category,
+      await index.upsert({
+        records: [
+          {
+            id: product._id.toString(),
+            values: embedding as number[],
+            metadata: {
+              name: product.name,
+              description: product.description,
+              category: product.category,
+            },
           },
-        },
-      ]);
+        ],
+      });
 
       res.json(updatedProduct);
 
