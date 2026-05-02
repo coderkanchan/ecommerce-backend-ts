@@ -21,14 +21,14 @@ export const handleAIQuery = async (req: Request, res: Response) => {
     if (!userQuery) {
       return res.status(400).json({ message: "Message is required" });
     }
- 
+
     const embeddingRes = await openai.embeddings.create({
       model: "text-embedding-3-small",
       input: userQuery,
     });
 
     const queryVector = embeddingRes.data[0].embedding;
- 
+
     const vectorSearch = await index.query({
       vector: queryVector,
       topK: 5,
@@ -41,23 +41,23 @@ export const handleAIQuery = async (req: Request, res: Response) => {
         description: m.metadata?.description,
         category: m.metadata?.category,
       })) || [];
- 
+
     const previousChat = await Chat.findOne({ userId });
 
-    const historyMessages = previousChat
+    const historyMessages: any[] = previousChat
       ? previousChat.messages.slice(-6).map((m) => ({
-        role: m.role === "ai" ? "assistant" : "user",
+        role: m.role === "ai" ? "assistant" as const : "user" as const,
         content: m.content || "",
       }))
       : [];
- 
+
     const lastProduct =
       previousChat?.messages
         ?.slice()
         .reverse()
         .find((m) => m.content?.includes("added to cart"))
         ?.content?.split(" added")[0] || null;
- 
+
     const chatRes = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
@@ -113,7 +113,7 @@ RESPONSE FORMAT:
         message: "Sorry, I didn’t understand that.",
       };
     }
- 
+
     if (parsed.action === "add_to_cart") {
       const dbProduct = await Product.findOne({
         name: parsed.productName,
@@ -126,7 +126,7 @@ RESPONSE FORMAT:
         };
       }
     }
- 
+
     const responseMap: Record<string, string> = {
       add_to_cart: `${parsed.productName} added to cart 🛒`,
       not_found: parsed.message || "Product not available",
@@ -134,7 +134,7 @@ RESPONSE FORMAT:
     };
 
     const aiMessage = responseMap[parsed.action] || "Something went wrong";
- 
+
     await Chat.findOneAndUpdate(
       { userId },
       {
