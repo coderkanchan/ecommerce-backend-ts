@@ -2,32 +2,12 @@ import { Request, Response } from "express";
 import { Chat } from "../models/Chat.js";
 import { Product } from "../models/Product.js";
 import OpenAI from "openai";
-import { Pinecone } from "@pinecone-database/pinecone";
 import { index } from "../config/pinecone.js";
-
-const searchProducts = async (query: string) => {
-  const embedder = await pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2");
-  const output = await embedder(query);
-  const queryVector = Array.from(output.data);
-
-  const result = await index.query({
-    vector: queryVector,
-    topK: 3,
-    includeMetadata: true,
-  });
-
-  return result.matches.map((m: any) => m.metadata.name);
-};
+import { getEmbedding } from "../utils/embedding.js";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
 });
-
-const pinecone = new Pinecone({
-  apiKey: process.env.PINECONE_API_KEY!,
-});
-
-const index = pinecone.index(process.env.PINECONE_INDEX_NAME!);
 
 type AIResponse = {
   action: "add_to_cart" | "not_found" | "chat";
@@ -42,13 +22,8 @@ export const handleAIQuery = async (req: Request, res: Response) => {
     if (!userQuery) {
       return res.status(400).json({ message: "Message is required" });
     }
-
-    const embeddingRes = await openai.embeddings.create({
-      model: "text-embedding-3-small",
-      input: userQuery,
-    });
-
-    const queryVector = embeddingRes.data[0].embedding;
+ 
+    const queryVector = await getEmbedding(userQuery);
 
     const vectorSearch = await index.query({
       vector: queryVector,
@@ -56,28 +31,29 @@ export const handleAIQuery = async (req: Request, res: Response) => {
       includeMetadata: true,
     });
 
-    const matchedProducts = vectorSearch.matches?.map((m: any) => ({
-      name: m.metadata?.name,
-      description: m.metadata?.description,
-      category: m.metadata?.category,
-    })) || [];
-
+    const matchedProducts =
+      vectorSearch.matches?.map((m: any) => ({
+        name: m.metadata?.name,
+        description: m.metadata?.description,
+        category: m.metadata?.category,
+      })) || [];
+ 
     const previousChat = await Chat.findOne({ userId });
 
     const historyMessages = previousChat
-      ? previousChat.messages.slice(-6).map(m => ({
+      ? previousChat.messages.slice(-6).map((m) => ({
         role: m.role === "ai" ? "assistant" : "user",
         content: m.content || "",
       }))
       : [];
-
+ 
     const lastProduct =
       previousChat?.messages
         ?.slice()
         .reverse()
-        .find(m => m.content?.includes("added to cart"))
+        .find((m) => m.content?.includes("added to cart"))
         ?.content?.split(" added")[0] || null;
-
+ 
     const chatRes = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
@@ -107,12 +83,9 @@ RESPONSE FORMAT:
 { "action": "add_to_cart", "productName": "EXACT NAME" }
 { "action": "not_found", "message": "Product not available" }
 { "action": "chat", "message": "..." }
-`
-        }, Relevant products from database:
-        ${ JSON.stringify(similarProducts) }
-
+`,
+        },
         ...historyMessages,
-
         {
           role: "user",
           content: userQuery,
@@ -133,16 +106,18 @@ RESPONSE FORMAT:
     } catch {
       parsed = { action: "chat", message: "Sorry, I didn’t understand that." };
     }
+ 
+    if (parsed.action === "add_to_cart") {
+      const dbProduct = await Product.findOne({ name: parsed.productName });
 
-    const dbProduct = await Product.findOne({ name: parsed.productName });
-
-    if (parsed.action === "add_to_cart" && !dbProduct) {
-      parsed = {
-        action: "not_found",
-        message: "Product not available",
-      };
+      if (!dbProduct) {
+        parsed = {
+          action: "not_found",
+          message: "Product not available",
+        };
+      }
     }
-
+ 
     const responseMap: Record<string, string> = {
       add_to_cart: `${parsed.productName} added to cart 🛒`,
       not_found: parsed.message || "Product not available",
@@ -150,7 +125,7 @@ RESPONSE FORMAT:
     };
 
     const aiMessage = responseMap[parsed.action] || "Something went wrong";
-    const similarProducts = await searchProducts(userQuery);
+ 
     await Chat.findOneAndUpdate(
       { userId },
       {
