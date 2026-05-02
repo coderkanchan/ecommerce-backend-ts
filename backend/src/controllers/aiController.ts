@@ -3,7 +3,6 @@ import { Chat } from "../models/Chat.js";
 import { Product } from "../models/Product.js";
 import OpenAI from "openai";
 import { index } from "../config/pinecone.js";
-import { getEmbedding } from "../utils/embedding.js";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -22,8 +21,14 @@ export const handleAIQuery = async (req: Request, res: Response) => {
     if (!userQuery) {
       return res.status(400).json({ message: "Message is required" });
     }
+ 
+    const embeddingRes = await openai.embeddings.create({
+      model: "text-embedding-3-small",
+      input: userQuery,
+    });
 
-    const queryVector = await getEmbedding(userQuery);
+    const queryVector = embeddingRes.data[0].embedding;
+ 
     const vectorSearch = await index.query({
       vector: queryVector,
       topK: 5,
@@ -36,7 +41,7 @@ export const handleAIQuery = async (req: Request, res: Response) => {
         description: m.metadata?.description,
         category: m.metadata?.category,
       })) || [];
-
+ 
     const previousChat = await Chat.findOne({ userId });
 
     const historyMessages = previousChat
@@ -45,14 +50,14 @@ export const handleAIQuery = async (req: Request, res: Response) => {
         content: m.content || "",
       }))
       : [];
-
+ 
     const lastProduct =
       previousChat?.messages
         ?.slice()
         .reverse()
         .find((m) => m.content?.includes("added to cart"))
         ?.content?.split(" added")[0] || null;
-
+ 
     const chatRes = await openai.chat.completions.create({
       model: "gpt-4o-mini",
       messages: [
@@ -103,11 +108,16 @@ RESPONSE FORMAT:
         ? JSON.parse(match[0])
         : { action: "chat", message: aiText };
     } catch {
-      parsed = { action: "chat", message: "Sorry, I didn’t understand that." };
+      parsed = {
+        action: "chat",
+        message: "Sorry, I didn’t understand that.",
+      };
     }
-
+ 
     if (parsed.action === "add_to_cart") {
-      const dbProduct = await Product.findOne({ name: parsed.productName });
+      const dbProduct = await Product.findOne({
+        name: parsed.productName,
+      });
 
       if (!dbProduct) {
         parsed = {
@@ -116,7 +126,7 @@ RESPONSE FORMAT:
         };
       }
     }
-
+ 
     const responseMap: Record<string, string> = {
       add_to_cart: `${parsed.productName} added to cart 🛒`,
       not_found: parsed.message || "Product not available",
@@ -124,7 +134,7 @@ RESPONSE FORMAT:
     };
 
     const aiMessage = responseMap[parsed.action] || "Something went wrong";
-
+ 
     await Chat.findOneAndUpdate(
       { userId },
       {
