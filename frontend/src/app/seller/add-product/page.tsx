@@ -90,7 +90,7 @@ export default function AddProductPage() {
         <p className="text-gray-500 mb-8 md:mb-12 text-sm md:text-lg">Deploy high-quality assets to the NexusMart ecosystem.</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="bg-[#0A0A0A] p-5 sm:p-8 rounded-[2rem] border border-gray-900 shadow-2xl space-y-8">
+          <div className="bg-[#0A0A0A] p-5 sm:p-8 rounded-4xl border border-gray-900 shadow-2xl space-y-8">
 
             <div>
               <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 mb-4">Product Visual</label>
