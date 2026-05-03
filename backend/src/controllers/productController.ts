@@ -68,31 +68,14 @@ export const deleteProduct = async (req: any, res: any) => {
 
   if (product) {
     await product.deleteOne();
-
-    await index.delete({
+    await index.deleteMany({
       ids: [product._id.toString()],
     });
-
     res.json({ message: 'Product removed' });
   } else {
     res.status(404).json({ message: 'Product not found' });
   }
 };
-
-// export const deleteProduct = async (req: any, res: any) => {
-//   const product = await Product.findById(req.params.id);
-
-//   if (product) {
-//     await product.deleteOne();
-//     await index.deleteMany({
-//       ids: [product._id.toString()],
-//     });
-//     res.json({ message: 'Product removed' });
-
-//   } else {
-//     res.status(404).json({ message: 'Product not found' });
-//   }
-// };
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
