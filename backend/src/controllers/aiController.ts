@@ -1,12 +1,8 @@
 import { Request, Response } from "express";
 import { Chat } from "../models/Chat.js";
 import { Product } from "../models/Product.js";
-
 import { index } from "../config/pinecone.js";
-
-// const openai = new OpenAI({
-//   apiKey: process.env.OPENAI_API_KEY!,
-// });
+import { getEmbedding } from "../utils/embedding.js";
 
 type AIResponse = {
   action: "add_to_cart" | "not_found" | "chat";
@@ -22,12 +18,7 @@ export const handleAIQuery = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Message is required" });
     }
 
-    const embeddingRes = await openai.embeddings.create({
-      model: "text-embedding-3-small",
-      input: userQuery,
-    });
-
-    const queryVector = embeddingRes.data[0].embedding;
+    const queryVector = await getEmbedding(userQuery);
 
     const vectorSearch = await index.query({
       vector: queryVector,
@@ -44,9 +35,9 @@ export const handleAIQuery = async (req: Request, res: Response) => {
 
     const previousChat = await Chat.findOne({ userId });
 
-    const historyMessages: any[] = previousChat
+    const historyMessages = previousChat
       ? previousChat.messages.slice(-6).map((m) => ({
-        role: m.role === "ai" ? "assistant" as const : "user" as const,
+        role: m.role === "ai" ? "assistant" : "user",
         content: m.content || "",
       }))
       : [];
@@ -58,23 +49,23 @@ export const handleAIQuery = async (req: Request, res: Response) => {
         .find((m) => m.content?.includes("added to cart"))
         ?.content?.split(" added")[0] || null;
 
-    const chatRes = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
-      messages: [
-        {
-          role: "system" as const,
-          content: `
+    const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "llama-3.1-8b-instant",
+        messages: [
+          {
+            role: "system",
+            content: `
 You are a professional AI shopping assistant.
 
 STRICT RULES:
 - ONLY return JSON
 - NO extra text
-
-INTENT:
-- "yes", "ok", "add it" → use lastProduct
-- buying intent → add_to_cart
-- product not found → not_found
-- otherwise → chat
 
 LAST PRODUCT:
 ${lastProduct || "none"}
@@ -82,22 +73,20 @@ ${lastProduct || "none"}
 RELEVANT PRODUCTS:
 ${JSON.stringify(matchedProducts)}
 
-RESPONSE FORMAT:
-
-{ "action": "add_to_cart", "productName": "EXACT NAME" }
-{ "action": "not_found", "message": "Product not available" }
+{ "action": "add_to_cart", "productName": "..." }
+{ "action": "not_found", "message": "..." }
 { "action": "chat", "message": "..." }
 `,
-        },
-        ...historyMessages,
-        {
-          role: "user" as const,
-          content: userQuery,
-        },
-      ],
+          },
+          ...historyMessages,
+          { role: "user", content: userQuery },
+        ],
+      }),
     });
 
-    let aiText = chatRes.choices[0]?.message?.content || "";
+    const data = await response.json();
+
+    let aiText = data?.choices?.[0]?.message?.content || "";
     aiText = aiText.replace(/```json|```/g, "").trim();
 
     let parsed: AIResponse;
@@ -108,16 +97,11 @@ RESPONSE FORMAT:
         ? JSON.parse(match[0])
         : { action: "chat", message: aiText };
     } catch {
-      parsed = {
-        action: "chat",
-        message: "Sorry, I didn’t understand that.",
-      };
+      parsed = { action: "chat", message: "Error understanding response" };
     }
 
     if (parsed.action === "add_to_cart") {
-      const dbProduct = await Product.findOne({
-        name: parsed.productName,
-      });
+      const dbProduct = await Product.findOne({ name: parsed.productName });
 
       if (!dbProduct) {
         parsed = {
@@ -133,7 +117,7 @@ RESPONSE FORMAT:
       chat: parsed.message || "How can I help you?",
     };
 
-    const aiMessage = responseMap[parsed.action] || "Something went wrong";
+    const aiMessage = responseMap[parsed.action];
 
     await Chat.findOneAndUpdate(
       { userId },
