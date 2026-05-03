@@ -41,7 +41,7 @@ export default function SellerLayout({ children }: { children: React.ReactNode }
           onClick={closeMenu}
         />
 
-        <div className={`absolute inset-y-0 left-0 w-72 bg-[#0a0a0a] border-r border-gray-900 shadow-2xl flex flex-col transform transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
+        <div className={`absolute inset-y-0 left-0 w-72 bg-[#0a0a0a] border-r border-gray-900 shadow-2xl flex flex-col transform transition-transform duration-500 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
           }`}>
           <div className="p-5 flex justify-between items-center border-b border-gray-900">
             <span className="text-blue-500 font-black tracking-tighter italic">NEXUS SELLER</span>
