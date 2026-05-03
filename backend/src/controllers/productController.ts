@@ -3,6 +3,21 @@ import { Product } from '../models/Product.js';
 import { index } from "../config/pinecone.js";
 import { getEmbedding } from "../utils/embedding.js";
 
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY!,
+// });
+
+// const getEmbedding = async (text: string): Promise<number[]> => {
+//   const embeddingRes = await openai.embeddings.create({
+//     model: "text-embedding-3-small",
+//     input: text,
+//   });
+
+//   return embeddingRes.data[0].embedding;
+// };
+const embedding = await getEmbedding(
+  `${product.name} ${product.description} ${product.category}`
+);
 
 export const createProduct = async (req: any, res: Response) => {
   try {
