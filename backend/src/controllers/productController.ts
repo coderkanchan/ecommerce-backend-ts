@@ -3,22 +3,6 @@ import { Product } from '../models/Product.js';
 import { index } from "../config/pinecone.js";
 import { getEmbedding } from "../utils/embedding.js";
 
-// const openai = new OpenAI({
-//   apiKey: process.env.OPENAI_API_KEY!,
-// });
-
-// const getEmbedding = async (text: string): Promise<number[]> => {
-//   const embeddingRes = await openai.embeddings.create({
-//     model: "text-embedding-3-small",
-//     input: text,
-//   });
-
-//   return embeddingRes.data[0].embedding;
-// };
-const embedding = await getEmbedding(
-  `${product.name} ${product.description} ${product.category}`
-);
-
 export const createProduct = async (req: any, res: Response) => {
   try {
     const { name, description, price, category, stock, imageUrl } = req.body;
@@ -41,10 +25,6 @@ export const createProduct = async (req: any, res: Response) => {
       return res.status(400).json({ message: "Stock cannot be negative" });
     }
 
-    if (!req.user) {
-      return res.status(401).json({ message: "Not authorized" });
-    }
-
     const product = new Product({
       name,
       description,
@@ -65,7 +45,7 @@ export const createProduct = async (req: any, res: Response) => {
       records: [
         {
           id: savedProduct._id.toString(),
-          values: embedding as number[],
+          values: embedding,
           metadata: {
             name: product.name,
             description: product.description,
@@ -82,6 +62,37 @@ export const createProduct = async (req: any, res: Response) => {
     res.status(500).json({ message: "Server Error while creating product" });
   }
 };
+
+export const deleteProduct = async (req: any, res: any) => {
+  const product = await Product.findById(req.params.id);
+
+  if (product) {
+    await product.deleteOne();
+
+    await index.delete({
+      ids: [product._id.toString()],
+    });
+
+    res.json({ message: 'Product removed' });
+  } else {
+    res.status(404).json({ message: 'Product not found' });
+  }
+};
+
+// export const deleteProduct = async (req: any, res: any) => {
+//   const product = await Product.findById(req.params.id);
+
+//   if (product) {
+//     await product.deleteOne();
+//     await index.deleteMany({
+//       ids: [product._id.toString()],
+//     });
+//     res.json({ message: 'Product removed' });
+
+//   } else {
+//     res.status(404).json({ message: 'Product not found' });
+//   }
+// };
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
@@ -175,20 +186,6 @@ export const createProductReview = async (req: any, res: Response) => {
   }
 };
 
-export const deleteProduct = async (req: any, res: any) => {
-  const product = await Product.findById(req.params.id);
-
-  if (product) {
-    await product.deleteOne();
-    await index.deleteMany({
-      ids: [product._id.toString()],
-    });
-    res.json({ message: 'Product removed' });
-
-  } else {
-    res.status(404).json({ message: 'Product not found' });
-  }
-};
 
 export const updateProduct = async (req: any, res: any) => {
   const { name, price, description, imageUrl, category, stock } = req.body;
