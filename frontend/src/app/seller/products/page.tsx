@@ -95,7 +95,7 @@ export default function MyProductsPage() {
           {products.map((product: any) => (
             <div key={product._id} className="bg-[#0A0A0A] border border-gray-900 p-4 sm:p-6 rounded-4xl flex flex-col sm:flex-row items-center justify-between gap-6 hover:border-blue-500/30 transition-all group shadow-xl">
               <div className="flex items-center gap-5 w-full sm:w-auto">
-                <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 group-hover:scale-105 transition-transform duration-500">
+                <div className="relative w-20 h-20 sm:w-24 sm:h-24 shrink-0 group-hover:scale-105 transition-transform duration-500">
                   <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover rounded-2xl border border-gray-800" />
                   <div className="absolute inset-0 rounded-2xl shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]"></div>
                 </div>
