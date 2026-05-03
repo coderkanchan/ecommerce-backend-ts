@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { Product } from '../models/Product.js';
 import { index } from "../config/pinecone.js";
-import OpenAI from "openai";
+import { getEmbedding } from "../utils/embedding.js";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
