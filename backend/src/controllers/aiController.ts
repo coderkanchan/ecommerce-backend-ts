@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { Chat } from "../models/Chat.js";
 import { Product } from "../models/Product.js";
-import OpenAI from "openai";
+
 import { index } from "../config/pinecone.js";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
-});
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY!,
+// });
 
 type AIResponse = {
   action: "add_to_cart" | "not_found" | "chat";
