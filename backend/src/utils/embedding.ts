@@ -12,5 +12,5 @@ export const getEmbedding = async (text: string) => {
     normalize: true,
   });
 
-  return Array.from(output.data);
+  return Array.from(output.data) as number[];
 };
