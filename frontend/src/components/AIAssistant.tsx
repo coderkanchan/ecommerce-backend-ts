@@ -20,7 +20,7 @@ const AIAssistant = () => {
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   const streamText = async (text: string) => {
-    
+
     let current = "";
 
     for (let i = 0; i < text.length; i++) {
@@ -117,7 +117,7 @@ const AIAssistant = () => {
   }, [messages]);
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <div className=" flex flex-col items-end">
 
       {isOpen && (
         <div className={`${isExpanded ? "w-[90vw] h-[80vh]" : "w-80 sm:w-96 h-125"}
