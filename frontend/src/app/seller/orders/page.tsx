@@ -59,7 +59,7 @@ export default function SellerOrdersPage() {
           <tbody className="divide-y divide-gray-800">
             {orders.length > 0 ? (
               orders.map((order) => (
-                <tr key={order._id} className="hover:bg-white/[0.02]">
+                <tr key={order._id} className="hover:bg-white/2">
                   <td className="px-6 py-4 font-mono text-sm">#{order._id.slice(-6)}</td>
                   <td className="px-6 py-4">
                     {order.orderItems.map((item) => item.name).join(", ")}
