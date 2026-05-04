@@ -19,79 +19,6 @@ const AIAssistant = () => {
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  const handleSearch = () => {
-    if (!query.trim() || loading) return;
-
-    const userMessage = query;
-    setMessages(prev => [...prev, { text: userMessage, sender: 'user' }]);
-
-    dispatch(askNexusAssistant({ userQuery: userMessage, products }))
-      .unwrap()
-      .then((res) => {
-
-        if (res.action === "add_to_cart") {
-          const product = products.find(p => p.name === res.productName);
-
-          if (product) {
-            dispatch(addToCart({ ...product, qty: 1 }));
-            setMessages(prev => [...prev, {
-              text: `${product.name} added to cart 🛒`,
-              sender: 'ai'
-            }]);
-            setLastSuggestedProduct(null);
-          } else {
-            setMessages(prev => [...prev, {
-              text: "❌ Product not found",
-              sender: 'ai'
-            }]);
-          }
-        }
-
-        else if (res.action === "not_found") {
-          setMessages(prev => [...prev, {
-            text: res.message,
-            sender: 'ai'
-          }]);
-        }
-
-        else {
-          setMessages(prev => [...prev, {
-            text: res.message,
-            sender: 'ai'
-          }]);
-
-          const foundProduct = products.find(p =>
-            res.message?.toLowerCase().includes(p.name.toLowerCase())
-          );
-
-          if (foundProduct) {
-            setLastSuggestedProduct(foundProduct.name);
-          }
-        }
-      })
-      .catch(() => {
-        setMessages(prev => [...prev, {
-          text: "Something went wrong 😅",
-          sender: 'ai'
-        }]);
-      });
-
-    setQuery('');
-  };
-
-  useEffect(() => {
-    fetch("http://localhost:5000/api/chat/demoUser")
-      .then(res => res.json())
-      .then(data => {
-        if (data.messages) {
-          setMessages(data.messages.map((m: any) => ({
-            text: m.content,
-            sender: m.role
-          })));
-        }
-      });
-  }, []);
-
   const streamText = async (text: string) => {
     let current = "";
 
@@ -111,6 +38,79 @@ const AIAssistant = () => {
     }
   };
 
+  const handleSearch = async () => {
+    if (!query.trim() || loading) return;
+
+    const userMessage = query;
+
+    setMessages(prev => [...prev, { text: userMessage, sender: 'user' }]);
+
+    try {
+      const res = await dispatch(
+        askNexusAssistant({ userQuery: userMessage })
+      ).unwrap();
+
+      if (res.action === "add_to_cart") {
+        const product = products.find(p => p.name === res.productName);
+
+        if (product) {
+          dispatch(addToCart({ ...product, qty: 1 }));
+
+          setMessages(prev => [...prev, {
+            text: `${product.name} added to cart 🛒`,
+            sender: 'ai'
+          }]);
+
+          setLastSuggestedProduct(null);
+        } else {
+          setMessages(prev => [...prev, {
+            text: "❌ Product not found",
+            sender: 'ai'
+          }]);
+        }
+      }
+
+      else if (res.action === "not_found") {
+        setMessages(prev => [...prev, { text: "", sender: 'ai' }]);
+        await streamText(res.message);
+      }
+
+      else {
+        setMessages(prev => [...prev, { text: "", sender: 'ai' }]);
+        await streamText(res.message);
+
+        const foundProduct = products.find(p =>
+          res.message?.toLowerCase().includes(p.name.toLowerCase().slice(0, 5))
+        );
+
+        if (foundProduct) {
+          setLastSuggestedProduct(foundProduct.name);
+        }
+      }
+
+    } catch (err) {
+      setMessages(prev => [...prev, {
+        text: "Something went wrong 😅",
+        sender: 'ai'
+      }]);
+    }
+
+    setQuery('');
+  };
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/chat/demoUser")
+      .then(res => res.json())
+      .then(data => {
+        if (data.messages) {
+          setMessages(data.messages.map((m: any) => ({
+            text: m.content,
+            sender: m.role === "ai" ? "ai" : "user"
+          })));
+        }
+      });
+  }, []);
+
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -119,7 +119,7 @@ const AIAssistant = () => {
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
 
       {isOpen && (
-        <div className={`${isExpanded ? "w-[90vw] h-[80vh]" : "w-80 sm:w-96 h-125"}
+        <div className={`${isExpanded ? "w-[90vw] h-[80vh]" : "w-80 sm:w-96 h-[500px]"}
           bg-blue-100 rounded-2xl shadow-2xl border flex flex-col`}>
 
           <div className="bg-blue-600 rounded-t-2xl p-4 text-white flex justify-between">
@@ -166,7 +166,7 @@ const AIAssistant = () => {
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-              className="flex-1 p-2 border-2 border-gray-400 rounded-lg outline-none focus:border-blue-500 text-gray-500 "
+              className="flex-1 p-2 border-2 border-gray-400 rounded-lg outline-none focus:border-blue-500 text-gray-600"
               placeholder="Ask anything..."
             />
             <button onClick={handleSearch} className='text-blue-500'>
