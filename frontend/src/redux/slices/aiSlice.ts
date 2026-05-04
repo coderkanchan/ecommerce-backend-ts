@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 interface AIState {
-  answer: string | null;
+  answer: any; 
   loading: boolean;
   error: string | null;
 }
@@ -14,13 +14,7 @@ const initialState: AIState = {
 
 export const askNexusAssistant = createAsyncThunk(
   'ai/askAssistant',
-  async ({ userQuery, products }: { userQuery: string; products: any[] }) => {
-
-    const optimizedProducts = products.map(p => ({
-      name: p.name,
-      price: p.price,
-      category: p.category
-    }));
+  async ({ userQuery }: { userQuery: string }) => {
 
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
@@ -31,7 +25,6 @@ export const askNexusAssistant = createAsyncThunk(
       },
       body: JSON.stringify({
         userQuery,
-        products: optimizedProducts,
         userId: "demoUser"
       }),
     });
@@ -45,6 +38,7 @@ export const askNexusAssistant = createAsyncThunk(
     return data;
   }
 );
+
 const aiSlice = createSlice({
   name: 'ai',
   initialState,
