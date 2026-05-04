@@ -117,7 +117,7 @@ export default function EditProductPage() {
             <textarea rows={5} className="w-full bg-black border border-gray-800 rounded-2xl p-4 focus:border-blue-500 outline-none transition resize-none text-sm leading-relaxed" value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} required />
           </div>
 
-          <button type="submit" disabled={updating} className="md:col-span-2 bg-blue-600 hover:bg-blue-700 text-white font-black py-5 rounded-[2rem] flex items-center justify-center gap-3 transition shadow-xl shadow-blue-900/20 disabled:opacity-50 mt-6 tracking-tighter text-lg">
+          <button type="submit" disabled={updating} className="md:col-span-2 bg-blue-600 hover:bg-blue-700 text-white font-black py-5 rounded-4xl flex items-center justify-center gap-3 transition shadow-xl shadow-blue-900/20 disabled:opacity-50 mt-6 tracking-tighter text-lg">
             {updating ? <Loader2 className="animate-spin" /> : <Save size={22} />}
             UPDATE NEXUS ASSET
           </button>
