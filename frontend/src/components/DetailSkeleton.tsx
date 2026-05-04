@@ -9,6 +9,7 @@ export default function DetailSkeleton() {
         <div className="bg-gray-800 rounded-2xl h-100px md:h-125 w-full"></div>
 
         <div className="space-y-6">
+          
           <div className="h-10 bg-gray-800 rounded-lg w-3/4"></div> 
           <div className="h-6 bg-gray-800 rounded-lg w-1/4"></div>  
 
@@ -27,6 +28,7 @@ export default function DetailSkeleton() {
             <div className="h-8 bg-gray-800 rounded w-1/3"></div>
             <div className="h-24 bg-gray-800 rounded-xl w-full"></div>
           </div>
+
         </div>
       </div>
     </div>

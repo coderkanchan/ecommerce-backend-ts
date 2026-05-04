@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { RiArrowLeftDoubleLine } from "react-icons/ri";
 import { RiArrowRightDoubleFill } from "react-icons/ri";
+
 const banners = [
   { id: 1, image: "/banner1.jpg", link: "/offers/summer" },
   { id: 2, image: "/banner2.jpg", link: "/category/electronics" },
@@ -10,6 +11,7 @@ const banners = [
 ];
 
 export default function HomeCarousel() {
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextSlide = useCallback(() => {
@@ -69,6 +71,7 @@ export default function HomeCarousel() {
           />
         ))}
       </div>
+      
     </div>
   );
 } 

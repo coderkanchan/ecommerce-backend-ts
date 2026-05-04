@@ -9,6 +9,7 @@ interface Props {
 const Pagination = ({ pages, page, isAdmin = false }: Props) => {
   return pages > 1 ? (
     <div className="flex justify-center my-8 gap-2">
+      
       {[...Array(pages).keys()].map((x) => (
         <Link
           key={x + 1}

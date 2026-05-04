@@ -9,6 +9,7 @@ export default function ProductSkeleton() {
         <div className="h-6 bg-gray-800 rounded w-1/4"></div>
         <div className="h-10 bg-gray-800 rounded w-full mt-4"></div>
       </div>
+      
     </div>
   );
 }
