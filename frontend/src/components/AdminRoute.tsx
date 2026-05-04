@@ -8,6 +8,7 @@ const AdminRoute = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+    
     if (!userInfo || !userInfo.isAdmin) {
       alert("Access Denied! Admins only.");
       router.push('/'); 

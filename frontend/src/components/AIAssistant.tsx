@@ -20,6 +20,7 @@ const AIAssistant = () => {
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   const streamText = async (text: string) => {
+    
     let current = "";
 
     for (let i = 0; i < text.length; i++) {
