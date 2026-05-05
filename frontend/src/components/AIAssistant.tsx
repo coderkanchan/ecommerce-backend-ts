@@ -19,7 +19,6 @@ const AIAssistant = () => {
   const products = useSelector((state: RootState) => state.products.products);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  // AIAssistant.tsx mein streamText ko replace karein
   const streamText = async (text: string) => {
     setMessages(prev => [...prev, { text: "", sender: 'ai' }]);
 
@@ -62,8 +61,15 @@ const AIAssistant = () => {
   };
 
   const handleClearChat = async () => {
+    const token = localStorage.getItem('userInfo')
+      ? JSON.parse(localStorage.getItem('userInfo')!).token
+      : null;
+
     try {
-      await fetch(`${API_BASE_URL}/api/chat/my-history`, { method: "DELETE" });
+      await fetch(`${API_BASE_URL}/api/chat/my-history`, {
+        method: "DELETE",
+        headers: { 'Authorization': `Bearer ${token}` } 
+      });
       setMessages([]);
     } catch (error) {
       console.error("Clear chat failed");
