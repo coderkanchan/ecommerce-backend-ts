@@ -156,7 +156,7 @@ export default function Navbar() {
       {isSidebarOpen && (
         <div className="fixed inset-0 bg-black/70 z-200 backdrop-blur-md transition-opacity duration-300" onClick={() => setIsSidebarOpen(false)} />
       )}
-
+      
       <div className={`fixed top-0 left-0 h-full w-70 sm:w-[320px] bg-white z-300 transform transition-transform duration-500 cubic-bezier(0.4, 0, 0.2, 1) shadow-2xl overflow-y-auto ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
 
         <div className="bg-gray-900 text-white p-6 relative">
