@@ -19,18 +19,19 @@ const AIAssistant = () => {
   const products = useSelector((state: RootState) => state.products.products);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
+  // AIAssistant.tsx mein streamText ko replace karein
   const streamText = async (text: string) => {
-    let current = "";
     setMessages(prev => [...prev, { text: "", sender: 'ai' }]);
 
+    let current = "";
     for (let i = 0; i < text.length; i++) {
       current += text[i];
       setMessages(prev => {
         const updated = [...prev];
-        updated[updated.length - 1] = { text: current, sender: 'ai' };
+        updated[updated.length - 1].text = current;
         return updated;
       });
-      await new Promise(res => setTimeout(res, 10));
+      await new Promise(res => setTimeout(res, 5));
     }
   };
 
