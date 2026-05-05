@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 interface AIState {
-  answer: any; 
+  answer: any;
   loading: boolean;
   error: string | null;
 }
@@ -17,16 +17,17 @@ export const askNexusAssistant = createAsyncThunk(
   async ({ userQuery }: { userQuery: string }) => {
 
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    const token = localStorage.getItem('userInfo')
+      ? JSON.parse(localStorage.getItem('userInfo')!).token
+      : null;
 
     const response = await fetch(`${API_URL}/api/ai/ask-assistant`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}` 
       },
-      body: JSON.stringify({
-        userQuery,
-        userId: "demoUser"
-      }),
+      body: JSON.stringify({ userQuery }), 
     });
 
     const data = await response.json();
