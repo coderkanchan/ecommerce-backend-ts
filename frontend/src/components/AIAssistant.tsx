@@ -3,39 +3,34 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { askNexusAssistant } from '../redux/slices/aiSlice';
 import { RootState, AppDispatch } from '../redux/store';
-import { MessageCircle, X, Send, Sparkles, Maximize2, Minimize2 } from 'lucide-react';
+import { MessageCircle, X, Send, Sparkles, Maximize2, Minimize2, Trash2 } from 'lucide-react';
 import { addToCart } from '../redux/slices/cartSlice';
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 const AIAssistant = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [query, setQuery] = useState('');
   const [messages, setMessages] = useState<{ text: string, sender: 'user' | 'ai' }[]>([]);
-  const [lastSuggestedProduct, setLastSuggestedProduct] = useState<string | null>(null);
 
   const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: RootState) => state.ai);
   const products = useSelector((state: RootState) => state.products.products);
-
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   const streamText = async (text: string) => {
-
     let current = "";
+    setMessages(prev => [...prev, { text: "", sender: 'ai' }]);
 
     for (let i = 0; i < text.length; i++) {
       current += text[i];
-
       setMessages(prev => {
         const updated = [...prev];
-        updated[updated.length - 1] = {
-          text: current,
-          sender: 'ai'
-        };
+        updated[updated.length - 1] = { text: current, sender: 'ai' };
         return updated;
       });
-
-      await new Promise(res => setTimeout(res, 15));
+      await new Promise(res => setTimeout(res, 10));
     }
   };
 
@@ -43,143 +38,113 @@ const AIAssistant = () => {
     if (!query.trim() || loading) return;
 
     const userMessage = query;
-
     setMessages(prev => [...prev, { text: userMessage, sender: 'user' }]);
+    setQuery('');
 
     try {
-      const res = await dispatch(
-        askNexusAssistant({ userQuery: userMessage })
-      ).unwrap();
+      const res = await dispatch(askNexusAssistant({ userQuery: userMessage })).unwrap();
 
       if (res.action === "add_to_cart") {
         const product = products.find(p => p.name === res.productName);
-
         if (product) {
           dispatch(addToCart({ ...product, qty: 1 }));
-
-          setMessages(prev => [...prev, {
-            text: `${product.name} added to cart 🛒`,
-            sender: 'ai'
-          }]);
-
-          setLastSuggestedProduct(null);
+          await streamText(`${product.name} has been added to your cart! 🛒`);
         } else {
-          setMessages(prev => [...prev, {
-            text: "❌ Product not found",
-            sender: 'ai'
-          }]);
+          await streamText("I found the product, but it seems to be out of stock.");
         }
-      }
-
-      else if (res.action === "not_found") {
-        setMessages(prev => [...prev, { text: "", sender: 'ai' }]);
+      } else {
         await streamText(res.message);
       }
-
-      else {
-        setMessages(prev => [...prev, { text: "", sender: 'ai' }]);
-        await streamText(res.message);
-
-        const foundProduct = products.find(p =>
-          res.message?.toLowerCase().includes(p.name.toLowerCase().slice(0, 5))
-        );
-
-        if (foundProduct) {
-          setLastSuggestedProduct(foundProduct.name);
-        }
-      }
-
     } catch (err) {
-      setMessages(prev => [...prev, {
-        text: "Something went wrong 😅",
-        sender: 'ai'
-      }]);
+      setMessages(prev => [...prev, { text: "Connection error. Please try again.", sender: 'ai' }]);
     }
-
-    setQuery('');
   };
 
-  useEffect(() => {
-    fetch("http://localhost:5000/api/chat/demoUser")
-      .then(res => res.json())
-      .then(data => {
-        if (data.messages) {
-          setMessages(data.messages.map((m: any) => ({
-            text: m.content,
-            sender: m.role === "ai" ? "ai" : "user"
-          })));
-        }
-      });
-  }, []);
+  const handleClearChat = async () => {
+    try {
+      await fetch(`${API_BASE_URL}/api/chat/my-history`, { method: "DELETE" });
+      setMessages([]);
+    } catch (error) {
+      console.error("Clear chat failed");
+    }
+  };
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   return (
-    <div className=" flex flex-col items-end">
-
+    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
       {isOpen && (
-        <div className={`${isExpanded ? "w-[90vw] h-[80vh]" : "w-80 sm:w-96 h-125"}
-          bg-blue-100 rounded-2xl shadow-2xl border flex flex-col`}>
+        <div className={`${isExpanded ? "w-[90vw] h-[80vh]" : "w-80 sm:w-96 h-[500px]"} 
+          bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden transition-all duration-300`}>
 
-          <div className="bg-blue-600 rounded-t-2xl p-4 text-white flex justify-between">
+          <div className="bg-blue-600 p-4 text-white flex justify-between items-center">
             <div className="flex gap-2 items-center">
-              <Sparkles size={20} />
-              <span>Nexus Assistant</span>
+              <Sparkles size={18} className="text-yellow-300" />
+              <span className="font-semibold text-sm">Nexus AI Assistant</span>
             </div>
-
-            <div className="flex gap-2">
-              <button onClick={() => setIsExpanded(prev => !prev)}>
-                {isExpanded ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+            <div className="flex gap-3">
+              <button onClick={() => setIsExpanded(!isExpanded)} className="hover:bg-blue-700 p-1 rounded">
+                {isExpanded ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
               </button>
-              <button onClick={() => setIsOpen(false)}>
-                <X size={20} />
+              <button onClick={() => setIsOpen(false)} className="hover:bg-blue-700 p-1 rounded">
+                <X size={18} />
               </button>
             </div>
           </div>
 
-          <button
-            onClick={async () => {
-              await fetch("http://localhost:5000/api/chat/demoUser", { method: "DELETE" });
-              setMessages([]);
-            }}
-            className="max-w-20 text-xs bg-red-500 text-white px-2 py-1 m-2 rounded"
-          >
-            Clear Chat
-          </button>
-
-          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-2">
+          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-gray-50">
+            {messages.length === 0 && (
+              <div className="text-center text-gray-400 mt-10 text-sm">
+                How can I help you with your shopping today?
+              </div>
+            )}
             {messages.map((msg, i) => (
-              <div key={i}
-                className={`p-2 rounded-lg max-w-[80%] ${msg.sender === 'user'
-                  ? 'self-end bg-blue-600 text-white'
-                  : 'self-start bg-gray-200 text-gray-800'
-                  }`}>
+              <div key={i} className={`p-3 rounded-2xl text-sm max-w-[85%] shadow-sm ${msg.sender === 'user' ? 'self-end bg-blue-600 text-white rounded-tr-none' : 'self-start bg-white text-gray-800 border border-gray-200 rounded-tl-none'
+                }`}>
                 {msg.text}
               </div>
             ))}
-            <div ref={bottomRef}></div>
+            <div ref={bottomRef} />
           </div>
 
-          <div className="p-3 flex gap-2 border-t bg-gray-100">
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-              className="flex-1 p-2 border-2 border-gray-400 rounded-lg outline-none focus:border-blue-500 text-gray-600"
-              placeholder="Ask anything..."
-            />
-            <button onClick={handleSearch} className='text-blue-500'>
-              <Send size={30} />
-            </button>
+          <div className="p-3 border-t bg-white">
+            <div className="flex justify-between mb-2">
+              <button onClick={handleClearChat} className="text-[10px] flex items-center gap-1 text-red-500 hover:underline">
+                <Trash2 size={12} /> Clear Chat
+              </button>
+            </div>
+            <div className="flex gap-2">
+              <input
+                disabled={loading}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                className="flex-1 p-2 bg-gray-100 border-none rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 text-gray-700"
+                placeholder={loading ? "AI is thinking..." : "Ask about products..."}
+              />
+              <button
+                disabled={loading || !query.trim()}
+                onClick={handleSearch}
+                className="bg-blue-600 text-white p-2 rounded-xl disabled:bg-gray-300 transition-colors"
+              >
+                <Send size={18} />
+              </button>
+            </div>
           </div>
         </div>
       )}
 
-      <button onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? <X size={28} /> : <MessageCircle size={28} />}
-      </button>
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="bg-blue-600 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center gap-2 group"
+        >
+          <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 font-medium">Chat with AI</span>
+          <MessageCircle size={24} />
+        </button>
+      )}
     </div>
   );
 };
