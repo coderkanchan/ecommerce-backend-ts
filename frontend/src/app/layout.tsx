@@ -18,7 +18,7 @@ export const viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body  className="min-h-screen pb-10 overflow-x-hidden">
+      <body className="min-h-screen pb-10 overflow-x-hidden">
         <ReduxProvider>
 
           <NavbarWrapper />
@@ -31,6 +31,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               src="https://checkout.razorpay.com/v1/checkout.js"
             />
           </main>
+
+          <AIAssistant />
+
         </ReduxProvider>
       </body>
     </html>
