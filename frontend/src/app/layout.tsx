@@ -3,6 +3,7 @@ import { ReduxProvider } from "@/redux/ReduxProvider";
 import Script from 'next/script';
 import { Toaster } from 'sonner';
 import NavbarWrapper from '../components/NavbarWrapper';
+import AIAssistant from "@/components/AIAssistant";
 
 export const metadata = {
   title: 'NexusMart | Best E-commerce Platform',
