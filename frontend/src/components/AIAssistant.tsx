@@ -33,7 +33,13 @@ const AIAssistant = () => {
       await new Promise(res => setTimeout(res, 5));
     }
   };
-
+  const [messages, setMessages] = useState<{ text: string, sender: 'user' | 'ai' }[]>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('nexus_chat_history');
+      return saved ? JSON.parse(saved) : [];
+    }
+    return [];
+  });
   const handleSearch = async () => {
     if (!query.trim() || loading) return;
 
