@@ -133,7 +133,7 @@ const AIAssistant = () => {
                 disabled={loading || !query.trim()}
                 onClick={handleSearch}
                 className="bg-blue-600 text-white p-2 rounded-xl disabled:bg-gray-300 transition-colors"
-              >[]
+              >
                 <Send size={18} />
               </button>
             </div>
