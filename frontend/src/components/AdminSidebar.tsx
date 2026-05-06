@@ -4,7 +4,6 @@ import { usePathname } from 'next/navigation';
 
 const AdminSidebar = () => {
   const pathname = usePathname();
-
   const menuItems = [
     { name: 'Dashboard', path: '/admin/dashboard' },
     { name: 'Products', path: '/admin/products' },
