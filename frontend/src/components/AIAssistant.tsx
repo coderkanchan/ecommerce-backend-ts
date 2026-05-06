@@ -9,7 +9,6 @@ import { addToCart } from '../redux/slices/cartSlice';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 const AIAssistant = () => {
-  // 1. States with LocalStorage Persistence
   const [isOpen, setIsOpen] = useState(() => {
     if (typeof window !== 'undefined') {
       return localStorage.getItem('nexus_chat_open') === 'true';
@@ -33,7 +32,6 @@ const AIAssistant = () => {
   const products = useSelector((state: RootState) => state.products.products);
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
-  // Sync state to LocalStorage
   useEffect(() => {
     localStorage.setItem('nexus_chat_history', JSON.stringify(messages));
   }, [messages]);
@@ -71,7 +69,7 @@ const AIAssistant = () => {
       const res = await dispatch(askNexusAssistant({ userQuery: userMessage })).unwrap();
 
       if (res.action === "add_to_cart" && res.productName) {
-        // Improved Matching Logic
+     
         const product = products.find(p =>
           p.name.toLowerCase().includes(res.productName.toLowerCase()) ||
           res.productName.toLowerCase().includes(p.name.toLowerCase())
@@ -114,7 +112,7 @@ const AIAssistant = () => {
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
       {isOpen && (
         <div className={`${isExpanded ? "w-[90vw] h-[80vh]" : "w-80 sm:w-96 h-[500px]"} bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden transition-[width,height] duration-300 ease-in-out`}>
-          {/* Header */}
+        
           <div className="bg-blue-600 p-4 text-white flex justify-between items-center">
             <div className="flex gap-2 items-center">
               <Sparkles size={18} className="text-yellow-300" />
@@ -130,7 +128,6 @@ const AIAssistant = () => {
             </div>
           </div>
 
-          {/* Messages Area */}
           <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-gray-50">
             {messages.length === 0 && (
               <div className="text-center text-gray-400 mt-10 text-sm italic">
@@ -148,7 +145,6 @@ const AIAssistant = () => {
             <div ref={bottomRef} />
           </div>
 
-          {/* Input Area */}
           <div className="p-3 border-t bg-white">
             <div className="flex justify-between mb-2">
               <button onClick={handleClearChat} className="text-[10px] flex items-center gap-1 text-red-500 hover:underline font-medium">
@@ -176,7 +172,6 @@ const AIAssistant = () => {
         </div>
       )}
 
-      {/* Trigger Button - Fixed UI */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
