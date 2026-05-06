@@ -31,6 +31,7 @@ const AIAssistant = () => {
   const { loading } = useSelector((state: RootState) => state.ai);
   const products = useSelector((state: RootState) => state.products.products);
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('nexus_chat_history', JSON.stringify(messages));
@@ -69,7 +70,7 @@ const AIAssistant = () => {
       const res = await dispatch(askNexusAssistant({ userQuery: userMessage })).unwrap();
 
       if (res.action === "add_to_cart" && res.productName) {
-     
+
         const product = products.find(p =>
           p.name.toLowerCase().includes(res.productName.toLowerCase()) ||
           res.productName.toLowerCase().includes(p.name.toLowerCase())
@@ -108,11 +109,17 @@ const AIAssistant = () => {
     }
   };
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
       {isOpen && (
         <div className={`${isExpanded ? "w-[90vw] h-[80vh]" : "w-80 sm:w-96 h-125"} bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden transition-[width,height] duration-300 ease-in-out`}>
-        
+
           <div className="bg-blue-600 p-4 text-white flex justify-between items-center">
             <div className="flex gap-2 items-center">
               <Sparkles size={18} className="text-yellow-300" />
@@ -136,8 +143,8 @@ const AIAssistant = () => {
             )}
             {messages.map((msg, i) => (
               <div key={i} className={`p-3 rounded-2xl text-sm max-w-[85%] shadow-sm animate-in fade-in duration-300 ${msg.sender === 'user'
-                  ? 'self-end bg-blue-600 text-white rounded-tr-none'
-                  : 'self-start bg-white text-gray-800 border border-gray-200 rounded-tl-none'
+                ? 'self-end bg-blue-600 text-white rounded-tr-none'
+                : 'self-start bg-white text-gray-800 border border-gray-200 rounded-tl-none'
                 }`}>
                 {msg.text}
               </div>
