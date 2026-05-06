@@ -11,6 +11,7 @@ type AIResponse = {
 };
 
 export const handleAIQuery = async (req: any, res: Response) => {
+
   try {
     const { userQuery } = req.body;
     const userId = req.user?._id || "guest_user";
@@ -70,6 +71,7 @@ export const handleAIQuery = async (req: any, res: Response) => {
     });
 
     const data = await response.json();
+    
     const parsed: AIResponse = JSON.parse(data.choices[0].message.content);
 
     let aiMessage = parsed.message;
