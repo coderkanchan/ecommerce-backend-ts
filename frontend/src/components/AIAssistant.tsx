@@ -68,7 +68,7 @@ const AIAssistant = () => {
     try {
       await fetch(`${API_BASE_URL}/api/chat/my-history`, {
         method: "DELETE",
-        headers: { 'Authorization': `Bearer ${token}` } 
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       setMessages([]);
     } catch (error) {
@@ -133,7 +133,7 @@ const AIAssistant = () => {
                 disabled={loading || !query.trim()}
                 onClick={handleSearch}
                 className="bg-blue-600 text-white p-2 rounded-xl disabled:bg-gray-300 transition-colors"
-              >
+              >[]
                 <Send size={18} />
               </button>
             </div>
@@ -144,10 +144,14 @@ const AIAssistant = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-blue-600 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform flex items-center gap-2 group"
+          className="bg-blue-600 text-white h-14 w-14 rounded-full shadow-lg hover:w-40 transition-all duration-300 flex items-center justify-center overflow-hidden group relative"
         >
-          <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-500 font-medium">Chat with AI</span>
-          <MessageCircle size={24} />
+          <div className="flex items-center justify-center w-full px-4">
+            <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-medium absolute left-6">
+              Chat with AI
+            </span>
+            <MessageCircle size={24} className="absolute right-4" />
+          </div>
         </button>
       )}
     </div>
