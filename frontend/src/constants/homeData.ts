@@ -12,7 +12,7 @@ export const HOME_CARDS = [
     footerLink: "/search?category=Appliances"
   },
   {
-    id: "electronics",
+    id: "Electronics",
     title: "Laptops, Desktops & Accessories",
     items: [
       { id: 1, name: "Laptops", image: "/laptopp.jpg", link: "/search?category=Laptops" },

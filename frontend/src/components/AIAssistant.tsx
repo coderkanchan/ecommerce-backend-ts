@@ -44,13 +44,26 @@ const AIAssistant = () => {
     try {
       const res = await dispatch(askNexusAssistant({ userQuery: userMessage })).unwrap();
 
+      // if (res.action === "add_to_cart") {
+      //   const product = products.find(p => p.name === res.productName);
+      //   if (product) {
+      //     dispatch(addToCart({ ...product, qty: 1 }));
+      //     await streamText(`${product.name} has been added to your cart! 🛒`);
+      //   } else {
+      //     await streamText("I found the product, but it seems to be out of stock.");
+      //   }
+      // }
       if (res.action === "add_to_cart") {
-        const product = products.find(p => p.name === res.productName);
+        const product = products.find(p =>
+          p.name.toLowerCase().includes(res.productName.toLowerCase()) ||
+          res.productName.toLowerCase().includes(p.name.toLowerCase())
+        );
+
         if (product) {
           dispatch(addToCart({ ...product, qty: 1 }));
-          await streamText(`${product.name} has been added to your cart! 🛒`);
+          await streamText(`Great choice! ${product.name} has been added to your cart! 🛒`);
         } else {
-          await streamText("I found the product, but it seems to be out of stock.");
+          await streamText("I found the product details, but I couldn't find the exact match in our current stock.");
         }
       } else {
         await streamText(res.message);
