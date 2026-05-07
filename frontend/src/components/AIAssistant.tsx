@@ -86,6 +86,13 @@ const AIAssistant = () => {
         } else {
           await streamText(res.message || `I found the product, but it seems I can't find that exact version in our store right now.`);
         }
+        if (product) {
+          console.log("Product found, dispatching to cart:", product);
+          dispatch(addToCart({ ...product, qty: 1 }));
+          toast.success(`${product.name} added to cart!`);
+        } else {
+          console.log("Product NOT found in Redux state. AI suggested:", res.productName);
+        }
       }
       else {
         await streamText(res.message || "How else can I help you?");
