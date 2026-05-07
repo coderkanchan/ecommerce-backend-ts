@@ -5,6 +5,7 @@ import { askNexusAssistant } from '../redux/slices/aiSlice';
 import { RootState, AppDispatch } from '../redux/store';
 import { MessageCircle, X, Send, Sparkles, Maximize2, Minimize2, Trash2 } from 'lucide-react';
 import { addToCart } from '../redux/slices/cartSlice';
+import { toast } from 'sonner';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
@@ -69,20 +70,21 @@ const AIAssistant = () => {
     try {
       const res = await dispatch(askNexusAssistant({ userQuery: userMessage })).unwrap();
 
-      console.log("AI Response:", res); 
+      console.log("AI Response:", res);
 
-      if (res.action === "add_to_cart" && res.productName) {
-
-        const product = products.find(p =>
-          p.name.toLowerCase().includes(res.productName.toLowerCase()) ||
-          res.productName.toLowerCase().includes(p.name.toLowerCase())
-        );
+      if (res.action === "add_to_cart") {
+        const product = products.find(p => {
+          const dbName = p.name.toLowerCase();
+          const aiName = res.productName.toLowerCase();
+          return dbName.includes(aiName) || aiName.includes(dbName);
+        });
 
         if (product) {
           dispatch(addToCart({ ...product, qty: 1 }));
-          await streamText(`Great choice! ${product.name} has been added to your cart! 🛒`);
+          toast.success(`${product.name} added to cart!`); 
+          await streamText(`Done! I've added the ${product.name} to your cart for you. 🛒`);
         } else {
-          await streamText("I found the details, but that exact item isn't in our inventory right now.");
+          await streamText(`I found ${res.productName}, but I couldn't find a matching version in our inventory.`);
         }
       } else {
         await streamText(res.message || "How else can I help you?");
