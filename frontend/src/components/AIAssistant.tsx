@@ -159,7 +159,7 @@ const AIAssistant = () => {
 
           <div className="p-3 border-t bg-white">
             <div className="flex justify-between mb-2">
-              <button onClick={handleClearChat} className="text-[10px] flex items-center gap-1 text-red-500 hover:underline font-medium border border-red-300 ">
+              <button onClick={handleClearChat} className="text-[10px] flex items-center gap-1 text-red-500 hover:underline font-medium border border-red-300 p-1 rounded-md">
                 <Trash2 size={12} /> Clear Chat
               </button>
             </div>
