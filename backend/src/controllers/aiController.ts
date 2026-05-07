@@ -19,7 +19,6 @@ export const handleAIQuery = async (req: any, res: Response) => {
       return res.status(400).json({ message: "Message is required" });
     }
 
-    // 1. Vector Search for Context
     const queryVector = await getEmbedding(userQuery);
     const vectorSearch = await index.query({
       vector: queryVector,
@@ -33,7 +32,6 @@ export const handleAIQuery = async (req: any, res: Response) => {
       category: m.metadata?.category,
     })) || [];
 
-    // 2. Fetch Chat History
     const previousChat = await Chat.findOne({ userId });
     const historyMessages = previousChat
       ? previousChat.messages.slice(-6).map((m) => ({
@@ -42,7 +40,6 @@ export const handleAIQuery = async (req: any, res: Response) => {
       }))
       : [];
 
-    // 3. Groq API Call
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -82,9 +79,7 @@ export const handleAIQuery = async (req: any, res: Response) => {
 
     let aiMessage = parsed.message;
 
-    // 4. Verification & Action Mapping
     if (parsed.action === "add_to_cart" && parsed.productName) {
-      // Flexible Regex Matching: Helps find "iPhone 13" even if DB has "Apple iPhone 13"
       const dbProduct = await Product.findOne({
         name: { $regex: new RegExp(parsed.productName, "i") }
       });
@@ -93,13 +88,11 @@ export const handleAIQuery = async (req: any, res: Response) => {
         parsed.action = "not_found";
         aiMessage = `I see you're interested in ${parsed.productName}, but we don't have that specific item in stock right now.`;
       } else {
-        // Update to exact DB name so frontend matching is 100% accurate
         parsed.productName = dbProduct.name;
         aiMessage = parsed.message;
       }
     }
 
-    // 5. Save to MongoDB History
     await Chat.findOneAndUpdate(
       { userId },
       {
@@ -113,7 +106,6 @@ export const handleAIQuery = async (req: any, res: Response) => {
       { upsert: true }
     );
 
-    // 6. Final Response to Frontend
     return res.json({
       action: parsed.action,
       message: aiMessage,
