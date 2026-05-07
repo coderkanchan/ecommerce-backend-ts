@@ -60,6 +60,48 @@ const AIAssistant = () => {
     }
   };
 
+  // const handleSearch = async () => {
+  //   if (!query.trim() || loading) return;
+
+  //   const userMessage = query;
+  //   setMessages(prev => [...prev, { text: userMessage, sender: 'user' }]);
+  //   setQuery('');
+
+  //   try {
+  //     const res = await dispatch(askNexusAssistant({ userQuery: userMessage })).unwrap();
+
+  //     console.log("AI Response:", res);
+
+  //     if (res.action === "add_to_cart") {
+  //       const product = products.find(p => {
+  //         const dbName = p.name.toLowerCase().replace(/\s+/g, '');
+  //         const aiName = res.productName.toLowerCase().replace(/\s+/g, '');
+  //         return dbName.includes(aiName) || aiName.includes(dbName);
+  //       });
+
+  //       if (product) {
+  //         dispatch(addToCart({ ...product, qty: 1 }));
+  //         toast.success(`${product.name} added to cart!`);
+  //         await streamText(`Bilkul! Maine ${product.name} aapke cart mein add kar diya hai. 🛒`);
+  //       } else {
+  //         await streamText(res.message || `I found the product, but it seems I can't find that exact version in our store right now.`);
+  //       }
+  //       if (product) {
+  //         console.log("Product found, dispatching to cart:", product);
+  //         dispatch(addToCart({ ...product, qty: 1 }));
+  //         toast.success(`${product.name} added to cart!`);
+  //       } else {
+  //         console.log("Product NOT found in Redux state. AI suggested:", res.productName);
+  //       }
+  //     }
+  //     else {
+  //       await streamText(res.message || "How else can I help you?");
+  //     }
+  //   } catch (err) {
+  //     setMessages(prev => [...prev, { text: "Connection error. Please ensure you are logged in and try again.", sender: 'ai' }]);
+  //   }
+  // };
+
   const handleSearch = async () => {
     if (!query.trim() || loading) return;
 
@@ -69,36 +111,30 @@ const AIAssistant = () => {
 
     try {
       const res = await dispatch(askNexusAssistant({ userQuery: userMessage })).unwrap();
-
-      console.log("AI Response:", res);
+      console.log("AI Response Object:", res);
 
       if (res.action === "add_to_cart") {
         const product = products.find(p => {
           const dbName = p.name.toLowerCase().replace(/\s+/g, '');
-          const aiName = res.productName.toLowerCase().replace(/\s+/g, '');
+          const aiName = res.productName?.toLowerCase().replace(/\s+/g, '') || "";
           return dbName.includes(aiName) || aiName.includes(dbName);
         });
 
         if (product) {
+          console.log("✅ Product matched in Redux:", product.name);
           dispatch(addToCart({ ...product, qty: 1 }));
           toast.success(`${product.name} added to cart!`);
           await streamText(`Bilkul! Maine ${product.name} aapke cart mein add kar diya hai. 🛒`);
         } else {
-          await streamText(res.message || `I found the product, but it seems I can't find that exact version in our store right now.`);
+          console.warn("❌ Product found by AI but missing in Redux state:", res.productName);
+          await streamText(res.message || `I found the product info, but I couldn't sync it with our current store list.`);
         }
-        if (product) {
-          console.log("Product found, dispatching to cart:", product);
-          dispatch(addToCart({ ...product, qty: 1 }));
-          toast.success(`${product.name} added to cart!`);
-        } else {
-          console.log("Product NOT found in Redux state. AI suggested:", res.productName);
-        }
-      }
-      else {
+      } else {
         await streamText(res.message || "How else can I help you?");
       }
     } catch (err) {
-      setMessages(prev => [...prev, { text: "Connection error. Please ensure you are logged in and try again.", sender: 'ai' }]);
+      console.error("AI Assistant Error:", err);
+      setMessages(prev => [...prev, { text: "Connection error. Please try again.", sender: 'ai' }]);
     }
   };
 
