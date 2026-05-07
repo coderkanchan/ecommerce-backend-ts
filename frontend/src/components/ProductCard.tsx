@@ -23,7 +23,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           href={`/product/${product._id}`}
           className="group border border-gray-800 rounded-2xl overflow-hidden hover:border-gray-600 transition-all bg-[#111] flex flex-col h-full"
         >
-          <div className="relative aspect-square overflow-hidden bg-white">
+          <div className="relative aspect-square overflow-hidden bg-gray-400">
             <Image
               src={imageSrc}
               alt={product.name}
