@@ -74,19 +74,20 @@ const AIAssistant = () => {
 
       if (res.action === "add_to_cart") {
         const product = products.find(p => {
-          const dbName = p.name.toLowerCase();
-          const aiName = res.productName.toLowerCase();
+          const dbName = p.name.toLowerCase().replace(/\s+/g, '');
+          const aiName = res.productName.toLowerCase().replace(/\s+/g, '');
           return dbName.includes(aiName) || aiName.includes(dbName);
         });
 
         if (product) {
           dispatch(addToCart({ ...product, qty: 1 }));
-          toast.success(`${product.name} added to cart!`); 
-          await streamText(`Done! I've added the ${product.name} to your cart for you. 🛒`);
+          toast.success(`${product.name} added to cart!`);
+          await streamText(`Bilkul! Maine ${product.name} aapke cart mein add kar diya hai. 🛒`);
         } else {
-          await streamText(`I found ${res.productName}, but I couldn't find a matching version in our inventory.`);
+          await streamText(res.message || `I found the product, but it seems I can't find that exact version in our store right now.`);
         }
-      } else {
+      }
+      else {
         await streamText(res.message || "How else can I help you?");
       }
     } catch (err) {
