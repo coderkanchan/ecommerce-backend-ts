@@ -140,7 +140,7 @@ const AIAssistant = () => {
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-gray-500">
+          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-gray-200">
             {messages.length === 0 && (
               <div className="text-center text-gray-400 mt-10 text-sm italic">
                 How can I help you with your shopping today?
