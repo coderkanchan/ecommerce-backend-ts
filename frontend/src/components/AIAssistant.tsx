@@ -47,6 +47,12 @@ const AIAssistant = () => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  useEffect(() => {
+    if (products.length === 0) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, products.length]);
+
   const streamText = async (text: string) => {
     setMessages(prev => [...prev, { text: "", sender: 'ai' }]);
     let current = "";
@@ -61,12 +67,6 @@ const AIAssistant = () => {
     }
   };
 
-  useEffect(() => {
-    if (products.length === 0) {
-      dispatch(fetchProducts());
-    }
-  }, [dispatch, products.length]);
-
   const handleSearch = async () => {
     if (!query.trim() || loading) return;
 
@@ -78,7 +78,6 @@ const AIAssistant = () => {
       const res = await dispatch(askNexusAssistant({ userQuery: userMessage })).unwrap();
 
       if (res.action === "add_to_cart" && res.productName) {
-       
         const product = products.find(p => {
           const dbName = p.name.toLowerCase().replace(/[^a-z0-9]/g, '');
           const aiName = res.productName.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -94,7 +93,7 @@ const AIAssistant = () => {
             await streamText(`Sorry, ${product.name} abhi out of stock hai.`);
           }
         } else {
-          await streamText(`Mujhe ${res.productName} catalog mein nahi mila. Please store page check karein.`);
+          await streamText(`Mujhe "${res.productName}" catalog mein nahi mila. Please store page check karein.`);
         }
       } else {
         await streamText(res.message || "Main isme aapki kaise madad kar sakta hoon?");
@@ -106,9 +105,8 @@ const AIAssistant = () => {
   };
 
   const handleClearChat = async () => {
-    const token = localStorage.getItem('userInfo')
-      ? JSON.parse(localStorage.getItem('userInfo')!).token
-      : null;
+    const userInfo = localStorage.getItem('userInfo');
+    const token = userInfo ? JSON.parse(userInfo).token : null;
 
     try {
       if (token) {
@@ -124,21 +122,6 @@ const AIAssistant = () => {
     }
   };
 
-  const handleAddToCart = (aiProductName: string) => {
-    const item = products.find((p: any) =>
-      p.name.toLowerCase().includes(aiProductName.toLowerCase()) ||
-      aiProductName.toLowerCase().includes(p.name.toLowerCase())
-    );
-
-    if (item && item.countInStock > 0) {
-      dispatch(addToCart({ ...item, qty: 1 }));
-      setMessages(prev => [...prev, { role: 'assistant', content: `${item.name} cart mein add ho gaya hai!` }]);
-    } else {
-      
-      setMessages(prev => [...prev, { role: 'assistant', content: "Sorry, ye product stock mein nahi hai." }]);
-    }
-  };
-
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -148,7 +131,7 @@ const AIAssistant = () => {
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
       {isOpen && (
-        <div className={`${isExpanded ? "w-[90vw] h-[80vh]" : "w-80 sm:w-96 h-125"} bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden transition-[width,height] duration-300 ease-in-out`}>
+        <div className={`${isExpanded ? "w-[90vw] h-[80vh]" : "w-80 sm:w-96 h-[500px]"} bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden transition-all duration-300`}>
 
           <div className="bg-blue-600 p-4 text-white flex justify-between items-center">
             <div className="flex gap-2 items-center">
@@ -165,16 +148,16 @@ const AIAssistant = () => {
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-gray-200">
+          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-gray-50">
             {messages.length === 0 && (
               <div className="text-center text-gray-400 mt-10 text-sm italic">
                 How can I help you with your shopping today?
               </div>
             )}
             {messages.map((msg, i) => (
-              <div key={i} className={`p-3 rounded-2xl text-sm max-w-[85%] shadow-sm animate-in fade-in duration-300 ${msg.sender === 'user'
-                ? 'self-end bg-blue-600 text-white rounded-tr-none'
-                : 'self-start bg-white text-gray-800 border border-gray-200 rounded-tl-none'
+              <div key={i} className={`p-3 rounded-2xl text-sm max-w-[85%] shadow-sm ${msg.sender === 'user'
+                  ? 'self-end bg-blue-600 text-white rounded-tr-none'
+                  : 'self-start bg-white text-gray-800 border border-gray-200 rounded-tl-none'
                 }`}>
                 {msg.text}
               </div>
@@ -184,7 +167,7 @@ const AIAssistant = () => {
 
           <div className="p-3 border-t bg-white">
             <div className="flex justify-between mb-2">
-              <button onClick={handleClearChat} className="text-[10px] flex items-center gap-1 text-red-500 hover:underline font-medium border border-red-300 p-1 rounded-md hover:bg-red-400 hover:text-white transition all duration-100 cursor-pointer">
+              <button onClick={handleClearChat} className="text-[10px] flex items-center gap-1 text-red-500 hover:bg-red-50 px-2 py-1 rounded-md border border-red-100 transition-colors">
                 <Trash2 size={12} /> Clear Chat
               </button>
             </div>
@@ -194,13 +177,13 @@ const AIAssistant = () => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                className="flex-1 p-2 bg-gray-100 border-none rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 text-gray-700 transition-all"
+                className="flex-1 p-2 bg-gray-100 border-none rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder={loading ? "AI is thinking..." : "Ask about products..."}
               />
               <button
                 disabled={loading || !query.trim()}
                 onClick={handleSearch}
-                className="bg-blue-600 text-white p-2 rounded-xl disabled:bg-gray-300 hover:bg-blue-700 transition-all active:scale-95"
+                className="bg-blue-600 text-white p-2 rounded-xl disabled:bg-gray-300 hover:bg-blue-700 transition-all"
               >
                 <Send size={18} />
               </button>
@@ -212,14 +195,9 @@ const AIAssistant = () => {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-blue-600 text-white h-14 w-14 rounded-full shadow-lg hover:w-40 transition-all duration-300 flex items-center justify-center overflow-hidden group relative"
+          className="bg-blue-600 text-white h-14 w-14 rounded-full shadow-lg hover:shadow-blue-200 transition-all flex items-center justify-center group"
         >
-          <div className="flex items-center justify-center w-full px-4">
-            <span className="whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-medium absolute left-6">
-              Chat with AI
-            </span>
-            <MessageCircle size={24} className="absolute right-4" />
-          </div>
+          <MessageCircle size={24} className="group-hover:scale-110 transition-transform" />
         </button>
       )}
     </div>
