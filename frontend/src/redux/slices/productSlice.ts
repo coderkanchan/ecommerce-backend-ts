@@ -30,7 +30,7 @@ export const fetchProducts = createAsyncThunk('products/fetchAll', async () => {
   if (!response.ok) throw new Error('Failed to fetch products');
 
   const data = await response.json();
-
+  console.log("DB Products:", data.products);
   console.log("Products loaded into Redux:", data.products);
 
   return data.products;
