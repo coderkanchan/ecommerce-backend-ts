@@ -5,6 +5,7 @@ import { askNexusAssistant } from '../redux/slices/aiSlice';
 import { RootState, AppDispatch } from '../redux/store';
 import { MessageCircle, X, Send, Sparkles, Maximize2, Minimize2, Trash2 } from 'lucide-react';
 import { addToCart } from '../redux/slices/cartSlice';
+import { fetchProducts } from '../redux/slices/productSlice';
 import { toast } from 'sonner';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
