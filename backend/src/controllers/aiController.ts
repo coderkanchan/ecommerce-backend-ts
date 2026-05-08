@@ -85,11 +85,18 @@ export const handleAIQuery = async (req: any, res: Response) => {
       });
 
       if (!dbProduct) {
-        parsed.action = "not_found";
-        aiMessage = `I see you're interested in ${parsed.productName}, but we don't have that specific item in stock right now.`;
+        const fallbackProduct = await Product.findOne({
+          name: { $regex: parsed.productName.split(' ')[0], $options: 'i' }
+        });
+
+        if (fallbackProduct) {
+          parsed.productName = fallbackProduct.name;
+        } else {
+          parsed.action = "not_found";
+          aiMessage = `I see you're interested in ${parsed.productName}, but I couldn't find it in our current catalog.`;
+        }
       } else {
         parsed.productName = dbProduct.name;
-        aiMessage = parsed.message;
       }
     }
 
