@@ -22,15 +22,18 @@ const initialState: ProductState = {
 };
 
 export const fetchProducts = createAsyncThunk('products/fetchAll', async () => {
+
   const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
 
-  const response = await fetch(`${API_URL}/api/products/all`); 
+  const response = await fetch(`${API_URL}/api/products/all`);
 
   if (!response.ok) throw new Error('Failed to fetch products');
 
   const data = await response.json();
 
-  return data.products; 
+  console.log("Products loaded into Redux:", data.products);
+
+  return data.products;
 });
 
 const productSlice = createSlice({
