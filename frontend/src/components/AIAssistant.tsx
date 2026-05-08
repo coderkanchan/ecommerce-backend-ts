@@ -61,6 +61,12 @@ const AIAssistant = () => {
     }
   };
 
+  useEffect(() => {
+    if (products.length === 0) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, products.length]);
+
   const handleSearch = async () => {
     if (!query.trim() || loading) return;
 
