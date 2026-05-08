@@ -66,7 +66,7 @@ const AIAssistant = () => {
       dispatch(fetchProducts());
     }
   }, [dispatch, products.length]);
-
+ 
   const handleSearch = async () => {
     if (!query.trim() || loading) return;
 
