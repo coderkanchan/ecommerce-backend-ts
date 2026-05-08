@@ -66,7 +66,7 @@ const AIAssistant = () => {
       dispatch(fetchProducts());
     }
   }, [dispatch, products.length]);
- 
+
   const handleSearch = async () => {
     if (!query.trim() || loading) return;
 
@@ -119,6 +119,22 @@ const AIAssistant = () => {
       localStorage.removeItem('nexus_chat_history');
     } catch (error) {
       console.error("Clear chat failed");
+    }
+  };
+
+  // AIAssistant.tsx ke andar jab add-to-cart trigger ho:
+  const handleAddToCart = (aiProductName: string) => {
+    const item = products.find((p: any) =>
+      p.name.toLowerCase().includes(aiProductName.toLowerCase()) ||
+      aiProductName.toLowerCase().includes(p.name.toLowerCase())
+    );
+
+    if (item && item.countInStock > 0) {
+      dispatch(addToCart({ ...item, qty: 1 }));
+      setMessages(prev => [...prev, { role: 'assistant', content: `${item.name} cart mein add ho gaya hai!` }]);
+    } else {
+      // Agar yahan 'item' nahi mila toh AI ye wala error dega jo aapko mil raha hai
+      setMessages(prev => [...prev, { role: 'assistant', content: "Sorry, ye product stock mein nahi hai." }]);
     }
   };
 
