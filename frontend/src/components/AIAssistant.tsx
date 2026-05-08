@@ -80,8 +80,8 @@ const AIAssistant = () => {
 
       if (res.action === "add_to_cart") {
         const product = products.find(p => {
-          const dbName = p.name.toLowerCase().replace(/\s+/g, '');
-          const aiName = res.productName?.toLowerCase().replace(/\s+/g, '') || "";
+          const dbName = p.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+          const aiName = res.productName?.toLowerCase().replace(/[^a-z0-9]/g, '') || "";
           return dbName.includes(aiName) || aiName.includes(dbName);
         });
 
