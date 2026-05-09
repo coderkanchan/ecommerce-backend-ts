@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { User } from '../models/User.js';
+import asyncHandler from 'express-async-handler';
 
 interface AuthRequest extends Request {
   user?: any;
@@ -46,16 +47,19 @@ export const seller = (req: any, res: Response, next: NextFunction) => {
   }
 };
 
-export const optionalProtect = asyncHandler(async (req, res, next) => {
+export const optionalProtect = asyncHandler(async (req: AuthRequest, res: Response, next: NextFunction) => {
   let token;
+
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     try {
       token = req.headers.authorization.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      const decoded: any = jwt.verify(token, process.env.JWT_SECRET as string);
+
       req.user = await User.findById(decoded.id).select('-password');
     } catch (error) {
       console.error("Optional token failed");
     }
   }
-  next();
+  next(); 
 });
