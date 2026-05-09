@@ -138,6 +138,11 @@ const AIAssistant = () => {
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+      {loading && (
+        <div className="self-start bg-white text-gray-400 p-3 rounded-2xl text-xs italic border border-gray-100">
+          Nexus is thinking...
+        </div>
+      )}
       {isOpen && (
         <div className={`${isExpanded ? "w-[90vw] h-[80vh]" : "w-80 sm:w-96 h-125"} bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden transition-all duration-300`}>
 
