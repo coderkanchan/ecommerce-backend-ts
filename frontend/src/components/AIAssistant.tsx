@@ -177,7 +177,7 @@ const AIAssistant = () => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                className="flex-1 p-2 bg-gray-100 border-none rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                className="flex-1 p-2 text-gray-600 bg-gray-100 border-none rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder={loading ? "AI is thinking..." : "Ask about products..."}
               />
               <button
