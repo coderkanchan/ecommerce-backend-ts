@@ -15,19 +15,23 @@ const initialState: AIState = {
 export const askNexusAssistant = createAsyncThunk(
   'ai/askAssistant',
   async ({ userQuery }: { userQuery: string }) => {
-
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-    const token = localStorage.getItem('userInfo')
-      ? JSON.parse(localStorage.getItem('userInfo')!).token
-      : null;
+
+    const userInfo = localStorage.getItem('userInfo');
+    const token = userInfo ? JSON.parse(userInfo).token : null;
+
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json',
+    };
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
 
     const response = await fetch(`${API_URL}/api/ai/ask-assistant`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}` 
-      },
-      body: JSON.stringify({ userQuery }), 
+      headers: headers,
+      body: JSON.stringify({ userQuery }),
     });
 
     const data = await response.json();
