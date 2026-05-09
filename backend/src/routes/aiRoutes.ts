@@ -1,12 +1,9 @@
 import express from 'express';
-import { handleAIQuery } from '../controllers/aiController.js';
-import { protect } from '../middleware/authMiddleware.js';
-import { optionalProtect } from '../middleware/authMiddleware';
+import { handleAIQuery } from '../controllers/aiController.js'; 
+import { optionalProtect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('/ask-assistant', protect, handleAIQuery);
-
-router.route('/ask-assistant').post(optionalProtect, askAssistant);
+router.route('/ask-assistant').post(optionalProtect, handleAIQuery);
 
 export default router;
