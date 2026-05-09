@@ -32,6 +32,8 @@ const AIAssistant = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: RootState) => state.ai);
   const products = useSelector((state: RootState) => state.products.products);
+  const { userInfo } = useSelector((state: RootState) => state.auth);
+
   const bottomRef = useRef<HTMLDivElement | null>(null);
   const [mounted, setMounted] = useState(false);
 
@@ -78,6 +80,13 @@ const AIAssistant = () => {
       const res = await dispatch(askNexusAssistant({ userQuery: userMessage })).unwrap();
 
       if (res.action === "add_to_cart" && res.productName) {
+
+        if (!userInfo) {
+          await streamText("Maine product dhoond liya hai, lekin cart mein add karne ke liye aapko login karna hoga! 😊");
+          toast.error("Please login to use cart features");
+          return;
+        }
+
         const product = products.find(p => {
           const dbName = p.name.toLowerCase().replace(/[^a-z0-9]/g, '');
           const aiName = res.productName.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -105,8 +114,7 @@ const AIAssistant = () => {
   };
 
   const handleClearChat = async () => {
-    const userInfo = localStorage.getItem('userInfo');
-    const token = userInfo ? JSON.parse(userInfo).token : null;
+    const token = userInfo ? userInfo.token : null;
 
     try {
       if (token) {
@@ -156,8 +164,8 @@ const AIAssistant = () => {
             )}
             {messages.map((msg, i) => (
               <div key={i} className={`p-3 rounded-2xl text-sm max-w-[85%] shadow-sm ${msg.sender === 'user'
-                  ? 'self-end bg-blue-600 text-white rounded-tr-none'
-                  : 'self-start bg-white text-gray-800 border border-gray-200 rounded-tl-none'
+                ? 'self-end bg-blue-600 text-white rounded-tr-none'
+                : 'self-start bg-white text-gray-800 border border-gray-200 rounded-tl-none'
                 }`}>
                 {msg.text}
               </div>
