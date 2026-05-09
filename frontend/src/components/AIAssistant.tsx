@@ -138,6 +138,9 @@ const AIAssistant = () => {
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-gray-50">
+        
+      </div>
       {loading && (
         <div className="self-start bg-white text-gray-400 p-3 rounded-2xl text-xs italic border border-gray-100">
           Nexus is thinking...
