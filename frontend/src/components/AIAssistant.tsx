@@ -47,7 +47,7 @@ const AIAssistant = () => {
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, loading]); 
 
   useEffect(() => {
     if (products.length === 0) {
@@ -80,7 +80,6 @@ const AIAssistant = () => {
       const res = await dispatch(askNexusAssistant({ userQuery: userMessage })).unwrap();
 
       if (res.action === "add_to_cart" && res.productName) {
-
         if (!userInfo) {
           await streamText("Maine product dhoond liya hai, lekin cart mein add karne ke liye aapko login karna hoga! 😊");
           toast.error("Please login to use cart features");
@@ -115,7 +114,6 @@ const AIAssistant = () => {
 
   const handleClearChat = async () => {
     const token = userInfo ? userInfo.token : null;
-
     try {
       if (token) {
         await fetch(`${API_BASE_URL}/api/chat/my-history`, {
@@ -138,31 +136,6 @@ const AIAssistant = () => {
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-gray-50">
-        {messages.length === 0 && (
-          <div className="text-center text-gray-400 mt-10 text-sm italic">
-            How can I help you with your shopping today?
-          </div>
-        )}
-
-        {messages.map((msg, i) => (
-          <div key={i} className={`p-3 rounded-2xl text-sm max-w-[85%] shadow-sm ${msg.sender === 'user'
-              ? 'self-end bg-blue-600 text-white rounded-tr-none'
-              : 'self-start bg-white text-gray-800 border border-gray-200 rounded-tl-none'
-            }`}>
-            {msg.text}
-          </div>
-        ))}
-
-        {loading && (
-          <div className="self-start bg-white text-gray-400 p-3 rounded-2xl text-[10px] italic border border-gray-100 flex items-center gap-2 shadow-sm animate-pulse">
-            <span className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-bounce"></span>
-            Nexus is thinking...
-          </div>
-        )}
-        <div ref={bottomRef} />
-      </div>
-      
       {isOpen && (
         <div className={`${isExpanded ? "w-[90vw] h-[80vh]" : "w-80 sm:w-96 h-125"} bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col overflow-hidden transition-all duration-300`}>
 
@@ -187,14 +160,22 @@ const AIAssistant = () => {
                 How can I help you with your shopping today?
               </div>
             )}
+
             {messages.map((msg, i) => (
               <div key={i} className={`p-3 rounded-2xl text-sm max-w-[85%] shadow-sm ${msg.sender === 'user'
-                ? 'self-end bg-blue-600 text-white rounded-tr-none'
-                : 'self-start bg-white text-gray-800 border border-gray-200 rounded-tl-none'
+                  ? 'self-end bg-blue-600 text-white rounded-tr-none'
+                  : 'self-start bg-white text-gray-800 border border-gray-200 rounded-tl-none'
                 }`}>
                 {msg.text}
               </div>
             ))}
+
+            {loading && (
+              <div className="self-start bg-white text-gray-400 p-3 rounded-2xl text-[10px] italic border border-gray-100 flex items-center gap-2 shadow-sm animate-pulse">
+                <span className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-bounce"></span>
+                Nexus is thinking...
+              </div>
+            )}
             <div ref={bottomRef} />
           </div>
 
