@@ -56,7 +56,7 @@ export default function SideBar({ onItemClick }: { onItemClick?: () => void }) {
       </nav>
 
       <div className="mt-auto border-t border-gray-900 pt-6 cursor-pointer">
-        <div className="flex items-center gap-3 px-3 py-4 bg-[#111] rounded-3xl border border-gray-800 mb-4">
+        <Link href="/seller/profile" className="flex items-center gap-3 px-3 py-4 bg-[#111] rounded-3xl border border-gray-800 mb-4">
           <div className="w-10 h-10 rounded-full bg-linear-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white shrink-0">
             {isMounted && userInfo?.name ? userInfo.name.charAt(0).toUpperCase() : '?'}
           </div>
@@ -66,7 +66,7 @@ export default function SideBar({ onItemClick }: { onItemClick?: () => void }) {
             </p>
             <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Verified Seller</p>
           </div>
-        </div>
+        </Link>
 
         <button
           onClick={logoutHandler}
