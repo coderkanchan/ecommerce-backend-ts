@@ -45,8 +45,8 @@ export default function SideBar({ onItemClick }: { onItemClick?: () => void }) {
               href={item.href}
               onClick={onItemClick}
               className={`flex items-center gap-3 p-4 rounded-2xl font-bold transition-all active:scale-95 ${isActive
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
-                  : 'text-gray-500 hover:bg-gray-900 hover:text-gray-300'
+                ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
+                : 'text-gray-500 hover:bg-gray-900 hover:text-gray-300'
                 }`}
             >
               <item.icon size={20} /> {item.name}
@@ -56,12 +56,15 @@ export default function SideBar({ onItemClick }: { onItemClick?: () => void }) {
       </nav>
 
       <div className="mt-auto border-t border-gray-900 pt-6 cursor-pointer">
-        <Link href="/seller/profile" className="flex items-center gap-3 px-3 py-4 bg-[#111] rounded-3xl border border-gray-800 mb-4">
+        <Link
+          href="/seller/profile"
+          className="flex items-center gap-3 px-3 py-4 bg-[#111] rounded-3xl border border-gray-800 mb-4 hover:border-blue-500/50 transition-all group"
+        >
           <div className="w-10 h-10 rounded-full bg-linear-to-br from-blue-500 to-blue-700 flex items-center justify-center font-bold text-white shrink-0">
             {isMounted && userInfo?.name ? userInfo.name.charAt(0).toUpperCase() : '?'}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold truncate text-white uppercase tracking-tight">
+            <p className="text-sm font-bold truncate text-white uppercase group-hover:text-blue-400 transition-colors">
               {isMounted ? userInfo?.name || 'Seller' : 'Loading...'}
             </p>
             <p className="text-[10px] text-gray-500 font-black uppercase tracking-widest">Verified Seller</p>
