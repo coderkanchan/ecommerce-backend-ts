@@ -17,7 +17,7 @@ export default function SellerProfilePage() {
   return (
     <div className="min-h-screen bg-black text-white p-6 lg:p-10">
       <div className="max-w-4xl mx-auto">
-        {/* Header Section */}
+       
         <div className="mb-10">
           <h1 className="text-4xl font-black tracking-tighter uppercase italic italic">
             Seller <span className="text-blue-500">Profile</span>
@@ -26,7 +26,7 @@ export default function SellerProfilePage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Profile Card */}
+          
           <div className="lg:col-span-1">
             <div className="bg-[#0a0a0a] border border-gray-800 rounded-3xl p-8 text-center sticky top-10">
               <div className="w-24 h-24 bg-linear-to-br from-blue-500 to-blue-700 rounded-full mx-auto flex items-center justify-center text-3xl font-black mb-4 shadow-xl shadow-blue-600/20">
@@ -48,7 +48,6 @@ export default function SellerProfilePage() {
             </div>
           </div>
 
-          {/* Details Section */}
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-[#0a0a0a] border border-gray-800 rounded-3xl p-8">
               <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
@@ -73,7 +72,6 @@ export default function SellerProfilePage() {
               </div>
             </div>
 
-            {/* Store Information (Placeholder for Professional Look) */}
             <div className="bg-[#0a0a0a] border border-gray-800 rounded-3xl p-8">
               <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
                 <Building size={20} className="text-blue-500" /> Store Details
