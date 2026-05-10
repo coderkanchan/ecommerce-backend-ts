@@ -33,7 +33,6 @@ function LoginSuccessHandler() {
             router.push(redirectPath);
           }, 800);
         } catch (error) {
-          //toast.error('Failed to sync user data.');
           router.push('/login');
         }
       } else {
