@@ -24,7 +24,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <NavbarWrapper />
 
           <main>
-            <Toaster position="top-center" richColors closeButton />
+            {/* <Toaster
+              position="top-center"
+              richColors
+              closeButton
+            /> */}
+            <Toaster
+              theme="dark"
+              position="top-right"
+              toastOptions={{
+                style: {
+                  background: '#111827',
+                  color: '#fff',
+                  border: '1px solid #1f2937',
+                  borderRadius: '12px',
+                },
+                className: 'my-custom-toast',
+              }}
+            />
             {children}
             <Script
               id="razorpay-checkout-js"
