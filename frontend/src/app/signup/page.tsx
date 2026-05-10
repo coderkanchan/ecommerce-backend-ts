@@ -7,7 +7,7 @@ import { FcGoogle } from "react-icons/fc";
 import { Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
 import { useDispatch } from 'react-redux';
-import { setCredentials } from '@/redux/slices/authSlice'; 
+import { setCredentials } from '@/redux/slices/authSlice';
 
 function SignupContent() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
@@ -26,20 +26,21 @@ function SignupContent() {
       dispatch(setCredentials(data));
       localStorage.setItem('userInfo', JSON.stringify(data));
 
-      toast.success('Account Created!', {
-        description: 'Logging you in automatically...',
-        duration: 800
+      toast.success(`Welcome to the family, ${data.name}!`, {
+        description: 'Account Created. Setting up your shopping experience...',
+        icon: <Sparkles className="text-yellow-400" size={18} />,
+        duration: 2000,
       });
 
       setTimeout(() => {
         router.push(redirect);
-      }, 800);
+      }, 2000);
 
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Signup Failed!');
+      toast.error(error.response?.data?.message || 'Signup Failed! Please try again.');
     }
   };
-
+  
   const handleGoogleLogin = () => {
     window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/users/google?redirect=${redirect}`;
   };
