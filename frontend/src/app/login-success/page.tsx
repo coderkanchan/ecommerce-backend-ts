@@ -42,16 +42,7 @@ function LoginSuccessHandler() {
     };
     fetchProfile();
   }, [searchParams, dispatch, router]);
-  useEffect(() => {
-    if (token) {
-      // Turant credentials set karein
-      dispatch(setCredentials(userData));
-      // Toast message yahan bhi dikha sakte hain
-      toast.success(`Welcome back, ${userData.name}!`);
-      // Turant redirect
-      router.replace('/');
-    }
-  }, [token]);
+
   return (
     <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
       <div className="text-center">
