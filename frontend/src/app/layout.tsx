@@ -25,7 +25,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           <main>
             <Toaster
-              theme="dark" position="top-center" closeButton
+              theme="dark" 
+              position="top-center" 
+              closeButton
               toastOptions={{
                 style: {
                   background: '#111827',
