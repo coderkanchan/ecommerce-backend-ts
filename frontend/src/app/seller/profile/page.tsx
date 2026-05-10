@@ -19,7 +19,7 @@ export default function SellerProfilePage() {
       <div className="max-w-4xl mx-auto">
        
         <div className="mb-10">
-          <h1 className="text-4xl font-black tracking-tighter uppercase italic italic">
+          <h1 className="text-4xl font-black tracking-tighter uppercase italic">
             Seller <span className="text-blue-500">Profile</span>
           </h1>
           <p className="text-gray-500 mt-2">Manage your professional identity and store settings.</p>
