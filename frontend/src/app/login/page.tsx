@@ -25,19 +25,19 @@ function LoginContent() {
       dispatch(setCredentials(data));
       localStorage.setItem('userInfo', JSON.stringify(data));
 
-      toast.success('Welcome back!', {
-        description: 'Login Successful. Redirecting...', duration: 800
+      toast.success(`Welcome back, ${data.name}!`, {
+        description: 'Login Successful. Redirecting...',
+        duration: 1500,
       });
 
       setTimeout(() => {
         router.push(redirect);
-      }, 800);
+      }, 1500);
 
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Login Failed. Try again!');
     }
   };
-
   const handleGoogleLogin = () => {
     window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/api/users/google?redirect=${redirect}`;
   };
@@ -78,7 +78,7 @@ function LoginContent() {
         <button
           type="button"
           onClick={handleGoogleLogin}
-          className="w-full mt-4 flex items-center justify-center gap-3 bg-white text-black py-3 rounded-lg font-bold hover:bg-gray-100 transition cursor-pointer" 
+          className="w-full mt-4 flex items-center justify-center gap-3 bg-white text-black py-3 rounded-lg font-bold hover:bg-gray-100 transition cursor-pointer"
         >
           <FcGoogle />
           Continue with Google
