@@ -24,11 +24,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <NavbarWrapper />
 
           <main>
-            {/* <Toaster
-              position="top-center"
-              richColors
-              closeButton
-            /> */}
             <Toaster
               theme="dark"
               position="top-center"
