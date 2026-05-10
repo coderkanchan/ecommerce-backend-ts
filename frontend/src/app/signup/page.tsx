@@ -101,7 +101,7 @@ function SignupContent() {
 
           <div className="relative flex items-center py-2">
             <div className="flex-grow border-t border-gray-800"></div>
-            <span className="flex-shrink mx-4 text-gray-500 text-xs uppercase">Or</span>
+            <span className="shrink mx-4 text-gray-500 text-xs uppercase">Or</span>
             <div className="grow border-t border-gray-800"></div>
           </div>
 
