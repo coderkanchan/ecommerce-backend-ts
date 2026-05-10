@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { setCredentials } from '@/redux/slices/authSlice';
 import API from '@/services/api';
 import { toast } from 'sonner';
-import { Sparkles } from 'lucide-react'; // Ek icon add kar dete hain
+import { Sparkles } from 'lucide-react'; 
 
 function LoginSuccessHandler() {
   const searchParams = useSearchParams();
@@ -27,14 +27,12 @@ function LoginSuccessHandler() {
           dispatch(setCredentials(userInfo));
           localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
-          // Professional Personalized Toast
           toast.success(`Welcome back, ${data.name}!`, {
             description: "You've successfully logged in with Google.",
             icon: <Sparkles className="text-yellow-400" size={18} />,
             duration: 2000,
           });
 
-          // Redirect thoda jaldi karte hain for better speed feel
           setTimeout(() => {
             router.push(redirectPath);
           }, 1500);
@@ -51,7 +49,6 @@ function LoginSuccessHandler() {
   return (
     <div className="flex items-center justify-center h-screen bg-black text-white">
       <div className="text-center space-y-6">
-        {/* Friendly Branding & Message */}
         <div className="flex justify-center">
           <div className="p-4 bg-blue-600/10 rounded-full animate-pulse">
             <Sparkles size={40} className="text-blue-500" />
@@ -63,7 +60,6 @@ function LoginSuccessHandler() {
           <p className="text-gray-400 text-sm italic">Just a moment while we set up your session...</p>
         </div>
 
-        {/* Modern Loader */}
         <div className="relative flex justify-center items-center">
           <div className="absolute animate-ping h-8 w-8 rounded-full bg-blue-500 opacity-20"></div>
           <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
