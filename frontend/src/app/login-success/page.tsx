@@ -5,12 +5,12 @@ import { useDispatch } from 'react-redux';
 import { setCredentials } from '@/redux/slices/authSlice';
 import API from '@/services/api';
 import { toast } from 'sonner';
+import { Sparkles } from 'lucide-react'; // Ek icon add kar dete hain
 
 function LoginSuccessHandler() {
   const searchParams = useSearchParams();
   const dispatch = useDispatch();
   const router = useRouter();
-
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -27,11 +27,17 @@ function LoginSuccessHandler() {
           dispatch(setCredentials(userInfo));
           localStorage.setItem('userInfo', JSON.stringify(userInfo));
 
-          toast.success(`Welcome back, ${data.name}!`);
+          // Professional Personalized Toast
+          toast.success(`Welcome back, ${data.name}!`, {
+            description: "You've successfully logged in with Google.",
+            icon: <Sparkles className="text-yellow-400" size={18} />,
+            duration: 2000,
+          });
 
+          // Redirect thoda jaldi karte hain for better speed feel
           setTimeout(() => {
             router.push(redirectPath);
-          }, 800);
+          }, 1500);
         } catch (error) {
           router.push('/login');
         }
@@ -43,10 +49,25 @@ function LoginSuccessHandler() {
   }, [searchParams, dispatch, router]);
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
-      <div className="text-center">
-        <h1 className="text-2xl font-bold mb-4">Verifying Session...</h1>
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto"></div>
+    <div className="flex items-center justify-center h-screen bg-black text-white">
+      <div className="text-center space-y-6">
+        {/* Friendly Branding & Message */}
+        <div className="flex justify-center">
+          <div className="p-4 bg-blue-600/10 rounded-full animate-pulse">
+            <Sparkles size={40} className="text-blue-500" />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold tracking-tight">Securely logging you in</h1>
+          <p className="text-gray-400 text-sm italic">Just a moment while we set up your session...</p>
+        </div>
+
+        {/* Modern Loader */}
+        <div className="relative flex justify-center items-center">
+          <div className="absolute animate-ping h-8 w-8 rounded-full bg-blue-500 opacity-20"></div>
+          <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
+        </div>
       </div>
     </div>
   );
@@ -54,7 +75,7 @@ function LoginSuccessHandler() {
 
 export default function LoginSuccess() {
   return (
-    <Suspense fallback={<div className="bg-gray-900 h-screen" />}>
+    <Suspense fallback={<div className="bg-black h-screen" />}>
       <LoginSuccessHandler />
     </Suspense>
   );
