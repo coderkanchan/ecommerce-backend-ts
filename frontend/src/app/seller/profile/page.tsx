@@ -62,6 +62,7 @@ export default function SellerProfilePage() {
                     <span className="text-sm font-medium">{userInfo?.name}</span>
                   </div>
                 </div>
+                
                 <div>
                   <label className="text-xs font-black uppercase text-gray-500 tracking-widest block mb-2">Email Address</label>
                   <div className="flex items-center gap-3 bg-black p-4 rounded-xl border border-gray-800">
