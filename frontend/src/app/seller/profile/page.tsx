@@ -120,9 +120,19 @@ export default function SellerProfilePage() {
             <h2 className="text-2xl font-black mb-8 italic uppercase tracking-tighter">Setup <span className="text-blue-500 font-black">Store</span></h2>
 
             <form onSubmit={handleUpdateStore} className="space-y-5">
-              <InputGroup label="Store Name" value={storeData.storeName} onChange={(val: string) => setStoreData({ ...storeData, storeName: val })} placeholder="e.g. Nexus Tech Hub" />
+              <InputGroup
+                label="Store Name"
+                value={storeData.storeName}
+                onChange={(val: string) => setStoreData({ ...storeData, storeName: val })}
+                placeholder="e.g. Nexus Tech Hub"
+              />
               <div className="grid grid-cols-2 gap-4">
-                <InputGroup label="Business Phone" value={storeData.phone} onChange={(val: string) => setStoreData({ ...storeData, phone: val })} placeholder="+91..." />
+                <InputGroup
+                  label="Business Phone"
+                  value={storeData.phone}
+                  onChange={(val: string) => setStoreData({ ...storeData, phone: val })}
+                  placeholder="+91..."
+                />
                 <InputGroup label="City" value={storeData.city} onChange={(val: string) => setStoreData({ ...storeData, city: val })} placeholder="City name" />
               </div>
               <InputGroup label="Street Address" value={storeData.street} onChange={(val: string) => setStoreData({ ...storeData, street: val })} placeholder="Building, Street, Area" />
