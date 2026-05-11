@@ -7,6 +7,7 @@ export interface IUser extends Document {
   password?: string;
   profileImage?: string;
   isAdmin: boolean;
+  storeDetails: string;
   role: 'buyer' | 'seller' | 'admin';
 }
 
@@ -20,8 +21,19 @@ const userSchema = new Schema<IUser>({
     type: String,
     required: true,
     enum: ['buyer', 'seller', 'admin'],
-    default: 'buyer' 
+    default: 'buyer'
   },
+  storeDetails: {
+    storeName: { type: String, default: '' },
+    phone: { type: String, default: '' },
+    address: {
+      street: String,
+      city: String,
+      state: String,
+      pincode: String,
+    },
+    gstin: { type: String, default: '' }
+  }
 }, { timestamps: true });
 
 
