@@ -7,6 +7,7 @@ export interface IUser extends Document {
   password?: string;
   profileImage?: string;
   isAdmin: boolean;
+  role: 'buyer' | 'seller' | 'admin';
   storeDetails: {
     storeName: string;
     phone: string;
@@ -18,7 +19,6 @@ export interface IUser extends Document {
     };
     gstin: string;
   };
-  role: 'buyer' | 'seller' | 'admin';
 }
 
 const userSchema = new Schema<IUser>({
@@ -37,22 +37,23 @@ const userSchema = new Schema<IUser>({
     storeName: { type: String, default: '' },
     phone: { type: String, default: '' },
     address: {
-      street: String,
-      city: String,
-      state: String,
-      pincode: String,
+      street: { type: String, default: '' },
+      city: { type: String, default: '' },
+      state: { type: String, default: '' },
+      pincode: { type: String, default: '' },
     },
     gstin: { type: String, default: '' }
   }
 }, { timestamps: true });
 
-userSchema.pre('save', async function () {
+userSchema.pre('save', async function (next) {
   if (!this.password || !this.isModified('password')) {
-    return;
+    return next();
   }
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
-export const User = model<IUser>('User', userSchema);
 
+export const User = model<IUser>('User', userSchema);
 
