@@ -12,7 +12,6 @@ export default function SellerProfilePage() {
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-
   const [storeData, setStoreData] = useState({
     storeName: userInfo?.storeDetails?.storeName || '',
     phone: userInfo?.storeDetails?.phone || '',
