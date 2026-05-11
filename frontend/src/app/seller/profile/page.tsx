@@ -116,10 +116,13 @@ export default function SellerProfilePage() {
       {isEditing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
           <div className="bg-[#0a0a0a] border border-gray-800 w-full max-w-lg rounded-[2.5rem] p-10 shadow-2xl relative">
-            <button onClick={() => setIsEditing(false)} className="absolute top-6 right-6 text-gray-500 hover:text-white cursor-pointer">
+            <button
+              onClick={() => setIsEditing(false)}
+              className="absolute top-6 right-6 text-gray-500 hover:text-white cursor-pointer">
               <X size={24} />
             </button>
-            <h2 className="text-2xl font-black mb-8 italic uppercase tracking-tighter">Setup <span className="text-blue-500 font-black">Store</span></h2>
+            <h2 className="text-2xl font-black mb-8 italic uppercase tracking-tighter">Setup <span className="text-blue-500 font-black">Store</span>
+            </h2>
 
             <form onSubmit={handleUpdateStore} className="space-y-5">
               <InputGroup
@@ -135,7 +138,12 @@ export default function SellerProfilePage() {
                   onChange={(val: string) => setStoreData({ ...storeData, phone: val })}
                   placeholder="+91..."
                 />
-                <InputGroup label="City" value={storeData.city} onChange={(val: string) => setStoreData({ ...storeData, city: val })} placeholder="City name" />
+                <InputGroup
+                  label="City"
+                  value={storeData.city}
+                  onChange={(val: string) => setStoreData({ ...storeData, city: val })}
+                  placeholder="City name"
+                />
               </div>
               <InputGroup
                 label="Street Address"
@@ -144,8 +152,17 @@ export default function SellerProfilePage() {
                 placeholder="Building, Street, Area"
               />
               <div className="flex gap-4 pt-6">
-                <button type="button" onClick={() => setIsEditing(false)} className="flex-1 py-4 border border-gray-800 rounded-2xl font-black text-xs uppercase hover:bg-gray-900 transition tracking-widest cursor-pointer">Cancel</button>
-                <button type="submit" className="flex-1 py-4 bg-blue-600 rounded-2xl font-black text-xs uppercase hover:bg-blue-700 transition shadow-lg shadow-blue-600/30 tracking-widest cursor-pointer">Save Store</button>
+                <button
+                  type="button"
+                  onClick={() => setIsEditing(false)}
+                  className="flex-1 py-4 border border-gray-800 rounded-2xl font-black text-xs uppercase hover:bg-gray-900 transition tracking-widest cursor-pointer">
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-4 bg-blue-600 rounded-2xl font-black text-xs uppercase hover:bg-blue-700 transition shadow-lg shadow-blue-600/30 tracking-widest cursor-pointer">
+                  Save Store
+                </button>
               </div>
             </form>
           </div>
