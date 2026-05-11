@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 export default function SellerProfilePage() {
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const [mounted, setMounted] = useState(false);
-  
+
   const [isEditing, setIsEditing] = useState(false);
   const [storeData, setStoreData] = useState({
     storeName: userInfo?.storeDetails?.storeName || '',
@@ -102,9 +102,18 @@ export default function SellerProfilePage() {
                 <div className="flex items-center justify-between bg-black p-4 rounded-xl border border-gray-800">
                   <div className="flex items-center gap-3">
                     <MapPin size={18} className="text-gray-600" />
-                    <span className="text-sm text-gray-400 font-medium italic">Store location not set yet</span>
+                    <span className="text-sm text-gray-400 font-medium">
+                      {userInfo?.storeDetails?.storeName ?
+                        `${userInfo.storeDetails.storeName} - ${userInfo.storeDetails.address.city}` :
+                        'Store location not set yet'}
+                    </span>
                   </div>
-                  <button className="text-xs font-bold text-blue-500 hover:underline cursor-pointer">Add Address</button>
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="text-xs font-bold text-blue-500 hover:underline cursor-pointer"
+                  >
+                    {userInfo?.storeDetails?.storeName ? 'Edit Details' : 'Add Address'}
+                  </button>
                 </div>
                 <p className="text-[10px] text-gray-600 uppercase tracking-tighter">
                   Note: Shop address is required for generating invoices and managing local pickups.
