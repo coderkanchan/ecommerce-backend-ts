@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { User, Mail, ShieldCheck, Calendar, MapPin, Building } from 'lucide-react';
 import { toast } from 'sonner';
-import API from '@/services/api'; // Apna sahi path check kar lein
+import API from '@/services/api'; 
 
 export default function SellerProfilePage() {
   const { userInfo } = useSelector((state: RootState) => state.auth);
