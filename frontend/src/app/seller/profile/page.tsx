@@ -3,11 +3,31 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import { User, Mail, ShieldCheck, Calendar, MapPin, Building } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function SellerProfilePage() {
   const { userInfo } = useSelector((state: RootState) => state.auth);
   const [mounted, setMounted] = useState(false);
+  
+  const [isEditing, setIsEditing] = useState(false);
+  const [storeData, setStoreData] = useState({
+    storeName: userInfo?.storeDetails?.storeName || '',
+    phone: userInfo?.storeDetails?.phone || '',
+    street: userInfo?.storeDetails?.address?.street || '',
+    city: userInfo?.storeDetails?.address?.city || '',
+    pincode: userInfo?.storeDetails?.address?.pincode || '',
+  });
 
+  const handleUpdateStore = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await API.put('/users/profile/store', storeData);
+      toast.success("Store details updated!");
+      setIsEditing(false);
+    } catch (error) {
+      toast.error("Update failed!");
+    }
+  };
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -17,7 +37,7 @@ export default function SellerProfilePage() {
   return (
     <div className="min-h-screen bg-black text-white p-6 lg:p-10">
       <div className="max-w-4xl mx-auto">
-       
+
         <div className="mb-10">
           <h1 className="text-4xl font-black tracking-tighter uppercase italic">
             Seller <span className="text-blue-500">Profile</span>
@@ -26,7 +46,7 @@ export default function SellerProfilePage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           <div className="lg:col-span-1">
             <div className="bg-[#0a0a0a] border border-gray-800 rounded-3xl p-8 text-center sticky top-10">
               <div className="w-24 h-24 bg-linear-to-br from-blue-500 to-blue-700 rounded-full mx-auto flex items-center justify-center text-3xl font-black mb-4 shadow-xl shadow-blue-600/20">
@@ -62,7 +82,7 @@ export default function SellerProfilePage() {
                     <span className="text-sm font-medium">{userInfo?.name}</span>
                   </div>
                 </div>
-                
+
                 <div>
                   <label className="text-xs font-black uppercase text-gray-500 tracking-widest block mb-2">Email Address</label>
                   <div className="flex items-center gap-3 bg-black p-4 rounded-xl border border-gray-800">
