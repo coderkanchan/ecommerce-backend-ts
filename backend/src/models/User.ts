@@ -7,7 +7,17 @@ export interface IUser extends Document {
   password?: string;
   profileImage?: string;
   isAdmin: boolean;
-  storeDetails: string;
+  storeDetails: {
+    storeName: string;
+    phone: string;
+    address: {
+      street: string;
+      city: string;
+      state: string;
+      pincode: string;
+    };
+    gstin: string;
+  };
   role: 'buyer' | 'seller' | 'admin';
 }
 
