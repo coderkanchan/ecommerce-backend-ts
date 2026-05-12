@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerUser, loginUser, updateUserProfile, googleAuthSuccess, getUserProfile } from '../controllers/authController.js';
+import { registerUser, loginUser, updateUserProfile, googleAuthSuccess, getUserProfile, updateStoreDetails } from '../controllers/authController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 import { getUsers } from '../controllers/authController.js';
 import passport from 'passport';
