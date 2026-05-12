@@ -29,6 +29,8 @@ router.get('/google', (req, res, next) => {
 
 router.put('/become-seller', protect, makeUserSeller);
 
+router.put('/profile/store', protect, updateStoreDetails);
+
 router.get('/google/callback',
   passport.authenticate('google', {
     failureRedirect: '/login',
