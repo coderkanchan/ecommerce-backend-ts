@@ -42,7 +42,7 @@ export default function SellerProfilePage() {
   if (!mounted) return null;
 
   return (
-    <div className="h-full  bg-black text-white p-6 lg:p-10 relative">
+    <div className="h-full  bg-black text-white p-1 relative">
       <div className="max-w-4xl mx-auto">
         <div className="mb-10">
           <h1 className="text-4xl font-black tracking-tighter uppercase italic">
