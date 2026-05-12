@@ -28,8 +28,8 @@ export default function SideBar({ onItemClick }: { onItemClick?: () => void }) {
     { name: 'Dashboard', icon: TrendingUp, href: '/seller/dashboard' },
     { name: 'My Products', icon: Package, href: '/seller/products' },
     { name: 'Orders', icon: ShoppingBag, href: '/seller/orders' },
-    { label: 'Analytics', icon: TrendingUp, href: '/seller/analytics' },
-    { label: 'Earnings', icon: Wallet, href: '/seller/earnings' },
+    { name: 'Analytics', icon: TrendingUp, href: '/seller/analytics' },
+    { name: 'Earnings', icon: Wallet, href: '/seller/earnings' },
   ];
 
   return (
