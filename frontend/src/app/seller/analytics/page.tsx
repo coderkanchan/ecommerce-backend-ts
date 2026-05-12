@@ -1,4 +1,3 @@
-import React from 'react';
 import { TrendingUp, Users, ShoppingBag, CreditCard } from 'lucide-react';
 
 const AnalyticsPage = () => {
