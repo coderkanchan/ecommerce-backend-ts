@@ -54,6 +54,22 @@ userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
+// Is hisse ko dhyan se update karein
+userSchema.pre('save', async function (next) {
+  const user = this as any; // TypeScript bypass ke liye
 
+  // Agar password modify nahi hua hai, toh aage badho
+  if (!user.isModified('password')) {
+    return next();
+  }
+
+  try {
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
+    next(); // Next ko yahan call karna zaroori hai
+  } catch (error: any) {
+    next(error);
+  }
+});
 export const User = model<IUser>('User', userSchema);
 
