@@ -5,7 +5,7 @@ import { logout } from '@/redux/slices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter, usePathname } from 'next/navigation';
 import { RootState } from '@/redux/store';
-import { Package, ShoppingBag, TrendingUp, LogOut } from 'lucide-react';
+import { Package, ShoppingBag, TrendingUp, LogOut, Wallet } from 'lucide-react';
 
 export default function SideBar({ onItemClick }: { onItemClick?: () => void }) {
   const { userInfo } = useSelector((state: RootState) => state.auth);
@@ -28,6 +28,8 @@ export default function SideBar({ onItemClick }: { onItemClick?: () => void }) {
     { name: 'Dashboard', icon: TrendingUp, href: '/seller/dashboard' },
     { name: 'My Products', icon: Package, href: '/seller/products' },
     { name: 'Orders', icon: ShoppingBag, href: '/seller/orders' },
+    { label: 'Analytics', icon: TrendingUp, href: '/seller/analytics' },
+    { label: 'Earnings', icon: Wallet, href: '/seller/earnings' },
   ];
 
   return (
