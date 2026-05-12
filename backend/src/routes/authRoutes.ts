@@ -14,11 +14,9 @@ import { protect, admin } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// --- Public Routes ---
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 
-// --- Google Auth Routes ---
 router.get('/google', (req, res, next) => {
   const redirectPath = (req.query.redirect as string) || '/';
   passport.authenticate('google', {
@@ -36,16 +34,13 @@ router.get('/google/callback',
   googleAuthSuccess
 );
 
-// --- Private Profile Routes ---
 router.route('/profile')
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
 
-// --- Seller Routes ---
 router.put('/become-seller', protect, makeUserSeller);
-router.put('/profile/store', protect, updateStoreDetails); // Store Details Update Route
+router.put('/profile/store', protect, updateStoreDetails);
 
-// --- Admin Routes ---
 router.route('/').get(protect, admin, getUsers);
 
 export default router;
