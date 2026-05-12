@@ -2,7 +2,7 @@ import { Wallet, ArrowDownCircle, History } from 'lucide-react';
 
 const EarningsPage = () => {
   return (
-    <div className=" bg-black  text-white">
+    <div className=" bg-black h-full text-white">
       <h1 className="text-3xl font-bold mb-8 italic">MY <span className="text-blue-600">EARNINGS</span></h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
