@@ -7,7 +7,7 @@ const EarningsPage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
        
-        <div className="bg-gradient-to-br from-blue-900/40 to-black p-8 rounded-3xl border border-blue-500/30">
+        <div className="bg-linear-to-br from-blue-900/40 to-black p-8 rounded-3xl border border-blue-500/30">
           <div className="flex items-center gap-4 mb-6">
             <Wallet className="text-blue-500 w-8 h-8" />
             <h2 className="text-xl font-semibold">Available Balance</h2>
