@@ -179,3 +179,31 @@ export const getUserProfile = async (req: any, res: Response) => {
     res.status(404).json({ message: 'User not found' });
   }
 };
+
+export const updateStoreDetails = async (req: any, res: Response) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+      user.storeDetails = {
+        storeName: req.body.storeName || user.storeDetails.storeName,
+        phone: req.body.phone || user.storeDetails.phone,
+        address: {
+          street: req.body.street || user.storeDetails.address.street,
+          city: req.body.city || user.storeDetails.address.city,
+          state: req.body.state || user.storeDetails.address.state,
+          pincode: req.body.pincode || user.storeDetails.address.pincode,
+        },
+        gstin: req.body.gstin || user.storeDetails.gstin,
+      };
+
+      const updatedUser = await user.save();
+
+      res.json(updatedUser);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
