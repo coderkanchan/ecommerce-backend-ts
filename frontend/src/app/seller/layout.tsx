@@ -74,10 +74,11 @@ export default function SellerLayout({ children }: { children: React.ReactNode }
             <span className="hidden sm:block text-[10px] font-black text-gray-500 uppercase tracking-widest bg-gray-900 px-3 py-1 rounded-full border border-gray-800">
               Dashboard Mode
             </span>
-            <Link href="/seller/profile"></Link>
-            <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold text-white shadow-lg ring-2 ring-blue-500/20">
-              {isClient ? userInfo?.name?.charAt(0).toUpperCase() : ""}
-            </div>
+            <Link href="/seller/profile">
+              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold text-white shadow-lg ring-2 ring-blue-500/20">
+                {isClient ? userInfo?.name?.charAt(0).toUpperCase() : ""}
+              </div>
+            </Link>
           </div>
         </header>
 
