@@ -27,8 +27,7 @@ export default function SellerProfilePage() {
   const handleUpdateStore = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { data } = await API.put('/api/users/profile/store', storeData);
-
+      const { data } = await API.put('/users/profile/store', storeData);
       const updatedUser = { ...userInfo, ...data };
       dispatch(setCredentials(updatedUser));
       localStorage.setItem('userInfo', JSON.stringify(updatedUser));
