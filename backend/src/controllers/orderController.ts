@@ -176,7 +176,8 @@ export const getSellerSummary = async (req: any, res: Response) => {
 
 export const getSellerOrders = async (req: any, res: Response) => {
   try {
-    const orders = await Order.find({ "orderItems.seller": req.user._id, 
+    const orders = await Order.find({
+      "orderItems.seller": req.user._id,
       //isPaid: true 
     }).populate('user', 'name email').sort({ createdAt: -1 });
 
@@ -184,5 +185,47 @@ export const getSellerOrders = async (req: any, res: Response) => {
   } catch (error) {
     console.error("Seller Orders Fetch Error:", error);
     res.status(500).json({ message: "Error fetching seller orders" });
+  }
+};
+
+// backend/src/controllers/orderController.ts
+
+export const getSellerStats = async (req: any, res: any) => {
+  try {
+    const sellerId = req.user._id;
+
+    // 1. Get all orders that have products from this seller
+    const orders = await Order.find({
+      'orderItems.seller': sellerId,
+      isPaid: true, // Hum sirf paid orders ka revenue dikhayenge
+    });
+
+    // 2. Calculate Revenue, Orders, and Customers
+    let totalRevenue = 0;
+    const customerIds = new Set();
+
+    orders.forEach((order) => {
+      // Sirf wahi items count karenge jo iss seller ke hain
+      const sellerItems = order.orderItems.filter(
+        (item: any) => item.seller.toString() === sellerId.toString()
+      );
+
+      const sellerOrderTotal = sellerItems.reduce(
+        (acc: number, item: any) => acc + item.price * item.qty,
+        0
+      );
+
+      totalRevenue += sellerOrderTotal;
+      customerIds.add(order.user.toString());
+    });
+
+    res.json({
+      totalRevenue: totalRevenue.toFixed(2),
+      totalOrders: orders.length,
+      totalCustomers: customerIds.size,
+      conversionRate: orders.length > 0 ? "5.2%" : "0%", // Ye dummy hai abhi
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching seller analytics" });
   }
 };
