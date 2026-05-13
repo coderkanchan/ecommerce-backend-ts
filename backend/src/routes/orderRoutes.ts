@@ -1,3 +1,4 @@
+// backend/src/routes/orderRoutes.ts
 
 import express from 'express';
 import {
@@ -9,33 +10,38 @@ import {
   getOrders,
   updateOrderToDelivered,
   getOrderSummary,
-  getSellerStats
-}
-  from '../controllers/orderController.js';
-import { getSellerSummary, getSellerOrders } from '../controllers/orderController.js';
+  getSellerStats,
+  getSellerSummary,
+  getSellerOrders
+} from '../controllers/orderController.js';
 import { protect, admin, seller } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
+// --- 1. FIXED/STATIC ROUTES (Hamesha upar rakhein) ---
+
+// Seller specific routes
 router.route('/seller').get(protect, seller, getSellerOrders);
-
 router.get('/seller-summary', protect, seller, getSellerSummary);
+router.get('/seller-stats', protect, getSellerStats); // Isse upar lana zaroori tha
 
-router.get('/summary', protect, admin, getOrderSummary);
-
-router.route('/').post(protect, addOrderItems);
-
+// User orders and stats
 router.route('/myorders').get(protect, getMyOrders);
-
 router.route('/stats').get(protect, getOrderStats);
 
+// Admin summary
+router.get('/summary', protect, admin, getOrderSummary);
+
+// Base '/' routes
+router.route('/')
+  .post(protect, addOrderItems)
+  .get(protect, admin, getOrders);
+
+
+// --- 2. DYNAMIC ROUTES (/:id wale hamesha niche rakhein) ---
+
 router.route('/:id/pay').put(protect, updateOrderToPaid);
-router.route('/:id').get(protect, getOrderById);
-
-router.route('/').get(protect, admin, getOrders);
-
 router.route('/:id/deliver').put(protect, admin, updateOrderToDelivered);
-
-router.get('/seller-stats', protect, getSellerStats);
+router.route('/:id').get(protect, getOrderById); // Ye sabse niche hona chahiye
 
 export default router;
