@@ -36,5 +36,6 @@ router.route('/').get(protect, admin, getOrders);
 
 router.route('/:id/deliver').put(protect, admin, updateOrderToDelivered);
 
+router.get('/seller-stats', protect, getSellerStats);
 
 export default router;
