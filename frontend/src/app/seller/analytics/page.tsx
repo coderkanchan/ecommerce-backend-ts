@@ -15,8 +15,6 @@ const AnalyticsPage = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        // Dhyaan dein: Agar axios base URL set hai toh theek, 
-        // nahi toh pura path '/api/orders/seller-stats' likhna pad sakta hai
         const { data } = await axios.get('/orders/seller-stats');
         setStatsData(data);
       } catch (err) {
