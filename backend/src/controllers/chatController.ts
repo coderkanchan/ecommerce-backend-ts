@@ -25,7 +25,6 @@ export const saveMessage = async (req: Request, res: Response) => {
   }
 };
 
-
 export const getChat = async (req: Request, res: Response) => {
   try {
     const chat = await Chat.findOne({ userId: req.params.userId });

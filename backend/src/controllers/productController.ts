@@ -169,7 +169,6 @@ export const createProductReview = async (req: any, res: Response) => {
   }
 };
 
-
 export const updateProduct = async (req: any, res: any) => {
   const { name, price, description, imageUrl, category, stock } = req.body;
 
