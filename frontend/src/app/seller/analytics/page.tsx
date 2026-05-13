@@ -1,39 +1,68 @@
+"use client";
+
 import { TrendingUp, Users, ShoppingBag, CreditCard } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const AnalyticsPage = () => {
-  const stats = [
-    { label: 'Total Revenue', value: '₹0.00', icon: <CreditCard className="text-green-500" />, change: '+0%' },
-    { label: 'Total Orders', value: '0', icon: <ShoppingBag className="text-blue-500" />, change: '+0%' },
-    { label: 'Total Customers', value: '0', icon: <Users className="text-orange-500" />, change: '+0%' },
-    { label: 'Conversion Rate', value: '0%', icon: <TrendingUp className="text-purple-500" />, change: '0%' },
-  ];
   const [statsData, setStatsData] = useState({
     totalRevenue: '0.00',
     totalOrders: '0',
     totalCustomers: '0',
     conversionRate: '0%'
   });
+
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const { data } = await axios.get('/orders/seller-stats'); 
+        // Dhyaan dein: Agar axios base URL set hai toh theek, 
+        // nahi toh pura path '/api/orders/seller-stats' likhna pad sakta hai
+        const { data } = await axios.get('/orders/seller-stats');
         setStatsData(data);
       } catch (err) {
-        console.error("Failed to fetch analytics");
+        console.error("Failed to fetch analytics", err);
       }
     };
     fetchStats();
   }, []);
 
+  // Is array ko yahan rakhne se ye 'statsData' ki latest values pick karega
+  const stats = [
+    {
+      label: 'Total Revenue',
+      value: `₹${statsData.totalRevenue}`,
+      icon: <CreditCard className="text-green-500" />,
+      change: '+0%'
+    },
+    {
+      label: 'Total Orders',
+      value: statsData.totalOrders,
+      icon: <ShoppingBag className="text-blue-500" />,
+      change: '+0%'
+    },
+    {
+      label: 'Total Customers',
+      value: statsData.totalCustomers,
+      icon: <Users className="text-orange-500" />,
+      change: '+0%'
+    },
+    {
+      label: 'Conversion Rate',
+      value: statsData.conversionRate,
+      icon: <TrendingUp className="text-purple-500" />,
+      change: '0%'
+    },
+  ];
+
   return (
-    <div className=" bg-black h-full text-white">
-      <h1 className="text-3xl font-bold mb-8 italic">STORE <span className="text-blue-600">ANALYTICS</span></h1>
+    <div className="bg-black h-full text-white p-4">
+      <h1 className="text-3xl font-bold mb-8 italic">
+        STORE <span className="text-blue-600">ANALYTICS</span>
+      </h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
         {stats.map((stat, index) => (
-          <div key={index} className="bg-[#111] p-6 rounded-2xl border border-gray-800 shadow-xl">
+          <div key={index} className="bg-[#111] p-6 rounded-2xl border border-gray-800 shadow-xl transition-transform hover:scale-105">
             <div className="flex justify-between items-start mb-4">
               <div className="p-3 bg-gray-900 rounded-lg">{stat.icon}</div>
               <span className="text-green-500 text-sm font-medium">{stat.change}</span>
