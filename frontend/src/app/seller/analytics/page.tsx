@@ -36,25 +36,6 @@ const AnalyticsPage = () => {
     }
   }, [userInfo]);
 
-  // const [statsData, setStatsData] = useState({
-  //   totalRevenue: '0.00',
-  //   totalOrders: '0',
-  //   totalCustomers: '0',
-  //   conversionRate: '0%'
-  // });
-
-  // useEffect(() => {
-  //   const fetchStats = async () => {
-  //     try {
-  //       const { data } = await axios.get('/api/orders/seller-stats');
-  //       setStatsData(data);
-  //     } catch (err) {
-  //       console.error("Failed to fetch analytics", err);
-  //     }
-  //   };
-  //   fetchStats();
-  // }, []);
-
   const stats = [
     {
       label: 'Total Revenue',
