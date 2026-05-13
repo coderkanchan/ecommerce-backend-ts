@@ -13,6 +13,17 @@ const AnalyticsPage = () => {
     totalCustomers: '0',
     conversionRate: '0%'
   });
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const { data } = await axios.get('/orders/seller-stats'); 
+        setStatsData(data);
+      } catch (err) {
+        console.error("Failed to fetch analytics");
+      }
+    };
+    fetchStats();
+  }, []);
 
   return (
     <div className=" bg-black h-full text-white">
