@@ -188,24 +188,19 @@ export const getSellerOrders = async (req: any, res: Response) => {
   }
 };
 
-// backend/src/controllers/orderController.ts
-
 export const getSellerStats = async (req: any, res: any) => {
   try {
     const sellerId = req.user._id;
 
-    // 1. Get all orders that have products from this seller
     const orders = await Order.find({
       'orderItems.seller': sellerId,
-      isPaid: true, // Hum sirf paid orders ka revenue dikhayenge
+      isPaid: true, 
     });
 
-    // 2. Calculate Revenue, Orders, and Customers
     let totalRevenue = 0;
     const customerIds = new Set();
 
     orders.forEach((order) => {
-      // Sirf wahi items count karenge jo iss seller ke hain
       const sellerItems = order.orderItems.filter(
         (item: any) => item.seller.toString() === sellerId.toString()
       );
@@ -223,7 +218,7 @@ export const getSellerStats = async (req: any, res: any) => {
       totalRevenue: totalRevenue.toFixed(2),
       totalOrders: orders.length,
       totalCustomers: customerIds.size,
-      conversionRate: orders.length > 0 ? "5.2%" : "0%", // Ye dummy hai abhi
+      conversionRate: orders.length > 0 ? "5.2%" : "0%", 
     });
   } catch (error) {
     res.status(500).json({ message: "Error fetching seller analytics" });
