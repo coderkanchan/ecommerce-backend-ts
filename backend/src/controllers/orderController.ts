@@ -224,7 +224,11 @@ export const getSellerStats = async (req: any, res: any) => {
       conversionRate: (orders && orders.length > 0) ? "5.2%" : "0%",
     });
   } catch (error) {
-    console.error("Seller Stats Error:", error); 
-    res.status(500).json({ message: "Error fetching seller analytics", error: error.message });
+    console.error("Seller Stats Error:", error);
+    const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+    res.status(500).json({
+      message: "Error fetching seller analytics",
+      error: errorMessage
+    });
   }
 };
