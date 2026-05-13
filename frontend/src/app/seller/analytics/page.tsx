@@ -6,6 +6,8 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 
 const AnalyticsPage = () => {
+  const { userInfo } = useSelector((state: any) => state.auth);
+
   const [statsData, setStatsData] = useState({
     totalRevenue: '0.00',
     totalOrders: '0',
@@ -16,14 +18,42 @@ const AnalyticsPage = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const { data } = await axios.get('/api/orders/seller-stats');
+        const config = {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        };
+
+        const { data } = await axios.get('/api/orders/seller-stats', config);
         setStatsData(data);
       } catch (err) {
         console.error("Failed to fetch analytics", err);
       }
     };
-    fetchStats();
-  }, []);
+
+    if (userInfo?.token) {
+      fetchStats();
+    }
+  }, [userInfo]);
+
+  // const [statsData, setStatsData] = useState({
+  //   totalRevenue: '0.00',
+  //   totalOrders: '0',
+  //   totalCustomers: '0',
+  //   conversionRate: '0%'
+  // });
+
+  // useEffect(() => {
+  //   const fetchStats = async () => {
+  //     try {
+  //       const { data } = await axios.get('/api/orders/seller-stats');
+  //       setStatsData(data);
+  //     } catch (err) {
+  //       console.error("Failed to fetch analytics", err);
+  //     }
+  //   };
+  //   fetchStats();
+  // }, []);
 
   const stats = [
     {
