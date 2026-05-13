@@ -43,7 +43,7 @@ export default function SideBar({ onItemClick }: { onItemClick?: () => void }) {
           const isActive = pathname === item.href;
           return (
             <Link
-              key={item.name}
+              key={item.href}
               href={item.href}
               onClick={onItemClick}
               className={`flex items-center gap-3 p-4 rounded-2xl font-bold transition-all active:scale-95 ${isActive
