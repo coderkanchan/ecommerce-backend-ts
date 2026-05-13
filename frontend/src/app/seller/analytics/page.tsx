@@ -24,7 +24,6 @@ const AnalyticsPage = () => {
     fetchStats();
   }, []);
 
-  // Is array ko yahan rakhne se ye 'statsData' ki latest values pick karega
   const stats = [
     {
       label: 'Total Revenue',
