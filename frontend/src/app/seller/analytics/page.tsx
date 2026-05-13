@@ -7,6 +7,12 @@ const AnalyticsPage = () => {
     { label: 'Total Customers', value: '0', icon: <Users className="text-orange-500" />, change: '+0%' },
     { label: 'Conversion Rate', value: '0%', icon: <TrendingUp className="text-purple-500" />, change: '0%' },
   ];
+  const [statsData, setStatsData] = useState({
+    totalRevenue: '0.00',
+    totalOrders: '0',
+    totalCustomers: '0',
+    conversionRate: '0%'
+  });
 
   return (
     <div className=" bg-black h-full text-white">
