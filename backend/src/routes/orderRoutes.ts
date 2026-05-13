@@ -8,7 +8,8 @@ import {
   getOrderById,
   getOrders,
   updateOrderToDelivered,
-  getOrderSummary
+  getOrderSummary,
+  getSellerStats
 }
   from '../controllers/orderController.js';
 import { getSellerSummary, getSellerOrders } from '../controllers/orderController.js';
