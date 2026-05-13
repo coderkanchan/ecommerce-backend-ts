@@ -15,7 +15,7 @@ const AnalyticsPage = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const { data } = await axios.get('/orders/seller-stats');
+        const { data } = await axios.get('/api/orders/seller-stats');
         setStatsData(data);
       } catch (err) {
         console.error("Failed to fetch analytics", err);
