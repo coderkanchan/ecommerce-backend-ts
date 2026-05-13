@@ -188,13 +188,11 @@ export const getSellerOrders = async (req: any, res: Response) => {
   }
 };
 
-// backend/src/controllers/orderController.ts
 
 export const getSellerStats = async (req: any, res: any) => {
   try {
     const sellerId = req.user._id;
 
-    // Filter orders jisme is seller ke products hon
     const orders = await Order.find({
       'orderItems.seller': sellerId,
       isPaid: true,
@@ -205,7 +203,6 @@ export const getSellerStats = async (req: any, res: any) => {
 
     if (orders && orders.length > 0) {
       orders.forEach((order) => {
-        // Safe check for orderItems
         const sellerItems = (order.orderItems || []).filter(
           (item: any) => item.seller && item.seller.toString() === sellerId.toString()
         );
@@ -227,7 +224,7 @@ export const getSellerStats = async (req: any, res: any) => {
       conversionRate: (orders && orders.length > 0) ? "5.2%" : "0%",
     });
   } catch (error) {
-    console.error("Seller Stats Error:", error); // Terminal mein error check karne ke liye
+    console.error("Seller Stats Error:", error); 
     res.status(500).json({ message: "Error fetching seller analytics", error: error.message });
   }
 };
