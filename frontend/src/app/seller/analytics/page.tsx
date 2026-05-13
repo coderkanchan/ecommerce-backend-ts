@@ -1,5 +1,7 @@
 import { TrendingUp, Users, ShoppingBag, CreditCard } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+
 const AnalyticsPage = () => {
   const stats = [
     { label: 'Total Revenue', value: '₹0.00', icon: <CreditCard className="text-green-500" />, change: '+0%' },
