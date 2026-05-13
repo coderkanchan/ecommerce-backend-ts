@@ -3,6 +3,7 @@
 import { TrendingUp, Users, ShoppingBag, CreditCard } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const AnalyticsPage = () => {
   const [statsData, setStatsData] = useState({
