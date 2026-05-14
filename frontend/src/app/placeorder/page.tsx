@@ -153,7 +153,10 @@ export default function PlaceOrderPage() {
                   {cartItems.map((item, index) => (
                     <div key={index} className="flex items-center justify-between border-b border-gray-800 pb-4">
                       <div className="flex items-center gap-4">
-                        <img src={item.imageUrl} alt={item.name} className="w-16 h-16 object-cover rounded" />
+                        <img
+                          src={item.image || item.imageUrl}
+                          alt={item.name}
+                          className="w-16 h-16 object-cover rounded" />
                         <Link href={`/product/${item._id}`} className="hover:text-blue-400">{item.name}</Link>
                       </div>
                       <p>{item.qty} x ${item.price} = <span className="font-bold">${(item.qty * item.price).toFixed(2)}</span></p>
