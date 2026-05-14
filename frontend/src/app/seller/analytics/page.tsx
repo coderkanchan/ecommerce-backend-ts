@@ -1,5 +1,4 @@
 "use client";
-
 import { TrendingUp, Users, ShoppingBag, CreditCard } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
