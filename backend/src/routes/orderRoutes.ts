@@ -18,7 +18,7 @@ const router = express.Router();
 
 router.route('/seller').get(protect, seller, getSellerOrders);
 router.get('/seller-summary', protect, seller, getSellerSummary);
-router.get('/seller-stats', protect, getSellerStats); 
+router.get('/seller-stats', protect, seller, getSellerStats);
 router.route('/myorders').get(protect, getMyOrders);
 router.route('/stats').get(protect, getOrderStats);
 
@@ -30,6 +30,6 @@ router.route('/')
 
 router.route('/:id/pay').put(protect, updateOrderToPaid);
 router.route('/:id/deliver').put(protect, admin, updateOrderToDelivered);
-router.route('/:id').get(protect, getOrderById); 
+router.route('/:id').get(protect, getOrderById);
 
 export default router;
