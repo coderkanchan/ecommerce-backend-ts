@@ -14,9 +14,9 @@ export const addOrderItems = async (req: any, res: Response) => {
     const preparedOrderItems = orderItems.map((item: any) => ({
       name: item.name,
       qty: item.qty,
-      imageUrl: item.imageUrl, // 👈 Terminal error yahi tha, isse ensure karein
+      imageUrl: item.imageUrl, 
       price: item.price,
-      product: item.product,  // 👈 Frontend se 'product' bhej rahe hain
+      product: item.product,  
       seller: item.seller,
     }));
 
@@ -25,18 +25,18 @@ export const addOrderItems = async (req: any, res: Response) => {
       orderItems: preparedOrderItems,
       shippingAddress,
       totalPrice,
-      paymentMethod, // 👈 Isse add karna mat bhoolna
-      isPaid: paymentMethod === 'COD' ? false : false, // Razorpay update handle karega
+      paymentMethod, 
+      isPaid: paymentMethod === 'COD' ? false : false, 
     });
 
     const createdOrder = await order.save();
     res.status(201).json(createdOrder);
   } catch (error: any) {
     console.error("Order Creation Error:", error);
-    res.status(500).json({ message: error.message }); // 👈 Taaki frontend ko HTML ke bajaye JSON mile
+    res.status(500).json({ message: error.message }); 
   }
 }
-}
+
 
 export const getMyOrders = async (req: any, res: Response) => {
   try {
