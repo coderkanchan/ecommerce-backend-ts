@@ -197,7 +197,6 @@ export const getSellerOrders = async (req: any, res: Response) => {
   }
 };
 
-
 export const getSellerStats = async (req: any, res: any) => {
   try {
     const sellerId = req.user._id;

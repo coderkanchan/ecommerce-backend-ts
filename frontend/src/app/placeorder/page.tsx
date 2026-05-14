@@ -43,9 +43,10 @@ export default function PlaceOrderPage() {
           orderItems: cartItems.map(item => ({
             name: item.name,
             qty: item.qty,
-            imageUrl: item.imageUrl,
+            image: item.image,
             price: item.price,
-            product: item._id
+            product: item._id,
+            seller: item.seller,
           })),
           shippingAddress: shippingAddress,
           totalPrice: Number(totalPrice),
