@@ -10,9 +10,19 @@ export const addOrderItems = async (req: any, res: Response) => {
     res.status(400).json({ message: 'No order items' });
     return;
   } else {
+    // Map order items to include product and seller IDs properly
+    const preparedOrderItems = orderItems.map((item: any) => ({
+      name: item.name,
+      qty: item.qty,
+      image: item.image,
+      price: item.price,
+      product: item._id, // Product ki ID
+      seller: item.seller, // 👈 Yeh line sabse important hai!
+    }));
+
     const order = new Order({
       user: req.user._id,
-      orderItems,
+      orderItems: preparedOrderItems,
       shippingAddress,
       totalPrice
     });
