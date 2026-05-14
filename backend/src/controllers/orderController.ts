@@ -13,10 +13,10 @@ export const addOrderItems = async (req: any, res: Response) => {
     const preparedOrderItems = orderItems.map((item: any) => ({
       name: item.name,
       qty: item.qty,
-      image: item.image,
+      imageUrl: item.imageUrl,
       price: item.price,
-      product: item._id, 
-      seller: item.seller, 
+      product: item.product,
+      seller: item.seller,
     }));
 
     const order = new Order({
