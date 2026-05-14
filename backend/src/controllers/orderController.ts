@@ -24,6 +24,8 @@ export const addOrderItems = async (req: any, res: Response) => {
       orderItems: preparedOrderItems,
       shippingAddress,
       totalPrice
+      paymentMethod, 
+      isPaid: paymentMethod === 'COD' ? false : false,
     });
 
     const createdOrder = await order.save();
