@@ -4,18 +4,19 @@ import { User } from '../models/User.js';
 import { Product } from '../models/Product.js';
 
 export const addOrderItems = async (req: any, res: Response) => {
-  const { orderItems, shippingAddress, totalPrice } = req.body;
+  try {
+    const { orderItems, shippingAddress, totalPrice, paymentMethod } = req.body;
 
-  if (orderItems && orderItems.length === 0) {
-    res.status(400).json({ message: 'No order items' });
-    return;
-  } else {
+    if (!orderItems || orderItems.length === 0) {
+      return res.status(400).json({ message: 'No order items' });
+    }
+
     const preparedOrderItems = orderItems.map((item: any) => ({
       name: item.name,
       qty: item.qty,
-      imageUrl: item.imageUrl,
+      imageUrl: item.imageUrl, // 👈 Terminal error yahi tha, isse ensure karein
       price: item.price,
-      product: item.product,
+      product: item.product,  // 👈 Frontend se 'product' bhej rahe hain
       seller: item.seller,
     }));
 
@@ -23,14 +24,18 @@ export const addOrderItems = async (req: any, res: Response) => {
       user: req.user._id,
       orderItems: preparedOrderItems,
       shippingAddress,
-      totalPrice
-      paymentMethod, 
-      isPaid: paymentMethod === 'COD' ? false : false,
+      totalPrice,
+      paymentMethod, // 👈 Isse add karna mat bhoolna
+      isPaid: paymentMethod === 'COD' ? false : false, // Razorpay update handle karega
     });
 
     const createdOrder = await order.save();
     res.status(201).json(createdOrder);
+  } catch (error: any) {
+    console.error("Order Creation Error:", error);
+    res.status(500).json({ message: error.message }); // 👈 Taaki frontend ko HTML ke bajaye JSON mile
   }
+}
 }
 
 export const getMyOrders = async (req: any, res: Response) => {
