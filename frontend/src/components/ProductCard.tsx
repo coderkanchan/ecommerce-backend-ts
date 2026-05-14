@@ -7,14 +7,14 @@ interface ProductCardProps {
     _id: string;
     name: string;
     price: number;
-    image: string;
+    imageUrl: string;
   };
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const imageSrc = product.image && product.image.startsWith('http')
-    ? product.image
-    : `${process.env.NEXT_PUBLIC_API_URL}${product.image}`;
+  const imageSrc = product.imageUrl && product.imageUrl.startsWith('http')
+    ? product.imageUrl
+    : `${process.env.NEXT_PUBLIC_API_URL}${product.imageUrl}`;
 
   return (
     <>
