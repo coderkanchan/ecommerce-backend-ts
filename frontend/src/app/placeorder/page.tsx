@@ -28,12 +28,12 @@ export default function PlaceOrderPage() {
   const { paymentMethod } = useSelector((state: RootState) => state.cart);
 
   const placeOrderHandler = async () => {
-    console.log("Current Cart Items:", cartItems);
     try {
+      console.log("Current Cart Items:", cartItems);
       const storedUser = localStorage.getItem('userInfo');
       if (!storedUser) { router.push('/login'); return; }
       const userInfo = JSON.parse(storedUser);
-      
+
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
         method: 'POST',
         headers: {
@@ -47,7 +47,7 @@ export default function PlaceOrderPage() {
             imageUrl: item.imageUrl || item.image,
             price: item.price,
             product: item._id || item.product,
-           seller: item.seller, 
+            seller: item.seller,
           })),
           shippingAddress: shippingAddress,
           totalPrice: Number(totalPrice),
