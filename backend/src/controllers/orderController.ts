@@ -26,12 +26,6 @@ export const addOrderItems = async (req: any, res: Response) => {
       shippingAddress,
       totalPrice,
       paymentMethod,
-      paymentResult: {
-        id: paymentResult?.id || "COD",
-        status: paymentResult?.status || "completed",
-        update_time: paymentResult?.update_time || Date.now().toString(),
-        email_address: req.user.email
-      },
       isPaid: paymentMethod === 'COD' ? false : false,
     });
 
