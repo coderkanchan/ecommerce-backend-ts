@@ -43,13 +43,17 @@ export default function PlaceOrderPage() {
           orderItems: cartItems.map(item => ({
             name: item.name,
             qty: item.qty,
-          imageUrl: item.imageUrl || item.image,
-            product: item._id,
-          seller: item.seller,
+            imageUrl: item.imageUrl || item.image,
+            price: item.price,
+            product: item._id || item.product,
+            seller: item.seller,
           })),
           shippingAddress: shippingAddress,
           totalPrice: Number(totalPrice),
           paymentMethod: paymentMethod,
+          itemsPrice: cart.itemsPrice,
+          taxPrice: cart.taxPrice,
+          shippingPrice: cart.shippingPrice,
         }),
       });
 
