@@ -14,12 +14,10 @@ import { protect, admin, seller } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
 router.get('/seller', protect, seller, getSellerProducts);
-
 router.get('/all', getProducts);
 router.get('/:id', getProductById);
 
 router.post('/:id/reviews', protect, createProductReview);
-
 router.post('/add', protect, seller, createProduct);
 
 router.route('/:id')
