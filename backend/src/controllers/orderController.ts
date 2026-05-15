@@ -14,9 +14,9 @@ export const addOrderItems = async (req: any, res: Response) => {
     const preparedOrderItems = orderItems.map((item: any) => ({
       name: item.name,
       qty: item.qty,
-      imageUrl: item.imageUrl, 
+      imageUrl: item.imageUrl,
       price: item.price,
-      product: item.product,  
+      product: item.product,
       seller: item.seller,
     }));
 
@@ -25,15 +25,21 @@ export const addOrderItems = async (req: any, res: Response) => {
       orderItems: preparedOrderItems,
       shippingAddress,
       totalPrice,
-      paymentMethod, 
-      isPaid: paymentMethod === 'COD' ? false : false, 
+      paymentMethod,
+      paymentResult: {
+        id: paymentResult?.id || "COD",
+        status: paymentResult?.status || "completed",
+        update_time: paymentResult?.update_time || Date.now().toString(),
+        email_address: req.user.email
+      },
+      isPaid: paymentMethod === 'COD' ? false : false,
     });
 
     const createdOrder = await order.save();
     res.status(201).json(createdOrder);
   } catch (error: any) {
     console.error("Order Creation Error:", error);
-    res.status(500).json({ message: error.message }); 
+    res.status(500).json({ message: error.message });
   }
 }
 
