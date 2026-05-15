@@ -32,7 +32,7 @@ export const addOrderItems = async (req: any, res: Response) => {
     const createdOrder = await order.save();
     res.status(201).json(createdOrder);
   } catch (error: any) {
-    console.error("Order Creation Error:", error);
+    console.error("Mongoose Save Error:", error);
     res.status(500).json({ message: error.message });
   }
 }
