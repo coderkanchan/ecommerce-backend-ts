@@ -13,9 +13,9 @@ export const addOrderItems = async (req: any, res: Response) => {
 
     const preparedOrderItems = orderItems.map((item: any) => ({
       name: item.name,
-      qty: item.qty,
+      qty: Number(item.qty),
       imageUrl: item.imageUrl,
-      price: item.price,
+      price: Number(item.price),
       product: item.product,
       seller: item.seller,
     }));
@@ -24,16 +24,17 @@ export const addOrderItems = async (req: any, res: Response) => {
       user: req.user._id,
       orderItems: preparedOrderItems,
       shippingAddress,
-      totalPrice,
+      totalPrice: Number(totalPrice),
       paymentMethod,
       isPaid: paymentMethod === 'COD' ? false : false,
     });
 
     const createdOrder = await order.save();
+    console.log("✅ Order Saved to DB:", createdOrder._id);
     res.status(201).json(createdOrder);
   } catch (error: any) {
-    console.error("Mongoose Save Error:", error);
-    res.status(500).json({ message: error.message });
+    console.error("❌ Mongoose Save Error:", error.message);
+    res.status(500).json({ message: error.message || "Internal Server Error" });
   }
 }
 
