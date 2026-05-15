@@ -17,8 +17,9 @@ export default function CartPage() {
     setIsClient(true);
   }, []);
 
-  const totalAmount = cartItems.reduce((acc, item) => acc + item.price * (item.qty || 1), 0);
-
+  const totalAmount = cartItems.reduce((acc, item) =>
+    acc + (Number(item.price) || 0) * (Number(item.qty) || 1), 0
+  );
   const checkoutHandler = () => {
     if (!userInfo) {
       router.push('/login?redirect=shipping');
