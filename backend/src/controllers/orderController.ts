@@ -17,7 +17,7 @@ export const addOrderItems = async (req: any, res: Response) => {
       imageUrl: item.imageUrl || item.image || "/placeholder.png",
       price: Number(item.price) || 0,
       product: item.product,
-      seller: item.seller,
+      seller: item.seller, 
     }));
 
     const order = new Order({
@@ -26,7 +26,7 @@ export const addOrderItems = async (req: any, res: Response) => {
       shippingAddress,
       totalPrice: Number(totalPrice),
       paymentMethod,
-      isPaid: false, 
+     isPaid: false,
     });
     const createdOrder = await order.save();
     console.log("✅ Order Saved to DB:", createdOrder._id);
