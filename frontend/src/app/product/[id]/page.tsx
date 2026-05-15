@@ -21,6 +21,7 @@ export default function ProductDetails() {
     const getProduct = async () => {
       try {
         const { data } = await API.get(`products/${id}`);
+        console.log("Full Product Data from DB:", data);
         setProduct(data);
       } catch (error) {
         console.error("Error:", error);
@@ -36,7 +37,7 @@ export default function ProductDetails() {
       price: product.price,
       imageUrl: product.imageUrl,
       qty: Number(qty),
-      seller: product.user
+      seller: product.user?._id || product.user || product.seller
     }));
     toast.success("Added to cart!");
   };
