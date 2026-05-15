@@ -43,10 +43,9 @@ export default function PlaceOrderPage() {
           orderItems: cartItems.map(item => ({
             name: item.name,
             qty: item.qty,
-            imageUrl: item.image || item.imageUrl,
-            price: item.price,
+          imageUrl: item.imageUrl || item.image,
             product: item._id,
-            seller: item.seller,
+          seller: item.seller,
           })),
           shippingAddress: shippingAddress,
           totalPrice: Number(totalPrice),
@@ -151,9 +150,9 @@ export default function PlaceOrderPage() {
               {cartItems.length === 0 ? <p>Your cart is empty</p> : (
                 <div className="space-y-4">
                   {cartItems.map((item, index) => (
-                    <div 
-                    key={index} 
-                    className="flex items-center justify-between border-b border-gray-800 pb-4">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between border-b border-gray-800 pb-4">
                       <div className="flex items-center gap-4">
                         <img
                           src={item.image || item.imageUrl}
