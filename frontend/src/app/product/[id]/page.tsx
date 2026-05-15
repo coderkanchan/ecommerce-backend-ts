@@ -31,13 +31,14 @@ export default function ProductDetails() {
   }, [id]);
 
   const handleAddToCart = () => {
+    console.log("Product before dispatch:", product);
     dispatch(addToCart({
       _id: product._id,
       name: product.name,
       price: product.price,
       imageUrl: product.imageUrl,
       qty: Number(qty),
-      seller: product.user?._id || product.user || product.seller
+      seller: product.user || product.seller || "NO_SELLER_ID"
     }));
     toast.success("Added to cart!");
   };
