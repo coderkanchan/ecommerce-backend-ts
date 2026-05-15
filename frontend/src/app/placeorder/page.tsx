@@ -151,7 +151,9 @@ export default function PlaceOrderPage() {
               {cartItems.length === 0 ? <p>Your cart is empty</p> : (
                 <div className="space-y-4">
                   {cartItems.map((item, index) => (
-                    <div key={index} className="flex items-center justify-between border-b border-gray-800 pb-4">
+                    <div 
+                    key={index} 
+                    className="flex items-center justify-between border-b border-gray-800 pb-4">
                       <div className="flex items-center gap-4">
                         <img
                           src={item.image || item.imageUrl}

@@ -6,7 +6,7 @@ import { Product } from '../models/Product.js';
 export const addOrderItems = async (req: any, res: Response) => {
   try {
     const { orderItems, shippingAddress, totalPrice, paymentMethod } = req.body;
-
+    console.log("Incoming Order Data:", JSON.stringify(req.body, null, 2));
     if (!orderItems || orderItems.length === 0) {
       return res.status(400).json({ message: 'No order items' });
     }
@@ -36,7 +36,6 @@ export const addOrderItems = async (req: any, res: Response) => {
     res.status(500).json({ message: error.message });
   }
 }
-
 
 export const getMyOrders = async (req: any, res: Response) => {
   try {
