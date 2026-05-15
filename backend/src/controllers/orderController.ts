@@ -15,7 +15,7 @@ export const addOrderItems = async (req: any, res: Response) => {
       name: item.name,
       qty: Number(item.qty),
       imageUrl: item.imageUrl || item.image || "/placeholder.png",
-      price: Number(item.price),
+      price: Number(item.price) || 0,
       product: item.product,
       seller: item.seller,
     }));
