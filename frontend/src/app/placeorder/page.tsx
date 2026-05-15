@@ -57,7 +57,7 @@ export default function PlaceOrderPage() {
       if (!res.ok) throw new Error(orderData.message);
 
       if (paymentMethod === 'COD') {
-        alert("Order Placed Successfully via COD! 📦");
+        alert("Order Placed Successfully via COD!");
         dispatch(clearCartItems());
         localStorage.removeItem('cartItems');
         router.push(`/profile`);
