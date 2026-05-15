@@ -47,7 +47,8 @@ export default function ProductDetails() {
       name: product.name,
       price: product.price,
       imageUrl: product.imageUrl,
-      qty: Number(qty)
+      qty: Number(qty),
+      seller: product.user
     }));
     router.push('/shipping');
   };
