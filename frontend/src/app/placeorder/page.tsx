@@ -32,7 +32,9 @@ export default function PlaceOrderPage() {
       const storedUser = localStorage.getItem('userInfo');
       if (!storedUser) { router.push('/login'); return; }
       const userInfo = JSON.parse(storedUser);
-
+      if (!orderData._id) {
+        throw new Error("Order ID not found. Please try again.");
+      }
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
         method: 'POST',
         headers: {
