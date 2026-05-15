@@ -14,7 +14,7 @@ export const addOrderItems = async (req: any, res: Response) => {
     const preparedOrderItems = orderItems.map((item: any) => ({
       name: item.name,
       qty: Number(item.qty),
-      imageUrl: item.imageUrl,
+      imageUrl: item.imageUrl || item.image || "/placeholder.png",
       price: Number(item.price),
       product: item.product,
       seller: item.seller,
