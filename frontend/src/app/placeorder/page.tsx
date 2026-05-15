@@ -28,6 +28,7 @@ export default function PlaceOrderPage() {
   const { paymentMethod } = useSelector((state: RootState) => state.cart);
 
   const placeOrderHandler = async () => {
+    console.log("Current Cart Items:", cartItems);
     try {
       const storedUser = localStorage.getItem('userInfo');
       if (!storedUser) { router.push('/login'); return; }
