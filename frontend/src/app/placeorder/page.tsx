@@ -51,9 +51,9 @@ export default function PlaceOrderPage() {
           shippingAddress: shippingAddress,
           totalPrice: Number(totalPrice),
           paymentMethod: paymentMethod,
-          itemsPrice: cart.itemsPrice,
-          taxPrice: cart.taxPrice,
-          shippingPrice: cart.shippingPrice,
+          itemsPrice: itemsPrice,
+          taxPrice: taxPrice,
+          shippingPrice: shippingPrice,
         }),
       });
 
