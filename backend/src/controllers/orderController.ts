@@ -140,11 +140,10 @@ export const updateOrderToDelivered = async (req: any, res: any) => {
   }
 };
 
-// Naya function: Seller specific items ko delivered mark karne ke liye
 export const updateSellerOrderToDelivered = async (req: any, res: Response) => {
   try {
     const orderId = req.params.id;
-    const sellerId = req.user._id; // Logged-in seller ki ID
+    const sellerId = req.user._id; 
 
     const order = await Order.findById(orderId);
 
@@ -152,7 +151,6 @@ export const updateSellerOrderToDelivered = async (req: any, res: Response) => {
       return res.status(404).json({ message: 'Order not found' });
     }
 
-    // Professional validation: Check karein ki is order mein is seller ka koi product hai bhi ya nahi
     const hasSellerItems = order.orderItems.some(
       (item: any) => item.seller && item.seller.toString() === sellerId.toString()
     );
