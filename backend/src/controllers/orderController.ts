@@ -33,7 +33,7 @@ export const addOrderItems = async (req: any, res: Response) => {
           imageUrl: item.imageUrl || item.image || "/placeholder.png",
           price: Number(item.price) || 0,
           product: item.product,
-          seller: sellerId, 
+          seller: sellerId,
         };
       })
     );
@@ -137,6 +137,53 @@ export const updateOrderToDelivered = async (req: any, res: any) => {
     }
   } catch (error) {
     res.status(500).json({ message: 'Error updating order' });
+  }
+};
+
+// Naya function: Seller specific items ko delivered mark karne ke liye
+export const updateSellerOrderToDelivered = async (req: any, res: Response) => {
+  try {
+    const orderId = req.params.id;
+    const sellerId = req.user._id; // Logged-in seller ki ID
+
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    // Professional validation: Check karein ki is order mein is seller ka koi product hai bhi ya nahi
+    const hasSellerItems = order.orderItems.some(
+      (item: any) => item.seller && item.seller.toString() === sellerId.toString()
+    );
+
+    if (!hasSellerItems) {
+      return res.status(403).json({ message: 'You are not authorized to update this order' });
+    }
+
+    // Pura order direct update karne ki jagah, sirf is seller ke specific items ka status badlein
+    order.orderItems.forEach((item: any) => {
+      if (item.seller && item.seller.toString() === sellerId.toString()) {
+        item.isDelivered = true;
+        item.deliveredAt = new Date();
+      }
+    });
+
+    // Check karein: Agar order ke SAARE items delivered ho chuke hain (chahe kisi bhi seller ke ho), 
+    // toh main order document ko bhi overall delivered mark kar dein.
+    const allItemsDelivered = order.orderItems.every((item: any) => item.isDelivered === true);
+    if (allItemsDelivered) {
+      order.isDelivered = true;
+      order.deliveredAt = new Date();
+    }
+
+    const updatedOrder = await order.save();
+    console.log(`📦 Seller (${sellerId}) marked their items as DELIVERED in Order: ${orderId}`);
+
+    res.json(updatedOrder);
+  } catch (error: any) {
+    console.error("❌ Seller Order Delivery Update Error:", error);
+    res.status(500).json({ message: error.message || 'Error updating seller order status' });
   }
 };
 
