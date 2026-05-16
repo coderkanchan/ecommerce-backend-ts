@@ -23,6 +23,33 @@ export default function SellerOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Frontend function handle karne ke liye sample code snippet:
+const deliverSellerOrderHandler = async (orderId: string) => {
+  try {
+    const storedUser = localStorage.getItem('userInfo');
+    if (!storedUser) return;
+    const { token } = JSON.parse(storedUser);
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderId}/seller-deliver`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (res.ok) {
+      alert("Your product items marked as delivered successfully! 🎉");
+      // Dashboard data refresh function call yahan karein
+    } else {
+      const data = await res.json();
+      alert(data.message || "Failed to update status");
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
+
   useEffect(() => {
     const fetchOrders = async () => {
       try {
