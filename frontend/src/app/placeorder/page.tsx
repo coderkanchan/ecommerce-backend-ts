@@ -125,7 +125,6 @@ export default function PlaceOrderPage() {
       if (!storedUser) { router.push('/login'); return; }
       const userInfo = JSON.parse(storedUser);
 
-      // Validation check before making API Call
       if (!cartItems || cartItems.length === 0) {
         alert("Your cart is empty!");
         return;
@@ -144,7 +143,7 @@ export default function PlaceOrderPage() {
             imageUrl: item.imageUrl || item.image || "/placeholder.png",
             price: Number(item.price),
             product: item._id || item.product,
-            seller: item.seller || null, // Fallback safe check
+            seller: item.seller || null,
           })),
           shippingAddress: shippingAddress,
           totalPrice: Number(totalPrice),
@@ -166,7 +165,6 @@ export default function PlaceOrderPage() {
         localStorage.removeItem('cartItems');
         router.push(`/profile`);
       } else {
-        // Razorpay order will execute ONLY if MongoDB order creation succeeds
         const paymentResponse = await createRazorpayOrder(Number(totalPrice));
 
         const options = {
