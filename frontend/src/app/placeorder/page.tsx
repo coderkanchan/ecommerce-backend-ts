@@ -27,12 +27,109 @@ export default function PlaceOrderPage() {
 
   const { paymentMethod } = useSelector((state: RootState) => state.cart);
 
+  // const placeOrderHandler = async () => {
+  //   try {
+  //     console.log("Current Cart Items:", cartItems);
+  //     const storedUser = localStorage.getItem('userInfo');
+  //     if (!storedUser) { router.push('/login'); return; }
+  //     const userInfo = JSON.parse(storedUser);
+
+  //     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': `Bearer ${userInfo.token}`,
+  //       },
+  //       body: JSON.stringify({
+  //         orderItems: cartItems.map(item => ({
+  //           name: item.name,
+  //           qty: item.qty,
+  //           imageUrl: item.imageUrl || item.image,
+  //           price: item.price,
+  //           product: item._id || item.product,
+  //           seller: item.seller,
+  //         })),
+  //         shippingAddress: shippingAddress,
+  //         totalPrice: Number(totalPrice),
+  //         paymentMethod: paymentMethod,
+  //         itemsPrice: itemsPrice,
+  //         taxPrice: taxPrice,
+  //         shippingPrice: shippingPrice,
+  //       }),
+  //     });
+
+  //     const orderData = await res.json();
+  //     if (!res.ok) throw new Error(orderData.message);
+
+  //     if (paymentMethod === 'COD') {
+  //       alert("Order Placed Successfully via COD!");
+  //       dispatch(clearCartItems());
+  //       localStorage.removeItem('cartItems');
+  //       router.push(`/profile`);
+
+  //     } else {
+
+  //       const paymentResponse = await createRazorpayOrder(Number(totalPrice));
+
+  //       const options = {
+  //         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+  //         amount: paymentResponse.order.amount,
+  //         currency: "INR",
+  //         name: "NexusMart",
+  //         order_id: paymentResponse.order.id,
+  //         handler: async function (response: any) {
+
+  //           try {
+  //             const payRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderData._id}/pay`, {
+  //               method: 'PUT',
+  //               headers: {
+  //                 'Content-Type': 'application/json',
+  //                 'Authorization': `Bearer ${userInfo.token}`,
+  //               },
+  //               body: JSON.stringify({
+  //                 razorpay_payment_id: response.razorpay_payment_id,
+  //                 status: 'completed',
+  //                 email: userInfo.email
+  //               }),
+  //             });
+
+  //             if (!payRes.ok) throw new Error("Failed to update order status on server");
+
+  //             alert("Order Placed & Payment Successful! 🎉");
+  //             dispatch(clearCartItems());
+  //             localStorage.removeItem('cartItems');
+  //             router.push(`/profile`);
+
+  //           } catch (innerErr: any) {
+  //             alert("Payment was successful but server update failed. Please contact support.");
+  //             console.error(innerErr);
+  //           }
+  //         },
+  //         prefill: { name: userInfo.name, email: userInfo.email },
+  //         theme: { color: "#EAB308" },
+  //       };
+
+  //       const rzp = new (window as any).Razorpay(options);
+  //       rzp.open();
+  //     }
+
+  //   } catch (err: any) {
+  //     alert(err.message || "Something went wrong!");
+  //   }
+  // };
+
   const placeOrderHandler = async () => {
     try {
       console.log("Current Cart Items:", cartItems);
       const storedUser = localStorage.getItem('userInfo');
       if (!storedUser) { router.push('/login'); return; }
       const userInfo = JSON.parse(storedUser);
+
+      // Validation check before making API Call
+      if (!cartItems || cartItems.length === 0) {
+        alert("Your cart is empty!");
+        return;
+      }
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
         method: 'POST',
@@ -43,32 +140,33 @@ export default function PlaceOrderPage() {
         body: JSON.stringify({
           orderItems: cartItems.map(item => ({
             name: item.name,
-            qty: item.qty,
-            imageUrl: item.imageUrl || item.image,
-            price: item.price,
+            qty: Number(item.qty),
+            imageUrl: item.imageUrl || item.image || "/placeholder.png",
+            price: Number(item.price),
             product: item._id || item.product,
-            seller: item.seller,
+            seller: item.seller || null, // Fallback safe check
           })),
           shippingAddress: shippingAddress,
           totalPrice: Number(totalPrice),
           paymentMethod: paymentMethod,
-          itemsPrice: itemsPrice,
-          taxPrice: taxPrice,
-          shippingPrice: shippingPrice,
+          itemsPrice: Number(itemsPrice),
+          taxPrice: Number(taxPrice),
+          shippingPrice: Number(shippingPrice),
         }),
       });
 
       const orderData = await res.json();
-      if (!res.ok) throw new Error(orderData.message);
+      if (!res.ok) {
+        throw new Error(orderData.message || "Failed to create order in database");
+      }
 
       if (paymentMethod === 'COD') {
         alert("Order Placed Successfully via COD!");
         dispatch(clearCartItems());
         localStorage.removeItem('cartItems');
         router.push(`/profile`);
-
       } else {
-
+        // Razorpay order will execute ONLY if MongoDB order creation succeeds
         const paymentResponse = await createRazorpayOrder(Number(totalPrice));
 
         const options = {
@@ -78,7 +176,6 @@ export default function PlaceOrderPage() {
           name: "NexusMart",
           order_id: paymentResponse.order.id,
           handler: async function (response: any) {
-
             try {
               const payRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderData._id}/pay`, {
                 method: 'PUT',
@@ -114,7 +211,8 @@ export default function PlaceOrderPage() {
       }
 
     } catch (err: any) {
-      alert(err.message || "Something went wrong!");
+      console.error("Order Placement Error:", err);
+      alert(err.message || "Something went wrong during checkout!");
     }
   };
 
