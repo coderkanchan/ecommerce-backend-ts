@@ -9,7 +9,7 @@ interface OrderItem {
   image: string;
   product: string;
   seller: string;
-  isDelivered?: boolean; // Multi-vendor standard option tracking
+  isDelivered?: boolean; 
 }
 
 interface Order {
@@ -25,7 +25,6 @@ export default function SellerOrdersPage() {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
-  // Core API Function to Fetch Orders
   const fetchOrders = async () => {
     try {
       const { data } = await API.get("/orders/seller");
@@ -41,7 +40,6 @@ export default function SellerOrdersPage() {
     fetchOrders();
   }, []);
 
-  // Professional Delivery Handler using your pre-configured API instance
   const deliverSellerOrderHandler = async (orderId: string) => {
     if (!window.confirm("Are you sure you want to mark this item as delivered?")) return;
 
