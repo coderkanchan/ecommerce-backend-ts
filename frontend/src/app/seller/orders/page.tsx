@@ -23,7 +23,6 @@ export default function SellerOrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Frontend function handle karne ke liye sample code snippet:
 const deliverSellerOrderHandler = async (orderId: string) => {
   try {
     const storedUser = localStorage.getItem('userInfo');
