@@ -159,7 +159,6 @@ export const updateSellerOrderToDelivered = async (req: any, res: Response) => {
       return res.status(403).json({ message: 'You are not authorized to update this order' });
     }
 
-    // Pura order direct update karne ki jagah, sirf is seller ke specific items ka status badlein
     order.orderItems.forEach((item: any) => {
       if (item.seller && item.seller.toString() === sellerId.toString()) {
         item.isDelivered = true;
@@ -167,8 +166,6 @@ export const updateSellerOrderToDelivered = async (req: any, res: Response) => {
       }
     });
 
-    // Check karein: Agar order ke SAARE items delivered ho chuke hain (chahe kisi bhi seller ke ho), 
-    // toh main order document ko bhi overall delivered mark kar dein.
     const allItemsDelivered = order.orderItems.every((item: any) => item.isDelivered === true);
     if (allItemsDelivered) {
       order.isDelivered = true;
