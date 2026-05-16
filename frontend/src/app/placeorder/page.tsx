@@ -27,109 +27,23 @@ export default function PlaceOrderPage() {
 
   const { paymentMethod } = useSelector((state: RootState) => state.cart);
 
-  // const placeOrderHandler = async () => {
-  //   try {
-  //     console.log("Current Cart Items:", cartItems);
-  //     const storedUser = localStorage.getItem('userInfo');
-  //     if (!storedUser) { router.push('/login'); return; }
-  //     const userInfo = JSON.parse(storedUser);
-
-  //     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': `Bearer ${userInfo.token}`,
-  //       },
-  //       body: JSON.stringify({
-  //         orderItems: cartItems.map(item => ({
-  //           name: item.name,
-  //           qty: item.qty,
-  //           imageUrl: item.imageUrl || item.image,
-  //           price: item.price,
-  //           product: item._id || item.product,
-  //           seller: item.seller,
-  //         })),
-  //         shippingAddress: shippingAddress,
-  //         totalPrice: Number(totalPrice),
-  //         paymentMethod: paymentMethod,
-  //         itemsPrice: itemsPrice,
-  //         taxPrice: taxPrice,
-  //         shippingPrice: shippingPrice,
-  //       }),
-  //     });
-
-  //     const orderData = await res.json();
-  //     if (!res.ok) throw new Error(orderData.message);
-
-  //     if (paymentMethod === 'COD') {
-  //       alert("Order Placed Successfully via COD!");
-  //       dispatch(clearCartItems());
-  //       localStorage.removeItem('cartItems');
-  //       router.push(`/profile`);
-
-  //     } else {
-
-  //       const paymentResponse = await createRazorpayOrder(Number(totalPrice));
-
-  //       const options = {
-  //         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-  //         amount: paymentResponse.order.amount,
-  //         currency: "INR",
-  //         name: "NexusMart",
-  //         order_id: paymentResponse.order.id,
-  //         handler: async function (response: any) {
-
-  //           try {
-  //             const payRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderData._id}/pay`, {
-  //               method: 'PUT',
-  //               headers: {
-  //                 'Content-Type': 'application/json',
-  //                 'Authorization': `Bearer ${userInfo.token}`,
-  //               },
-  //               body: JSON.stringify({
-  //                 razorpay_payment_id: response.razorpay_payment_id,
-  //                 status: 'completed',
-  //                 email: userInfo.email
-  //               }),
-  //             });
-
-  //             if (!payRes.ok) throw new Error("Failed to update order status on server");
-
-  //             alert("Order Placed & Payment Successful! 🎉");
-  //             dispatch(clearCartItems());
-  //             localStorage.removeItem('cartItems');
-  //             router.push(`/profile`);
-
-  //           } catch (innerErr: any) {
-  //             alert("Payment was successful but server update failed. Please contact support.");
-  //             console.error(innerErr);
-  //           }
-  //         },
-  //         prefill: { name: userInfo.name, email: userInfo.email },
-  //         theme: { color: "#EAB308" },
-  //       };
-
-  //       const rzp = new (window as any).Razorpay(options);
-  //       rzp.open();
-  //     }
-
-  //   } catch (err: any) {
-  //     alert(err.message || "Something went wrong!");
-  //   }
-  // };
-
   const placeOrderHandler = async () => {
     try {
       console.log("Current Cart Items:", cartItems);
       const storedUser = localStorage.getItem('userInfo');
-      if (!storedUser) { router.push('/login'); return; }
+      if (!storedUser) {
+        router.push('/login');
+        return;
+      }
       const userInfo = JSON.parse(storedUser);
 
+      // Edge-case check: Agar cart empty hai toh request block karein
       if (!cartItems || cartItems.length === 0) {
-        alert("Your cart is empty!");
+        alert("No order items found in cart!");
         return;
       }
 
+      // Step 1: Create Draft/Unpaid Order in MongoDB Database First
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
         method: 'POST',
         headers: {
@@ -143,7 +57,7 @@ export default function PlaceOrderPage() {
             imageUrl: item.imageUrl || item.image || "/placeholder.png",
             price: Number(item.price),
             product: item._id || item.product,
-            seller: item.seller || null,
+            seller: item.seller || null, // Ensuring safe fallback
           })),
           shippingAddress: shippingAddress,
           totalPrice: Number(totalPrice),
@@ -155,16 +69,22 @@ export default function PlaceOrderPage() {
       });
 
       const orderData = await res.json();
-      if (!res.ok) {
-        throw new Error(orderData.message || "Failed to create order in database");
+
+      // CRITICAL CHECK: Agar MongoDB mein order create nahi hua ya server ne ID nahi di, toh yahi block kardo
+      if (!res.ok || !orderData || !orderData._id) {
+        throw new Error(orderData.message || "Failed to create a new order reference in the database.");
       }
 
+      console.log("Successfully created new order in DB with ID:", orderData._id);
+
+      // Step 2: Handle Payment Lifecycle Based on Method
       if (paymentMethod === 'COD') {
         alert("Order Placed Successfully via COD!");
         dispatch(clearCartItems());
         localStorage.removeItem('cartItems');
         router.push(`/profile`);
       } else {
+        // Online Payment Process starts ONLY after successful DB reference creation
         const paymentResponse = await createRazorpayOrder(Number(totalPrice));
 
         const options = {
@@ -175,6 +95,7 @@ export default function PlaceOrderPage() {
           order_id: paymentResponse.order.id,
           handler: async function (response: any) {
             try {
+              // Triggering server update with the dynamic, newly created order ID
               const payRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderData._id}/pay`, {
                 method: 'PUT',
                 headers: {
@@ -188,7 +109,9 @@ export default function PlaceOrderPage() {
                 }),
               });
 
-              if (!payRes.ok) throw new Error("Failed to update order status on server");
+              if (!payRes.ok) {
+                throw new Error("Payment captured by Razorpay, but server failed to update order status.");
+              }
 
               alert("Order Placed & Payment Successful! 🎉");
               dispatch(clearCartItems());
@@ -196,8 +119,8 @@ export default function PlaceOrderPage() {
               router.push(`/profile`);
 
             } catch (innerErr: any) {
-              alert("Payment was successful but server update failed. Please contact support.");
-              console.error(innerErr);
+              alert(innerErr.message || "Payment was successful but server sync failed. Please contact support.");
+              console.error("Payment Sync Error:", innerErr);
             }
           },
           prefill: { name: userInfo.name, email: userInfo.email },
@@ -209,7 +132,7 @@ export default function PlaceOrderPage() {
       }
 
     } catch (err: any) {
-      console.error("Order Placement Error:", err);
+      console.error("Order Checkout Flow Crashed:", err);
       alert(err.message || "Something went wrong during checkout!");
     }
   };
