@@ -47,12 +47,10 @@ export default function SellerOrdersPage() {
 
     try {
       setActionLoading(orderId);
-      // Apne Axios API client ka use karke dynamic request send karein
       await API.put(`/orders/${orderId}/seller-deliver`);
 
       alert("Your product items marked as delivered successfully! 🎉");
 
-      // Real-time structural dynamic updates: UI state refresh karein
       await fetchOrders();
     } catch (err: any) {
       console.error(err);
