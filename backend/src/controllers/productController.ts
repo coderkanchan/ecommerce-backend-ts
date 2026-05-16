@@ -120,19 +120,17 @@ export const getProducts = async (req: Request, res: Response) => {
 
 export const getProductById = async (req: Request, res: Response) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).populate('seller', 'name email');
 
     if (product) {
       res.json(product);
     } else {
       res.status(404).json({ message: 'Product not found' });
     }
-
   } catch (error) {
     res.status(500).json({ message: 'Server Error: Invalid ID format' });
   }
 };
-
 export const createProductReview = async (req: any, res: Response) => {
   const { rating, comment } = req.body;
   const product = await Product.findById(req.params.id);
