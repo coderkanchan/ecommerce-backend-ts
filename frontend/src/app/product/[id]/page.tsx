@@ -38,7 +38,7 @@ export default function ProductDetails() {
       price: product.price,
       imageUrl: product.imageUrl,
       qty: Number(qty),
-      seller: product.user || product.seller || "NO_SELLER_ID"
+      seller: product.seller?._id || product.seller || product.user
     }));
     toast.success("Added to cart!");
   };
