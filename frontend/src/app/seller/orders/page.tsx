@@ -40,7 +40,6 @@ const deliverSellerOrderHandler = async (orderId: string) => {
 
     if (res.ok) {
       alert("Your product items marked as delivered successfully! 🎉");
-      // Dashboard data refresh function call yahan karein
     } else {
       const data = await res.json();
       alert(data.message || "Failed to update status");
