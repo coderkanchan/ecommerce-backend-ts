@@ -10,7 +10,9 @@ import {
   getOrderSummary,
   getSellerStats,
   getSellerSummary,
-  getSellerOrders
+  getSellerOrders,
+  isSeller,
+  updateSellerOrderToDelivered
 } from '../controllers/orderController.js';
 import { protect, admin, seller } from '../middleware/authMiddleware.js';
 
@@ -27,7 +29,7 @@ router.get('/summary', protect, admin, getOrderSummary);
 router.route('/')
   .post(protect, addOrderItems)
   .get(protect, admin, getOrders);
-
+router.route('/:id/seller-deliver').put(protect, isSeller, updateSellerOrderToDelivered);
 router.route('/:id/pay').put(protect, updateOrderToPaid);
 router.route('/:id/deliver').put(protect, admin, updateOrderToDelivered);
 router.route('/:id').get(protect, getOrderById);
