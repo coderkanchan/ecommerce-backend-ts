@@ -37,13 +37,11 @@ export default function PlaceOrderPage() {
       }
       const userInfo = JSON.parse(storedUser);
 
-      // Edge-case check: Agar cart empty hai toh request block karein
       if (!cartItems || cartItems.length === 0) {
         alert("No order items found in cart!");
         return;
       }
 
-      // Step 1: Create Draft/Unpaid Order in MongoDB Database First
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders`, {
         method: 'POST',
         headers: {
@@ -57,7 +55,7 @@ export default function PlaceOrderPage() {
             imageUrl: item.imageUrl || item.image || "/placeholder.png",
             price: Number(item.price),
             product: item._id || item.product,
-            seller: item.seller || null, // Ensuring safe fallback
+            seller: item.seller || null, 
           })),
           shippingAddress: shippingAddress,
           totalPrice: Number(totalPrice),
@@ -70,21 +68,18 @@ export default function PlaceOrderPage() {
 
       const orderData = await res.json();
 
-      // CRITICAL CHECK: Agar MongoDB mein order create nahi hua ya server ne ID nahi di, toh yahi block kardo
       if (!res.ok || !orderData || !orderData._id) {
         throw new Error(orderData.message || "Failed to create a new order reference in the database.");
       }
 
       console.log("Successfully created new order in DB with ID:", orderData._id);
 
-      // Step 2: Handle Payment Lifecycle Based on Method
       if (paymentMethod === 'COD') {
         alert("Order Placed Successfully via COD!");
         dispatch(clearCartItems());
         localStorage.removeItem('cartItems');
         router.push(`/profile`);
       } else {
-        // Online Payment Process starts ONLY after successful DB reference creation
         const paymentResponse = await createRazorpayOrder(Number(totalPrice));
 
         const options = {
@@ -95,7 +90,6 @@ export default function PlaceOrderPage() {
           order_id: paymentResponse.order.id,
           handler: async function (response: any) {
             try {
-              // Triggering server update with the dynamic, newly created order ID
               const payRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/${orderData._id}/pay`, {
                 method: 'PUT',
                 headers: {
