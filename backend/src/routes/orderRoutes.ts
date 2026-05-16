@@ -11,7 +11,6 @@ import {
   getSellerStats,
   getSellerSummary,
   getSellerOrders,
-  isSeller,
   updateSellerOrderToDelivered
 } from '../controllers/orderController.js';
 import { protect, admin, seller } from '../middleware/authMiddleware.js';
