@@ -46,12 +46,10 @@ export const addOrderItems = async (req: any, res: Response) => {
       return res.status(400).json({ message: 'No order items' });
     }
 
-    // Promise.all use karke har individual item par async operations chalayenge
     const preparedOrderItems = await Promise.all(
       orderItems.map(async (item: any) => {
         let sellerId = item.seller;
 
-        // CRITICAL FALLBACK: Agar frontend se seller null/undefined aaye toh DB check karein
         if (!sellerId || sellerId === null) {
           console.log(`⚠️ Seller ID missing for product ${item.product}. Fetching from Database...`);
           const dbProduct = await Product.findById(item.product);
@@ -69,7 +67,7 @@ export const addOrderItems = async (req: any, res: Response) => {
           imageUrl: item.imageUrl || item.image || "/placeholder.png",
           price: Number(item.price) || 0,
           product: item.product,
-          seller: sellerId, // Ab ye null nahi rahega
+          seller: sellerId, 
         };
       })
     );
