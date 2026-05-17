@@ -64,10 +64,33 @@ export const addOrderItems = async (req: any, res: Response) => {
   }
 };
 
+// export const getMyOrders = async (req: any, res: Response) => {
+//   try {
+//     const orders = await Order.find({ user: req.user._id });
+//     res.json(orders);
+//   } catch (error) {
+//     res.status(500).json({ message: "Error fetching user orders" });
+//   }
+// };
+
 export const getMyOrders = async (req: any, res: Response) => {
   try {
     const orders = await Order.find({ user: req.user._id });
-    res.json(orders);
+
+    // Safety Fallback: Har order ke andar numeric fields missing na hon
+    const safeOrders = orders.map(order => {
+      const orderObj = order.toObject();
+      return {
+        ...orderObj,
+        totalPrice: Number(orderObj.totalPrice) || 0,
+        // Frontend agar inko toFixed(2) kar raha hai toh crash nahi hoga
+        itemsPrice: Number(orderObj.itemsPrice) || Number(orderObj.totalPrice) || 0,
+        taxPrice: Number(orderObj.taxPrice) || 0,
+        shippingPrice: Number(orderObj.shippingPrice) || 0
+      };
+    });
+
+    res.json(safeOrders);
   } catch (error) {
     res.status(500).json({ message: "Error fetching user orders" });
   }
@@ -308,7 +331,7 @@ export const getSellerStats = async (req: any, res: any) => {
     const safeRevenue = typeof totalRevenue === 'number' && !isNaN(totalRevenue) ? totalRevenue : 0;
 
     res.json({
-      totalRevenue: safeRevenue.toFixed(2), 
+      totalRevenue: safeRevenue.toFixed(2),
       totalOrders: orders ? orders.length : 0,
       totalCustomers: customerIds.size,
       conversionRate: (orders && orders.length > 0) ? "5.2%" : "0%",
