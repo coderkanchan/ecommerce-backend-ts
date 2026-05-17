@@ -30,7 +30,6 @@ export default function OrderDetailsPage() {
   if (loading) return <div className="text-white text-center mt-20">Loading Order Details...</div>;
   if (!order) return <div className="text-white text-center mt-20">Order Not Found</div>;
 
-  // Numbers ko safe parse karne ke liye custom variables
   const safeTotalPrice = Number(order.totalPrice) || 0;
   const safeItemsPrice = safeTotalPrice > 10 ? safeTotalPrice - 10 : safeTotalPrice;
 
@@ -40,7 +39,6 @@ export default function OrderDetailsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
-          {/* Shipping Section */}
           <div className="bg-gray-900 p-6 rounded-xl border border-gray-800">
             <h2 className="text-xl font-bold mb-2">Shipping</h2>
             <p><strong>Name:</strong> {order.user?.name || "Customer"}</p>
@@ -50,7 +48,6 @@ export default function OrderDetailsPage() {
             </div>
           </div>
 
-          {/* Payment Section */}
           <div className="bg-gray-900 p-6 rounded-xl border border-gray-800">
             <h2 className="text-xl font-bold mb-2">Payment Method</h2>
             <p><strong>Method:</strong> Razorpay/COD</p>
@@ -59,7 +56,6 @@ export default function OrderDetailsPage() {
             </div>
           </div>
 
-          {/* Order Items Section */}
           <div className="bg-gray-900 p-6 rounded-xl border border-gray-800">
             <h2 className="text-xl font-bold mb-4">Order Items</h2>
             {order.orderItems && order.orderItems.map((item: any, index: number) => {
