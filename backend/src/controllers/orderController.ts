@@ -73,27 +73,6 @@ export const getMyOrders = async (req: any, res: Response) => {
   }
 };
 
-// export const updateOrderToPaid = async (req: Request, res: Response) => {
-//   const order = await Order.findById(req.params.id);
-
-//   if (order) {
-//     order.isPaid = true;
-//     order.paidAt = new Date();
-//     order.paymentResult = {
-//       id: req.body.razorpay_payment_id,
-//       status: 'completed',
-//       update_time: String(Date.now()),
-//       email_address: req.body.email,
-//     };
-
-//     const updatedOrder = await order.save();
-//     console.log("✅ Order updated to Paid status. Seller fields preserved.");
-//     res.json(updatedOrder);
-//   } else {
-//     res.status(404).json({ message: 'Order not found' });
-//   }
-// };
-
 export const updateOrderToPaid = async (req: Request, res: Response) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -118,6 +97,7 @@ export const updateOrderToPaid = async (req: Request, res: Response) => {
     res.status(500).json({ message: error.message || "Error updating payment status" });
   }
 };
+
 export const getOrderStats = async (req: Request, res: Response) => {
   try {
     const totalOrders = await Order.countDocuments();
