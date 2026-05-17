@@ -300,8 +300,6 @@ export const getSellerStats = async (req: any, res: any) => {
   try {
     const sellerId = req.user._id;
 
-    // TESTING PROTECTION: Agar user ne test orders banaye hain jo abhi paid nahi hain, 
-    // toh isPaid hata kar check karte hain taaki dashboard zero na dikhaye.
     const orders = await Order.find({
       'orderItems.seller': sellerId
     });
