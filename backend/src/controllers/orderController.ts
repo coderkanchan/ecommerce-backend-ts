@@ -39,7 +39,7 @@ export const addOrderItems = async (req: any, res: Response) => {
           imageUrl: item.imageUrl || item.image || "/placeholder.png",
           price: Number(item.price) || 0,
           product: productId,
-          seller: sellerId, 
+          seller: sellerId,
           isDelivered: false
         };
       })
@@ -73,27 +73,53 @@ export const getMyOrders = async (req: any, res: Response) => {
   }
 };
 
+// export const updateOrderToPaid = async (req: Request, res: Response) => {
+//   const order = await Order.findById(req.params.id);
+
+//   if (order) {
+//     order.isPaid = true;
+//     order.paidAt = new Date();
+//     order.paymentResult = {
+//       id: req.body.razorpay_payment_id,
+//       status: 'completed',
+//       update_time: String(Date.now()),
+//       email_address: req.body.email,
+//     };
+
+//     const updatedOrder = await order.save();
+//     console.log("✅ Order updated to Paid status. Seller fields preserved.");
+//     res.json(updatedOrder);
+//   } else {
+//     res.status(404).json({ message: 'Order not found' });
+//   }
+// };
+
 export const updateOrderToPaid = async (req: Request, res: Response) => {
-  const order = await Order.findById(req.params.id);
+  try {
+    const order = await Order.findById(req.params.id);
 
-  if (order) {
-    order.isPaid = true;
-    order.paidAt = new Date();
-    order.paymentResult = {
-      id: req.body.razorpay_payment_id,
-      status: 'completed',
-      update_time: String(Date.now()),
-      email_address: req.body.email,
-    };
+    if (order) {
+      order.isPaid = true;
+      order.paidAt = new Date();
+      order.paymentResult = {
+        id: req.body.razorpay_payment_id,
+        status: 'completed',
+        update_time: String(Date.now()),
+        email_address: req.body.email || order.paymentResult?.email_address || '',
+      };
 
-    const updatedOrder = await order.save();
-    console.log("✅ Order updated to Paid status. Seller fields preserved.");
-    res.json(updatedOrder);
-  } else {
-    res.status(404).json({ message: 'Order not found' });
+      // order.orderItems ko bina chede, directly pure model document ko save karenge 
+      // taaki subdocument arrays aur unke andar ke new properties leak na hon.
+      const updatedOrder = await order.save();
+      console.log("✅ Order updated to Paid status. Seller fields preserved successfully.");
+      res.json(updatedOrder);
+    } else {
+      res.status(404).json({ message: 'Order not found' });
+    }
+  } catch (error: any) {
+    res.status(500).json({ message: error.message || "Error updating payment status" });
   }
 };
-
 export const getOrderStats = async (req: Request, res: Response) => {
   try {
     const totalOrders = await Order.countDocuments();
