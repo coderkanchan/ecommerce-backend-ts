@@ -108,8 +108,6 @@ export const updateOrderToPaid = async (req: Request, res: Response) => {
         email_address: req.body.email || order.paymentResult?.email_address || '',
       };
 
-      // order.orderItems ko bina chede, directly pure model document ko save karenge 
-      // taaki subdocument arrays aur unke andar ke new properties leak na hon.
       const updatedOrder = await order.save();
       console.log("✅ Order updated to Paid status. Seller fields preserved successfully.");
       res.json(updatedOrder);
