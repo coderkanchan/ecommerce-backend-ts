@@ -69,13 +69,11 @@ export const addOrderItems = async (req: any, res: Response) => {
 
     const preparedOrderItems = await Promise.all(
       orderItems.map(async (item: any) => {
-        // Frontend se aane wali product ID ko clean nikalte hain
+
         const productId = item.product?._id || item.product;
 
-        // Frontend se aane wali seller ID ya fir fallback backup
         let sellerId = item.seller?._id || item.seller;
 
-        // Force Validation: Database se hamesha fresh product seller verification karenge
         if (productId) {
           console.log(`🔍 Fetching fresh product info for ID: ${productId}`);
           const dbProduct = await Product.findById(productId);
@@ -94,7 +92,7 @@ export const addOrderItems = async (req: any, res: Response) => {
           imageUrl: item.imageUrl || item.image || "/placeholder.png",
           price: Number(item.price) || 0,
           product: productId,
-          seller: sellerId, // Yeh field ab database mein compulsory save hogi!
+          seller: sellerId, 
         };
       })
     );
