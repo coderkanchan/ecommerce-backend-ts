@@ -78,7 +78,6 @@ export default function OrderDetailsPage() {
           </div>
         </div>
 
-        {/* Order Summary Sidebar */}
         <div className="bg-gray-900 p-6 rounded-xl border border-gray-800 h-fit">
           <h2 className="text-xl font-bold mb-4">Order Summary</h2>
           <div className="space-y-2 text-gray-400">
