@@ -66,16 +66,15 @@ export const addOrderItems = async (req: any, res: Response) => {
 
 export const getMyOrders = async (req: any, res: Response) => {
   try {
-    const orders = await Order.find({ user: req.user._id });
+    const orders = await Order.find({ user: req.user._id }).lean();
 
     const safeOrders = orders.map(order => {
-      const orderObj = order.toObject();
       return {
-        ...orderObj,
-        totalPrice: Number(orderObj.totalPrice) || 0,
-        itemsPrice: Number(orderObj.itemsPrice) || Number(orderObj.totalPrice) || 0,
-        taxPrice: Number(orderObj.taxPrice) || 0,
-        shippingPrice: Number(orderObj.shippingPrice) || 0
+        ...order,
+        totalPrice: Number(order.totalPrice) || 0,
+        itemsPrice: Number((order as any).itemsPrice) || Number(order.totalPrice) || 0,
+        taxPrice: Number((order as any).taxPrice) || 0,
+        shippingPrice: Number((order as any).shippingPrice) || 0
       };
     });
 
@@ -233,7 +232,7 @@ export const getOrderSummary = async (req: any, res: any) => {
 
     res.json({
       ordersCount,
-      totalSales: Number(safeSales.toFixed(2)), 
+      totalSales: Number(safeSales.toFixed(2)),
       usersCount,
       salesData,
       recentOrders,
