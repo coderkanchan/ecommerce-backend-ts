@@ -263,39 +263,6 @@ export const getSellerOrders = async (req: any, res: Response) => {
   }
 };
 
-// export const getSellerStats = async (req: any, res: any) => {
-//   try {
-//     const sellerId = req.user._id;
-//     const orders = await Order.find({
-//       'orderItems.seller': sellerId
-//     });
-//     let totalRevenue = 0;
-//     const customerIds = new Set();
-//     if (orders && orders.length > 0) {
-//       orders.forEach((order) => {
-//         const sellerItems = (order.orderItems || []).filter(
-//           (item: any) => item.seller && item.seller.toString() === sellerId.toString()
-//         );
-//         const sellerOrderTotal = sellerItems.reduce(
-//           (acc: number, item: any) => acc + (Number(item.price) || 0) * (Number(item.qty) || 0),
-//           0
-//         );
-//         totalRevenue += sellerOrderTotal;
-//         if (order.user) customerIds.add(order.user.toString());
-//       });
-//     }
-//     res.json({
-//       totalRevenue: totalRevenue.toFixed(2),
-//       totalOrders: orders ? orders.length : 0,
-//       totalCustomers: customerIds.size,
-//       conversionRate: (orders && orders.length > 0) ? "5.2%" : "0%",
-//     });
-//   } catch (error) {
-//     console.error("Seller Stats Error:", error);
-//     res.status(500).json({ message: "Error fetching seller analytics" });
-//   }
-// };
-
 export const getSellerStats = async (req: any, res: any) => {
   try {
     const sellerId = req.user._id;
