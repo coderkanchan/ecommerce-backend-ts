@@ -252,17 +252,19 @@ export const getSellerSummary = async (req: any, res: Response) => {
 
 export const getSellerOrders = async (req: any, res: Response) => {
   try {
+    console.log("🎯 Fetching orders for Seller ID:", req.user._id);
+
     const orders = await Order.find({
       "orderItems.seller": req.user._id,
     }).populate('user', 'name email').sort({ createdAt: -1 });
 
+    console.log(`📦 Found ${orders.length} orders for this seller.`);
     res.json(orders);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Seller Orders Fetch Error:", error);
-    res.status(500).json({ message: "Error fetching seller orders" });
+    res.status(500).json({ message: "Error fetching seller orders", error: error.message });
   }
 };
-
 export const getSellerStats = async (req: any, res: any) => {
   try {
     const sellerId = req.user._id;
