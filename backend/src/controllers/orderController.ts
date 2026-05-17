@@ -97,7 +97,7 @@ export const addOrderItems = async (req: any, res: Response) => {
           imageUrl: item.imageUrl || item.image || "/placeholder.png",
           price: Number(item.price) || 0,
           product: productId,
-          seller: sellerId, // ✅ Yeh ab model update hone ki vajah se 100% save hoga!
+          seller: sellerId, 
           isDelivered: false
         };
       })
