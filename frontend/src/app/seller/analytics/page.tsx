@@ -23,7 +23,10 @@ const AnalyticsPage = () => {
           },
         };
 
-        const { data } = await axios.get('/api/orders/seller-stats', config);
+        // const { data } = await axios.get('/api/orders/seller-stats', config);
+        // const { data } = await API.get('/orders/seller-stats');
+        // ya fir:
+        const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/orders/seller-stats`, config);
         setStatsData(data);
       } catch (err) {
         console.error("Failed to fetch analytics", err);
