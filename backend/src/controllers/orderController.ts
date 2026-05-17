@@ -248,7 +248,6 @@ export const getOrderSummary = async (req: any, res: any) => {
     const orders = await Order.find();
     const ordersCount = orders.length;
 
-    // Reduce mein infinity/NaN check lagaya
     const totalSales = orders.reduce((acc, item) => acc + (Number(item.totalPrice) || 0), 0);
     const usersCount = await User.countDocuments();
     const lowStockCount = await Product.countDocuments({ stock: { $lt: 5 } });
@@ -268,12 +267,11 @@ export const getOrderSummary = async (req: any, res: any) => {
       .limit(5)
       .populate('user', 'name');
 
-    // Safe revenue parsing for summary numbers
     const safeSales = typeof totalSales === 'number' && !isNaN(totalSales) ? totalSales : 0;
 
     res.json({
       ordersCount,
-      totalSales: Number(safeSales.toFixed(2)), // ✅ Backend par safe parsing
+      totalSales: Number(safeSales.toFixed(2)), 
       usersCount,
       salesData,
       recentOrders,
