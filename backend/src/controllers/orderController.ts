@@ -250,7 +250,40 @@ export const getSellerSummary = async (req: any, res: Response) => {
     res.status(500).json({ message: "Error fetching seller stats" });
   }
 };
+export const getSellerSummary = async (req: any, res: Response) => {
+  try {
+    const sellerId = req.user._id;
 
+    // 1. Is seller ke kitne products hain count karein
+    const productsCount = await Product.countDocuments({ seller: sellerId });
+
+    // 2. Sirf wahi orders nikalein jisme is seller ka koi item bikka ho
+    const orders = await Order.find({ "orderItems.seller": sellerId });
+    const ordersCount = orders.length;
+
+    // 3. Total Sales calculate karein (is Paid check temporary secondary rakh rahe hain testing ke liye)
+    const totalSales = orders.reduce((acc, order) => {
+      const sellerItems = order.orderItems.filter(
+        (item: any) => item.seller && item.seller.toString() === sellerId.toString()
+      );
+      const sellerTotal = sellerItems.reduce((sum: number, item: any) => sum + (item.price * item.qty), 0);
+      return acc + sellerTotal;
+    }, 0);
+
+    // 4. Unique customers count karein
+    const customersCount = [...new Set(orders.map((order) => order.user?.toString()).filter(Boolean))].length;
+
+    res.json({
+      productsCount,
+      ordersCount,
+      totalSales,
+      customersCount
+    });
+  } catch (error: any) {
+    console.error("Error fetching seller summary backend:", error);
+    res.status(500).json({ message: "Error fetching seller stats", error: error.message });
+  }
+};
 export const getSellerOrders = async (req: any, res: Response) => {
   try {
     const orders = await Order.find({
