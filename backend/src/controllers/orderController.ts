@@ -206,13 +206,51 @@ export const updateSellerOrderToDelivered = async (req: any, res: Response) => {
   }
 };
 
+// export const getOrderSummary = async (req: any, res: any) => {
+//   try {
+//     const orders = await Order.find();
+//     const ordersCount = orders.length;
+//     const totalSales = orders.reduce((acc, item) => acc + item.totalPrice, 0);
+//     const usersCount = await User.countDocuments();
+
+//     const lowStockCount = await Product.countDocuments({ stock: { $lt: 5 } });
+
+//     const salesData = await Order.aggregate([
+//       {
+//         $group: {
+//           _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+//           sales: { $sum: "$totalPrice" },
+//         },
+//       },
+//       { $sort: { _id: 1 } },
+//     ]);
+
+//     const recentOrders = await Order.find()
+//       .sort({ createdAt: -1 })
+//       .limit(5)
+//       .populate('user', 'name');
+
+//     res.json({
+//       ordersCount,
+//       totalSales,
+//       usersCount,
+//       salesData,
+//       recentOrders,
+//       lowStockCount
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error fetching summary", error });
+//   }
+// };
+
 export const getOrderSummary = async (req: any, res: any) => {
   try {
     const orders = await Order.find();
     const ordersCount = orders.length;
-    const totalSales = orders.reduce((acc, item) => acc + item.totalPrice, 0);
-    const usersCount = await User.countDocuments();
 
+    // Reduce mein infinity/NaN check lagaya
+    const totalSales = orders.reduce((acc, item) => acc + (Number(item.totalPrice) || 0), 0);
+    const usersCount = await User.countDocuments();
     const lowStockCount = await Product.countDocuments({ stock: { $lt: 5 } });
 
     const salesData = await Order.aggregate([
@@ -230,9 +268,12 @@ export const getOrderSummary = async (req: any, res: any) => {
       .limit(5)
       .populate('user', 'name');
 
+    // Safe revenue parsing for summary numbers
+    const safeSales = typeof totalSales === 'number' && !isNaN(totalSales) ? totalSales : 0;
+
     res.json({
       ordersCount,
-      totalSales,
+      totalSales: Number(safeSales.toFixed(2)), // ✅ Backend par safe parsing
       usersCount,
       salesData,
       recentOrders,
