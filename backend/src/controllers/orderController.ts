@@ -348,11 +348,10 @@ export const getSellerStats = async (req: any, res: any) => {
       });
     }
 
-    // Safety Fallback: Agar totalRevenue valid number na ho, toh use 0 default kar do
     const safeRevenue = typeof totalRevenue === 'number' && !isNaN(totalRevenue) ? totalRevenue : 0;
 
     res.json({
-      totalRevenue: safeRevenue.toFixed(2), // ✅ Ab yeh kabhi crash nahi hoga
+      totalRevenue: safeRevenue.toFixed(2), 
       totalOrders: orders ? orders.length : 0,
       totalCustomers: customerIds.size,
       conversionRate: (orders && orders.length > 0) ? "5.2%" : "0%",
