@@ -37,7 +37,7 @@ export const addOrderItems = async (req: any, res: Response) => {
           imageUrl: item.imageUrl || item.image || "/placeholder.png",
           price: Number(item.price) || 0,
           product: productId,
-          seller: sellerId, 
+          seller: sellerId,
         };
       })
     );
@@ -48,7 +48,7 @@ export const addOrderItems = async (req: any, res: Response) => {
       shippingAddress,
       totalPrice: Number(totalPrice),
       paymentMethod,
-      isPaid: false, 
+      isPaid: false,
     });
 
     const createdOrder = await order.save();
@@ -84,6 +84,7 @@ export const updateOrderToPaid = async (req: Request, res: Response) => {
     };
 
     const updatedOrder = await order.save();
+    console.log("✅ Order updated to Paid status. Seller fields preserved.");
     res.json(updatedOrder);
   } else {
     res.status(404).json({ message: 'Order not found' });
@@ -269,6 +270,7 @@ export const getSellerOrders = async (req: any, res: Response) => {
     res.status(500).json({ message: "Error fetching seller orders", error: error.message });
   }
 };
+
 export const getSellerStats = async (req: any, res: any) => {
   try {
     const sellerId = req.user._id;

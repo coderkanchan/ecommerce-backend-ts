@@ -9,6 +9,9 @@ export interface IOrder extends Document {
         imageUrl: string;
         price: number;
         product: Types.ObjectId;
+        seller: Types.ObjectId;
+        isDelivered?: boolean;
+        deliveredAt?: Date;
     }[];
     shippingAddress: {
         address: string;
@@ -37,6 +40,9 @@ const orderSchema = new Schema<IOrder>({
             imageUrl: { type: String, required: true },
             price: { type: Number, required: true },
             product: { type: Schema.Types.ObjectId, required: true, ref: 'Product' },
+            seller: { type: Schema.Types.ObjectId, required: true, ref: 'User' }, 
+            isDelivered: { type: Boolean, default: false }, 
+            deliveredAt: { type: Date }
         }
     ],
     shippingAddress: {
