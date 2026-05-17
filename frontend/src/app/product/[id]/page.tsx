@@ -43,14 +43,27 @@ export default function ProductDetails() {
     toast.success("Added to cart!");
   };
 
+  // const handleBuyNow = () => {
+  //   dispatch(buyNowRequest({
+  //     _id: product._id,
+  //     name: product.name,
+  //     price: product.price,
+  //     imageUrl: product.imageUrl,
+  //     qty: Number(qty),
+  //     seller: product.user
+  //   }));
+  //   router.push('/shipping');
+  // };
+  
   const handleBuyNow = () => {
+    if (!product) return;
     dispatch(buyNowRequest({
       _id: product._id,
       name: product.name,
       price: product.price,
       imageUrl: product.imageUrl,
       qty: Number(qty),
-      seller: product.user
+      seller: product.seller?._id || product.seller || product.user
     }));
     router.push('/shipping');
   };
@@ -58,6 +71,7 @@ export default function ProductDetails() {
   if (!product) {
     return <DetailSkeleton />;
   }
+  
   return (
     <div className="max-w-6xl mx-auto p-8 flex flex-col md:flex-row gap-8">
 
