@@ -87,11 +87,7 @@ export const addOrderItems = async (req: any, res: Response) => {
           }
         }
 
-        // Agar DB mein product ka seller nahi bhi mila (jaise Camera product mein hua), 
-        // toh schema fail na ho isliye ek solid validation fallback lagate hain
         if (!sellerId) {
-          // Fallback: Agar koi option nahi bacha toh product create karne wale ya system admin ID map kar sakte hain, 
-          // temporary error crash se bachne ke liye req.user._id (ya model check complete rakhein)
           sellerId = req.user._id;
         }
 
