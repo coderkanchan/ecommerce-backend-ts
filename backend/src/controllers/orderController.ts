@@ -3,6 +3,61 @@ import { Order } from '../models/Order.js';
 import { User } from '../models/User.js';
 import { Product } from '../models/Product.js';
 
+// export const addOrderItems = async (req: any, res: Response) => {
+//   try {
+//     const { orderItems, shippingAddress, totalPrice, paymentMethod } = req.body;
+//     console.log("Incoming Order Data:", JSON.stringify(req.body, null, 2));
+
+//     if (!orderItems || orderItems.length === 0) {
+//       return res.status(400).json({ message: 'No order items' });
+//     }
+
+//     const preparedOrderItems = await Promise.all(
+//       orderItems.map(async (item: any) => {
+
+//         let sellerId = item.seller;
+
+//         if (!sellerId || sellerId === null) {
+//           console.log(`⚠️ Seller ID missing for product ${item.product}. Fetching from Database...`);
+//           const dbProduct = await Product.findById(item.product);
+//           if (dbProduct && dbProduct.seller) {
+//             sellerId = dbProduct.seller;
+//             console.log(`🎯 Successfully mapped seller ID: ${sellerId} to item: ${item.name}`);
+//           } else {
+//             console.log(`❌ No seller found in DB for product: ${item.name}`);
+//           }
+//         }
+
+//         return {
+//           name: item.name,
+//           qty: Number(item.qty),
+//           imageUrl: item.imageUrl || item.image || "/placeholder.png",
+//           price: Number(item.price) || 0,
+//           product: item.product,
+//           seller: sellerId,
+//         };
+//       })
+//     );
+
+//     const order = new Order({
+//       user: req.user._id,
+//       orderItems: preparedOrderItems,
+//       shippingAddress,
+//       totalPrice: Number(totalPrice),
+//       paymentMethod,
+//       isPaid: false,
+//     });
+
+//     const createdOrder = await order.save();
+//     console.log("✅ Order Saved to DB with Resolved Sellers:", createdOrder._id);
+//     res.status(201).json(createdOrder);
+
+//   } catch (error: any) {
+//     console.error("❌ Mongoose Save Error:", error.message);
+//     res.status(500).json({ message: error.message || "Internal Server Error" });
+//   }
+// };
+
 export const addOrderItems = async (req: any, res: Response) => {
   try {
     const { orderItems, shippingAddress, totalPrice, paymentMethod } = req.body;
@@ -14,16 +69,22 @@ export const addOrderItems = async (req: any, res: Response) => {
 
     const preparedOrderItems = await Promise.all(
       orderItems.map(async (item: any) => {
-        let sellerId = item.seller;
+        // Frontend se aane wali product ID ko clean nikalte hain
+        const productId = item.product?._id || item.product;
 
-        if (!sellerId || sellerId === null) {
-          console.log(`⚠️ Seller ID missing for product ${item.product}. Fetching from Database...`);
-          const dbProduct = await Product.findById(item.product);
+        // Frontend se aane wali seller ID ya fir fallback backup
+        let sellerId = item.seller?._id || item.seller;
+
+        // Force Validation: Database se hamesha fresh product seller verification karenge
+        if (productId) {
+          console.log(`🔍 Fetching fresh product info for ID: ${productId}`);
+          const dbProduct = await Product.findById(productId);
+
           if (dbProduct && dbProduct.seller) {
             sellerId = dbProduct.seller;
-            console.log(`🎯 Successfully mapped seller ID: ${sellerId} to item: ${item.name}`);
+            console.log(`🎯 Successfully linked seller ID (${sellerId}) to item: ${item.name}`);
           } else {
-            console.log(`❌ No seller found in DB for product: ${item.name}`);
+            console.log(`⚠️ Product dhoondhne par bhi DB mein seller nahi mila for: ${item.name}`);
           }
         }
 
@@ -32,8 +93,8 @@ export const addOrderItems = async (req: any, res: Response) => {
           qty: Number(item.qty),
           imageUrl: item.imageUrl || item.image || "/placeholder.png",
           price: Number(item.price) || 0,
-          product: item.product,
-          seller: sellerId,
+          product: productId,
+          seller: sellerId, // Yeh field ab database mein compulsory save hogi!
         };
       })
     );
@@ -44,15 +105,15 @@ export const addOrderItems = async (req: any, res: Response) => {
       shippingAddress,
       totalPrice: Number(totalPrice),
       paymentMethod,
-      isPaid: false,
+      isPaid: false, // Initial status (frontend callback handles the payment update to true)
     });
 
     const createdOrder = await order.save();
-    console.log("✅ Order Saved to DB with Resolved Sellers:", createdOrder._id);
+    console.log("✅ Order Saved with Verified Seller IDs:", createdOrder._id);
     res.status(201).json(createdOrder);
 
   } catch (error: any) {
-    console.error("❌ Mongoose Save Error:", error.message);
+    console.error("❌ Mongoose Order Save Error:", error.message);
     res.status(500).json({ message: error.message || "Internal Server Error" });
   }
 };
