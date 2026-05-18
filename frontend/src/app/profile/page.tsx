@@ -19,17 +19,6 @@ export default function ProfilePage() {
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: any) => state.auth);
 
-  // useEffect(() => {
-  //   const localUser = JSON.parse(localStorage.getItem('userInfo') || '{}');
-  //   if (!localUser.token) {
-  //     router.push('/login');
-  //   } else {
-  //     setName(localUser.name || '');
-  //     setEmail(localUser.email || '');
-  //     fetchMyOrders(localUser.token);
-  //   }
-  // }, [router]);
-
   useEffect(() => {
     setIsMounted(true); 
 
