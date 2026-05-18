@@ -13,7 +13,7 @@ export default function ProfilePage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<any[]>([]);
   const router = useRouter();
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: any) => state.auth);
@@ -109,7 +109,7 @@ export default function ProfilePage() {
               </div>
             ) : (
               <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-blue-600 flex items-center justify-center text-6xl font-bold text-white shadow-xl border-4 border-gray-700">
-                {getInitial()} 
+                {getInitial()}
               </div>
             )}
             <h2 className="text-2xl font-bold mb-6 text-center">User Profile</h2>
