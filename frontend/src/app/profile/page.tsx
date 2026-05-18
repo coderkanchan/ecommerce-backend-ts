@@ -109,7 +109,7 @@ export default function ProfilePage() {
               </div>
             ) : (
               <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-blue-600 flex items-center justify-center text-6xl font-bold text-white shadow-xl border-4 border-gray-700">
-                {getInitial()} {/* ✅ Ab yeh kisi bhi state refresh par crash nahi hoga */}
+                {getInitial()} 
               </div>
             )}
             <h2 className="text-2xl font-bold mb-6 text-center">User Profile</h2>
@@ -163,7 +163,6 @@ export default function ProfilePage() {
             </form>
           </div>
 
-          {/* Orders Section */}
           <div className="w-full lg:w-2/3">
             <h2 className="text-2xl font-bold mb-6">My Orders</h2>
             <div className="bg-gray-900 rounded-2xl border border-gray-800 overflow-x-auto w-full">
