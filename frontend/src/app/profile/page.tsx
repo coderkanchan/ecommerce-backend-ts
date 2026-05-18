@@ -83,13 +83,7 @@ export default function ProfilePage() {
     }
   };
 
-  // const getInitial = () => {
-  //   const targetName = name || userInfo?.name;
-  //   if (targetName && typeof targetName === 'string') {
-  //     return targetName.charAt(0).toUpperCase();
-  //   }
-  //   return '?';
-  // };
+
   // ✅ Super Safe getInitial Arrow Function:
   const getInitial = (): string => {
     const targetName = name || (userInfo && userInfo.name);
