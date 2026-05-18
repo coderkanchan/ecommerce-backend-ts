@@ -183,7 +183,11 @@ export default function ProfilePage() {
                             #{order._id.substring(14, 24)}
                           </Link>
                         </td>
-                        <td className="p-4 text-sm text-gray-300">{order.createdAt.substring(0, 10)}</td>
+                        <td className="p-4 text-sm text-gray-300">
+                          {order.createdAt
+                            ? new Date(order.createdAt).toLocaleDateString('en-GB') // Format: DD/MM/YYYY 
+                            : 'Pending'}
+                        </td>
                         <td className="p-4 font-bold text-white">${order.totalPrice}</td>
                         <td className="p-4">
                           {order.isPaid ? (
