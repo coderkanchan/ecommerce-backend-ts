@@ -83,7 +83,6 @@ export default function ProfilePage() {
     }
   };
 
-  // Safe Avatar Initial Letter Parser
   const getInitial = () => {
     const targetName = name || userInfo?.name;
     if (targetName && typeof targetName === 'string') {
@@ -97,7 +96,6 @@ export default function ProfilePage() {
       <div className="w-full px-3">
         <div className='max-w-6xl mx-auto flex flex-col lg:flex-row items-start justify-center gap-10 mt-10'>
 
-          {/* Profile Sidebar */}
           <div className="w-full lg:w-1/3 bg-gray-900 p-6 rounded-2xl border border-gray-800 h-fit">
             {userInfo?.profileImage ? (
               <div className="relative w-32 h-32 mb-4 mx-auto">
