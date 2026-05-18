@@ -176,43 +176,44 @@ export default function ProfilePage() {
                       </td>
                     </tr>
                   ) : (
-                    orders.map((order: any) => (
-                      <tr key={order._id} className="hover:bg-gray-800/30 transition-colors">
-                        <td className="p-4 text-sm font-mono text-blue-300">
-                          <Link href={`/order/${order._id}`} className="text-blue-400 hover:underline">
-                            #{order._id.substring(14, 24)}
-                          </Link>
-                        </td>
-                        <td className="p-4 text-sm text-gray-300">
-                          {order.createdAt
-                            ? new Date(order.createdAt).toLocaleDateString('en-GB')
-                            : 'Pending'}
-                        </td>
-                        <td className="p-4 font-bold text-white">${order.totalPrice}</td>
-                        <td className="p-4">
-                          {order.isPaid ? (
-                            <span className="text-green-400 bg-green-900/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase">Paid</span>
-                          ) : (
-                            <span className="text-red-400 bg-red-900/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase">Unpaid</span>
-                          )}
-                        </td>
-                        <td className="p-4">
-                          {order.isDelivered ? (
-                            <span className="text-green-400 bg-green-900/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase">Yes</span>
-                          ) : (
-                            <span className="text-yellow-400 bg-yellow-900/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase">No</span>
-                          )}
-                        </td>
-                        <td className="p-4">
-                          <button
-                            onClick={() => router.push(`/order/${order._id}`)}
-                            className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-1.5 rounded-lg text-xs font-medium border border-gray-700 transition"
-                          >
-                            Details
-                          </button>
-                        </td>
-                      </tr>
-                    ))
+                    // orders.map((order: any) => (
+                    //   <tr key={order._id} className="hover:bg-gray-800/30 transition-colors">
+                    //     <td className="p-4 text-sm font-mono text-blue-300">
+                    //       <Link href={`/order/${order._id}`} className="text-blue-400 hover:underline">
+                    //         #{order._id.substring(14, 24)}
+                    //       </Link>
+                    //     </td>
+                    //     <td className="p-4 text-sm text-gray-300">
+                    //       {order.createdAt
+                    //         ? new Date(order.createdAt).toLocaleDateString('en-GB')
+                    //         : 'Pending'}
+                    //     </td>
+                    //     <td className="p-4 font-bold text-white">${order.totalPrice}</td>
+                    //     <td className="p-4">
+                    //       {order.isPaid ? (
+                    //         <span className="text-green-400 bg-green-900/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase">Paid</span>
+                    //       ) : (
+                    //         <span className="text-red-400 bg-red-900/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase">Unpaid</span>
+                    //       )}
+                    //     </td>
+                    //     <td className="p-4">
+                    //       {order.isDelivered ? (
+                    //         <span className="text-green-400 bg-green-900/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase">Yes</span>
+                    //       ) : (
+                    //         <span className="text-yellow-400 bg-yellow-900/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase">No</span>
+                    //       )}
+                    //     </td>
+                    //     <td className="p-4">
+                    //       <button
+                    //         onClick={() => router.push(`/order/${order._id}`)}
+                    //         className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-1.5 rounded-lg text-xs font-medium border border-gray-700 transition"
+                    //       >
+                    //         Details
+                    //       </button>
+                    //     </td>
+                    //   </tr>
+                    // ))
+                    
                   )}
                 </tbody>
               </table>
