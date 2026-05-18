@@ -111,9 +111,6 @@ export default function ProfilePage() {
                 />
               </div>
             ) : (
-              // <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-blue-600 flex items-center justify-center text-6xl font-bold text-white shadow-xl border-4 border-gray-700">
-              //   {getInitial()}
-              // </div>
               <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-blue-600 flex items-center justify-center text-6xl font-bold text-white shadow-xl border-4 border-gray-700">
                 {isMounted ? getInitial() : '?'}
               </div>
