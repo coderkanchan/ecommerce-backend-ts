@@ -90,6 +90,14 @@ export default function ProfilePage() {
     }
     return '?';
   };
+  // ✅ Super Safe getInitial Arrow Function:
+  const getInitial = (): string => {
+    const targetName = name || (userInfo && userInfo.name);
+    if (targetName && typeof targetName === 'string' && targetName.length > 0) {
+      return targetName.charAt(0).toUpperCase();
+    }
+    return '?';
+  };
 
   return (
     <ProtectedRoute>
