@@ -184,7 +184,6 @@ export default function ProfilePage() {
                           </Link>
                         </td>
 
-                        {/* Safe Date Parsing */}
                         <td className="p-4 text-sm text-gray-300">
                           {order.createdAt ? new Date(order.createdAt).toISOString().split('T')[0] : 'N/A'}
                         </td>
