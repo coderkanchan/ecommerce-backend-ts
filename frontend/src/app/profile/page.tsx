@@ -185,7 +185,7 @@ export default function ProfilePage() {
                         </td>
                         <td className="p-4 text-sm text-gray-300">
                           {order.createdAt
-                            ? new Date(order.createdAt).toLocaleDateString('en-GB') // Format: DD/MM/YYYY 
+                            ? new Date(order.createdAt).toLocaleDateString('en-GB')
                             : 'Pending'}
                         </td>
                         <td className="p-4 font-bold text-white">${order.totalPrice}</td>
