@@ -14,6 +14,7 @@ export default function ProfilePage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [orders, setOrders] = useState<any[]>([]);
+  const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
   const { userInfo } = useSelector((state: any) => state.auth);
