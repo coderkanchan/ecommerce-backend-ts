@@ -77,7 +77,11 @@ export default function SellerProfilePage() {
               <User size={14} className="text-blue-500" /> Account Contexts
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <InfoBox label="Full Identity Name" value={userInfo?.name} icon={<User size={14} />} />
+              <InfoBox
+                label="Full Identity Name"
+                value={userInfo?.name}
+                icon={<User size={14} />}
+              />
               <InfoBox label="Network Route Email" value={userInfo?.email} icon={<Mail size={14} />} />
             </div>
           </div>
