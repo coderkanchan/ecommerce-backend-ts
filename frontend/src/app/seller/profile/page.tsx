@@ -50,7 +50,6 @@ export default function SellerProfilePage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* Profile Card Summary Anchor */}
         <div className="lg:col-span-1 bg-[#0a0a0a] border border-gray-900 rounded-2xl p-6 text-center space-y-6">
           <div>
             <div className="w-20 h-20 bg-linear-to-br from-blue-500 to-blue-600 rounded-full mx-auto flex items-center justify-center text-2xl font-black text-white shadow-xl shadow-blue-500/10 border border-blue-400/20">
