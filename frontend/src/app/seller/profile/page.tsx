@@ -43,7 +43,6 @@ export default function SellerProfilePage() {
 
   return (
     <div className="space-y-8">
-      {/* Top Banner Context Header */}
       <div className="border-b border-gray-900 pb-6">
         <h1 className="text-3xl font-black tracking-tight text-white uppercase italic">Seller <span className="text-blue-500">Identity</span></h1>
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mt-1">Manage and edit store identities and structural configurations</p>
