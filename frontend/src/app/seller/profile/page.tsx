@@ -123,7 +123,10 @@ export default function SellerProfilePage() {
               </div>
               <InputGroup label="Street Area Pointer" value={storeData.street} onChange={(val: string) => setStoreData({ ...storeData, street: val })} placeholder="Zone Vector 12" />
               <div className="flex gap-3 pt-4">
-                <button type="button" onClick={() => setIsEditing(false)} className="flex-1 py-3 border border-gray-900 rounded-xl font-bold text-xs uppercase text-gray-400 hover:bg-gray-900 transition tracking-wider cursor-pointer">Abort</button>
+                <button 
+                type="button" 
+                onClick={() => setIsEditing(false)} 
+                className="flex-1 py-3 border border-gray-900 rounded-xl font-bold text-xs uppercase text-gray-400 hover:bg-gray-900 transition tracking-wider cursor-pointer">Abort</button>
                 <button type="submit" className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-bold text-xs uppercase text-white transition tracking-wider shadow-md shadow-blue-600/10 cursor-pointer">Commit Changes</button>
               </div>
             </form>
