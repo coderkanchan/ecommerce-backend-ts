@@ -43,7 +43,7 @@ export default function SellerProfilePage() {
 
   return (
     <div className="space-y-8">
-      
+
       <div className="border-b border-gray-900 pb-6">
         <h1 className="text-3xl font-black tracking-tight text-white uppercase italic">Seller <span className="text-blue-500">Identity</span></h1>
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mt-1">Manage and edit store identities and structural configurations</p>
@@ -123,11 +123,19 @@ export default function SellerProfilePage() {
               </div>
               <InputGroup label="Street Area Pointer" value={storeData.street} onChange={(val: string) => setStoreData({ ...storeData, street: val })} placeholder="Zone Vector 12" />
               <div className="flex gap-3 pt-4">
-                <button 
-                type="button" 
-                onClick={() => setIsEditing(false)} 
-                className="flex-1 py-3 border border-gray-900 rounded-xl font-bold text-xs uppercase text-gray-400 hover:bg-gray-900 transition tracking-wider cursor-pointer">Abort</button>
-                <button type="submit" className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-bold text-xs uppercase text-white transition tracking-wider shadow-md shadow-blue-600/10 cursor-pointer">Commit Changes</button>
+                <button
+                  type="button"
+                  onClick={() => setIsEditing(false)}
+                  className="flex-1 py-3 border border-gray-900 rounded-xl font-bold text-xs uppercase text-gray-400 hover:bg-gray-900 transition tracking-wider cursor-pointer"
+                >
+                  Abort
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-bold text-xs uppercase text-white transition tracking-wider shadow-md shadow-blue-600/10 cursor-pointer"
+                >
+                  Commit Changes
+                </button>
               </div>
             </form>
           </div>
