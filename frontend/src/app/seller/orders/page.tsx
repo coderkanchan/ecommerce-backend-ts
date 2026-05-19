@@ -90,7 +90,7 @@ export default function SellerOrdersPage() {
                         <td className="px-6 py-4 font-mono text-xs text-blue-400 font-bold">
                           #{displayId} 
                         </td>
-                        <td className="px-6 py-4 font-medium text-white max-w-[200px] truncate">
+                        <td className="px-6 py-4 font-medium text-white max-w-50 truncate">
                           {order.orderItems.map((item) => item.name).join(", ")}
                         </td>
                         <td className="px-6 py-4 text-gray-400 font-medium">{order.user?.name || "Guest Account"}</td>
