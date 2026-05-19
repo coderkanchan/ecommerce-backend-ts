@@ -111,7 +111,9 @@ export default function SellerProfilePage() {
               <X size={18} />
             </button>
             <div>
-              <h2 className="text-lg font-black text-white uppercase tracking-tight italic">Configure <span className="text-blue-500 font-black">Storefront</span></h2>
+              <h2 className="text-lg font-black text-white uppercase tracking-tight italic">
+                Configure <span className="text-blue-500 font-black">Storefront</span>
+              </h2>
               <p className="text-xs text-gray-500 mt-1">Bind your commercial variables parameters securely</p>
             </div>
 
