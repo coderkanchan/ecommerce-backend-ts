@@ -72,7 +72,6 @@ export default function MyProductsPage() {
 
   return (
     <div className="space-y-8">
-      {/* Premium Sub-Header Block */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-gray-900 pb-6">
         <div>
           <h1 className="text-3xl font-black tracking-tight text-white uppercase italic">My <span className="text-blue-500">Products</span></h1>
