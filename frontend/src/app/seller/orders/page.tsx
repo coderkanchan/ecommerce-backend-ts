@@ -86,7 +86,7 @@ export default function SellerOrdersPage() {
                     const displayId = safeId.length > 6 ? safeId.slice(-6) : safeId;
 
                     return (
-                      <tr key={order._id} className="hover:bg-white/[0.01] transition-colors duration-200">
+                      <tr key={order._id} className="hover:bg-white/1 transition-colors duration-200">
                         <td className="px-6 py-4 font-mono text-xs text-blue-400 font-bold">
                           #{displayId} 
                         </td>
