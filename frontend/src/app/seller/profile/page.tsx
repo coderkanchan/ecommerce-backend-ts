@@ -48,7 +48,9 @@ export default function SellerProfilePage() {
         <h1 className="text-3xl font-black tracking-tight text-white uppercase italic">
           Seller <span className="text-blue-500">Identity</span>
         </h1>
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mt-1">Manage and edit store identities and structural configurations</p>
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mt-1">
+          Manage and edit store identities and structural configurations
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
