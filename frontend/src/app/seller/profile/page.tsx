@@ -42,125 +42,92 @@ export default function SellerProfilePage() {
   if (!mounted) return null;
 
   return (
-    <div className="h-full  bg-black text-white p-1 relative">
-      <div className="max-w-4xl mx-auto">
-        <div className="mb-10">
-          <h1 className="text-4xl font-black tracking-tighter uppercase italic">
-            Seller <span className="text-blue-500">Profile</span>
-          </h1>
-          <p className="text-gray-500 mt-2">Manage your professional identity and store settings.</p>
+    <div className="space-y-8">
+      {/* Top Banner Context Header */}
+      <div className="border-b border-gray-900 pb-6">
+        <h1 className="text-3xl font-black tracking-tight text-white uppercase italic">Seller <span className="text-blue-500">Identity</span></h1>
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mt-1">Manage and edit store identities and structural configurations</p>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        {/* Profile Card Summary Anchor */}
+        <div className="lg:col-span-1 bg-[#0a0a0a] border border-gray-900 rounded-2xl p-6 text-center space-y-6">
+          <div>
+            <div className="w-20 h-20 bg-linear-to-br from-blue-500 to-blue-600 rounded-full mx-auto flex items-center justify-center text-2xl font-black text-white shadow-xl shadow-blue-500/10 border border-blue-400/20">
+              {userInfo?.name?.charAt(0).toUpperCase()}
+            </div>
+            <h2 className="text-lg font-bold text-white mt-4 uppercase tracking-tight truncate">{userInfo?.name}</h2>
+            <p className="text-blue-500 text-[9px] font-black uppercase tracking-widest mt-1">Verified Platform Seller</p>
+          </div>
+
+          <div className="pt-5 border-t border-gray-900 text-left space-y-3">
+            <div className="flex items-center gap-3 text-xs font-medium text-gray-400">
+              <ShieldCheck size={14} className="text-green-500" />
+              <span>Status Node: Active</span>
+            </div>
+            <div className="flex items-center gap-3 text-xs font-medium text-gray-400">
+              <Calendar size={14} className="text-blue-500" />
+              <span>Node Bound: Est. 2026</span>
+            </div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-1">
-            <div className="bg-[#0a0a0a] border border-gray-800 rounded-3xl p-8 text-center sticky top-10">
-              <div className="w-24 h-24 bg-linear-to-br from-blue-500 to-blue-700 rounded-full mx-auto flex items-center justify-center text-3xl font-black mb-4 shadow-xl shadow-blue-600/20">
-                {userInfo?.name?.charAt(0).toUpperCase()}
-              </div>
-              <h2 className="text-xl font-bold uppercase tracking-tight truncate px-2">{userInfo?.name}</h2>
-              <p className="text-blue-500 text-[10px] font-black uppercase tracking-widest mt-1">Verified Seller</p>
-
-              <div className="mt-8 pt-8 border-t border-gray-900 space-y-4 text-left">
-                <div className="flex items-center gap-3 text-sm text-gray-400">
-                  <ShieldCheck size={18} className="text-green-500" />
-                  <span>Account Active</span>
-                </div>
-                <div className="flex items-center gap-3 text-sm text-gray-400">
-                  <Calendar size={18} className="text-blue-500" />
-                  <span>Member since 2026</span>
-                </div>
-              </div>
+        {/* Detailed Form Parameter Lists */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="bg-[#0a0a0a] border border-gray-900 rounded-2xl p-6 space-y-6">
+            <h3 className="text-sm font-black uppercase text-gray-400 tracking-wider flex items-center gap-2 border-b border-gray-900 pb-3">
+              <User size={14} className="text-blue-500" /> Account Contexts
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <InfoBox label="Full Identity Name" value={userInfo?.name} icon={<User size={14} />} />
+              <InfoBox label="Network Route Email" value={userInfo?.email} icon={<Mail size={14} />} />
             </div>
           </div>
 
-          <div className="lg:col-span-2 space-y-6">
-            <div className="bg-[#0a0a0a] border border-gray-800 rounded-3xl p-8">
-              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-                <User size={20} className="text-blue-500" /> Account Information
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <InfoBox label="Full Name" value={userInfo?.name} icon={<User size={16} />} />
-                <InfoBox label="Email Address" value={userInfo?.email} icon={<Mail size={16} />} />
-              </div>
-            </div>
-
-            <div className="bg-[#0a0a0a] border border-gray-800 rounded-3xl p-8">
-              <h3 className="text-lg font-bold mb-6 flex items-center gap-2">
-                <Building size={20} className="text-blue-500" /> Store Details
-              </h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between bg-black p-5 rounded-2xl border border-gray-800">
-                  <div className="flex items-center gap-4">
-                    <div className="p-2 bg-gray-900 rounded-lg"><MapPin size={20} className="text-blue-500" /></div>
-                    <div className="flex flex-col">
-                      <span className="text-sm text-white font-bold uppercase tracking-tight">
-                        {userInfo?.storeDetails?.storeName || 'Store not set'}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        {userInfo?.storeDetails?.address?.city || 'Location missing'}
-                      </span>
-                    </div>
-                  </div>
-                  <button onClick={() => setIsEditing(true)} className="text-xs font-black text-blue-500 hover:text-white transition uppercase tracking-widest cursor-pointer bg-blue-500/10 px-4 py-2 rounded-lg">
-                    {userInfo?.storeDetails?.storeName ? 'Edit' : 'Add'}
-                  </button>
+          <div className="bg-[#0a0a0a] border border-gray-900 rounded-2xl p-6 space-y-4">
+            <h3 className="text-sm font-black uppercase text-gray-400 tracking-wider flex items-center gap-2 border-b border-gray-900 pb-3">
+              <Building size={14} className="text-blue-500" /> Storefront Manifest
+            </h3>
+            <div className="flex items-center justify-between bg-black p-4 rounded-xl border border-gray-950">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="p-2 bg-gray-900 border border-gray-800 rounded-lg text-blue-500 shrink-0">
+                  <MapPin size={16} />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-sm text-white font-bold block truncate">{userInfo?.storeDetails?.storeName || 'Store Context Unset'}</span>
+                  <span className="text-xs text-gray-500 block truncate">{userInfo?.storeDetails?.address?.city || 'Geoloc Matrix Missing'}</span>
                 </div>
               </div>
+              <button onClick={() => setIsEditing(true)} className="text-[10px] font-black text-blue-400 hover:text-white bg-blue-500/10 hover:bg-blue-600 border border-blue-500/20 px-3 py-1.5 rounded-lg uppercase tracking-wider transition duration-200 shrink-0 cursor-pointer">
+                {userInfo?.storeDetails?.storeName ? 'Modify' : 'Initialize'}
+              </button>
             </div>
           </div>
         </div>
       </div>
 
+      {/* Slide-over Popup Form Block */}
       {isEditing && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
-          <div className="bg-[#0a0a0a] border border-gray-800 w-full max-w-lg rounded-[2.5rem] p-10 shadow-2xl relative">
-            <button
-              onClick={() => setIsEditing(false)}
-              className="absolute top-6 right-6 text-gray-500 hover:text-white cursor-pointer">
-              <X size={24} />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="bg-[#0a0a0a] border border-gray-900 w-full max-w-md rounded-2xl p-6 shadow-2xl relative space-y-6">
+            <button onClick={() => setIsEditing(false)} className="absolute top-4 right-4 text-gray-500 hover:text-white transition cursor-pointer">
+              <X size={18} />
             </button>
-            <h2 className="text-2xl font-black mb-8 italic uppercase tracking-tighter">Setup <span className="text-blue-500 font-black">Store</span>
-            </h2>
+            <div>
+              <h2 className="text-lg font-black text-white uppercase tracking-tight italic">Configure <span className="text-blue-500 font-black">Storefront</span></h2>
+              <p className="text-xs text-gray-500 mt-1">Bind your commercial variables parameters securely</p>
+            </div>
 
-            <form onSubmit={handleUpdateStore} className="space-y-5">
-              <InputGroup
-                label="Store Name"
-                value={storeData.storeName}
-                onChange={(val: string) => setStoreData({ ...storeData, storeName: val })}
-                placeholder="e.g. Nexus Tech Hub"
-              />
+            <form onSubmit={handleUpdateStore} className="space-y-4">
+              <InputGroup label="Store Name String" value={storeData.storeName} onChange={(val: string) => setStoreData({ ...storeData, storeName: val })} placeholder="Nexus Hardware Matrix" />
               <div className="grid grid-cols-2 gap-4">
-                <InputGroup
-                  label="Business Phone"
-                  value={storeData.phone}
-                  onChange={(val: string) => setStoreData({ ...storeData, phone: val })}
-                  placeholder="+91..."
-                />
-                <InputGroup
-                  label="City"
-                  value={storeData.city}
-                  onChange={(val: string) => setStoreData({ ...storeData, city: val })}
-                  placeholder="City name"
-                />
+                <InputGroup label="Business Dial Route" value={storeData.phone} onChange={(val: string) => setStoreData({ ...storeData, phone: val })} placeholder="+91..." />
+                <InputGroup label="City Center" value={storeData.city} onChange={(val: string) => setStoreData({ ...storeData, city: val })} placeholder="Matrix Center" />
               </div>
-              <InputGroup
-                label="Street Address"
-                value={storeData.street}
-                onChange={(val: string) => setStoreData({ ...storeData, street: val })}
-                placeholder="Building, Street, Area"
-              />
-              <div className="flex gap-4 pt-6">
-                <button
-                  type="button"
-                  onClick={() => setIsEditing(false)}
-                  className="flex-1 py-4 border border-gray-800 rounded-2xl font-black text-xs uppercase hover:bg-gray-900 transition tracking-widest cursor-pointer">
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 py-4 bg-blue-600 rounded-2xl font-black text-xs uppercase hover:bg-blue-700 transition shadow-lg shadow-blue-600/30 tracking-widest cursor-pointer">
-                  Save Store
-                </button>
+              <InputGroup label="Street Area Pointer" value={storeData.street} onChange={(val: string) => setStoreData({ ...storeData, street: val })} placeholder="Zone Vector 12" />
+              <div className="flex gap-3 pt-4">
+                <button type="button" onClick={() => setIsEditing(false)} className="flex-1 py-3 border border-gray-900 rounded-xl font-bold text-xs uppercase text-gray-400 hover:bg-gray-900 transition tracking-wider cursor-pointer">Abort</button>
+                <button type="submit" className="flex-1 py-3 bg-blue-600 hover:bg-blue-700 rounded-xl font-bold text-xs uppercase text-white transition tracking-wider shadow-md shadow-blue-600/10 cursor-pointer">Commit Changes</button>
               </div>
             </form>
           </div>
@@ -172,11 +139,11 @@ export default function SellerProfilePage() {
 
 function InfoBox({ label, value, icon }: any) {
   return (
-    <div>
-      <label className="text-[10px] font-black uppercase text-gray-500 tracking-widest block mb-2">{label}</label>
-      <div className="flex items-center gap-3 bg-black p-4 rounded-xl border border-gray-800">
-        <span className="text-gray-600">{icon}</span>
-        <span className="text-sm font-medium truncate">{value}</span>
+    <div className="space-y-2">
+      <label className="text-[10px] font-black uppercase text-gray-500 tracking-wider block">{label}</label>
+      <div className="flex items-center gap-3 bg-black/40 p-3 rounded-xl border border-gray-900 min-w-0">
+        <span className="text-gray-600 shrink-0">{icon}</span>
+        <span className="text-xs font-semibold text-gray-300 truncate">{value || 'Unmapped'}</span>
       </div>
     </div>
   );
@@ -184,11 +151,11 @@ function InfoBox({ label, value, icon }: any) {
 
 function InputGroup({ label, value, onChange, placeholder }: any) {
   return (
-    <div>
-      <label className="text-[10px] font-black uppercase text-gray-500 tracking-widest mb-2 block">{label}</label>
+    <div className="space-y-2">
+      <label className="text-[10px] font-black uppercase text-gray-500 tracking-wider block">{label}</label>
       <input
         type="text"
-        className="w-full bg-black border border-gray-800 rounded-xl p-4 text-sm focus:border-blue-500 outline-none transition-all placeholder:text-gray-700"
+        className="w-full bg-black border border-gray-900 focus:border-blue-500/50 rounded-xl p-3 text-xs text-white outline-none transition-all placeholder:text-gray-800 font-medium"
         value={value}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
