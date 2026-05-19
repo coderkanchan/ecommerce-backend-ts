@@ -86,7 +86,6 @@ export default function AnalyticsPage() {
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mt-1">Monitor data conversion logs and macro-economic market grids</p>
       </div>
 
-      {/* Grid Bento Blocks */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
           <div key={index} className="bg-[#0a0a0a] p-5 rounded-2xl border border-gray-900 shadow-xl flex flex-col justify-between space-y-4">
@@ -106,7 +105,6 @@ export default function AnalyticsPage() {
         ))}
       </div>
 
-      {/* Analytics Data Chart Area */}
       <div className="bg-[#0a0a0a] p-6 rounded-2xl border border-gray-900 shadow-xl space-y-6">
         <div className="flex items-center gap-2 border-b border-gray-900 pb-3">
           <BarChart3 className="text-gray-500 w-4 h-4" />
