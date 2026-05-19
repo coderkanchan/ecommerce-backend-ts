@@ -96,7 +96,10 @@ export default function SellerProfilePage() {
                   <span className="text-xs text-gray-500 block truncate">{userInfo?.storeDetails?.address?.city || 'Geoloc Matrix Missing'}</span>
                 </div>
               </div>
-              <button onClick={() => setIsEditing(true)} className="text-[10px] font-black text-blue-400 hover:text-white bg-blue-500/10 hover:bg-blue-600 border border-blue-500/20 px-3 py-1.5 rounded-lg uppercase tracking-wider transition duration-200 shrink-0 cursor-pointer">
+              <button
+                onClick={() => setIsEditing(true)}
+                className="text-[10px] font-black text-blue-400 hover:text-white bg-blue-500/10 hover:bg-blue-600 border border-blue-500/20 px-3 py-1.5 rounded-lg uppercase tracking-wider transition duration-200 shrink-0 cursor-pointer"
+              >
                 {userInfo?.storeDetails?.storeName ? 'Modify' : 'Initialize'}
               </button>
             </div>
