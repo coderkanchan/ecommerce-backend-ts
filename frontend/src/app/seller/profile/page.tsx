@@ -72,7 +72,6 @@ export default function SellerProfilePage() {
           </div>
         </div>
 
-        {/* Detailed Form Parameter Lists */}
         <div className="lg:col-span-2 space-y-6">
           <div className="bg-[#0a0a0a] border border-gray-900 rounded-2xl p-6 space-y-6">
             <h3 className="text-sm font-black uppercase text-gray-400 tracking-wider flex items-center gap-2 border-b border-gray-900 pb-3">
