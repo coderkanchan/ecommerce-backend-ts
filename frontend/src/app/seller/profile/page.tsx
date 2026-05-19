@@ -119,7 +119,12 @@ export default function SellerProfilePage() {
               <InputGroup label="Store Name String" value={storeData.storeName} onChange={(val: string) => setStoreData({ ...storeData, storeName: val })} placeholder="Nexus Hardware Matrix" />
               <div className="grid grid-cols-2 gap-4">
                 <InputGroup label="Business Dial Route" value={storeData.phone} onChange={(val: string) => setStoreData({ ...storeData, phone: val })} placeholder="+91..." />
-                <InputGroup label="City Center" value={storeData.city} onChange={(val: string) => setStoreData({ ...storeData, city: val })} placeholder="Matrix Center" />
+                <InputGroup
+                  label="City Center"
+                  value={storeData.city}
+                  onChange={(val: string) => setStoreData({ ...storeData, city: val })}
+                  placeholder="Matrix Center"
+                />
               </div>
               <InputGroup
                 label="Street Area Pointer"
