@@ -32,7 +32,7 @@ export default function SellerLayout({ children }: { children: React.ReactNode }
         <Sidebar />
       </aside>
 
-      <div className={`fixed inset-0 z-[200] lg:hidden transition-all duration-500 ${isMobileMenuOpen ? 'visible' : 'invisible'}`}>
+      <div className={`fixed inset-0 z-200 lg:hidden transition-all duration-500 ${isMobileMenuOpen ? 'visible' : 'invisible'}`}>
         <div
           className={`absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity duration-500 ease-in-out ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}
           onClick={closeMenu}
