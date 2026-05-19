@@ -10,7 +10,6 @@ const EarningsPage = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Core Wallet Container Card */}
         <div className="bg-[#0a0a0a] p-6 rounded-2xl border border-blue-500/10 shadow-xl flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="flex items-center gap-3 border-b border-gray-900 pb-3">
