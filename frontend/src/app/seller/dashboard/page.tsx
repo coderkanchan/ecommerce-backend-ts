@@ -112,7 +112,7 @@ export default function SellerDashboard() {
         </div>
       ) : (
         <div className="bg-[#0A0A0A] p-6 md:p-8 rounded-[2.5rem] border border-gray-900 shadow-xl overflow-hidden">
-          <h3 className="text-lg font-black mb-2 text-white uppercase tracking-widest text-xs opacity-50">Insights</h3>
+          <h3 className="font-black mb-2 text-white uppercase tracking-widest text-xs opacity-50">Insights</h3>
           <p className="text-gray-400 font-medium leading-relaxed">
             Your inventory is live with <span className="text-white">{summary.productsCount} SKU(s)</span>. Monitoring active sales traffic.
           </p>
