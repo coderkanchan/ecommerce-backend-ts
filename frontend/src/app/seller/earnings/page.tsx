@@ -3,7 +3,6 @@ import { Wallet, History } from 'lucide-react';
 const EarningsPage = () => {
   return (
     <div className="space-y-8">
-      {/* Structural Account Headers */}
       <div className="border-b border-gray-900 pb-6">
         <h1 className="text-3xl font-black tracking-tight text-white uppercase italic">Financial <span className="text-blue-500">Ledger</span></h1>
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mt-1">Audit liquid balance metrics and transactional payout routes</p>
