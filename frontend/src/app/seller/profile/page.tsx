@@ -92,7 +92,9 @@ export default function SellerProfilePage() {
                   <MapPin size={16} />
                 </div>
                 <div className="min-w-0">
-                  <span className="text-sm text-white font-bold block truncate">{userInfo?.storeDetails?.storeName || 'Store Context Unset'}</span>
+                  <span className="text-sm text-white font-bold block truncate">
+                    {userInfo?.storeDetails?.storeName || 'Store Context Unset'}
+                  </span>
                   <span className="text-xs text-gray-500 block truncate">{userInfo?.storeDetails?.address?.city || 'Geoloc Matrix Missing'}</span>
                 </div>
               </div>
