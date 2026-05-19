@@ -27,12 +27,11 @@ export default function SellerLayout({ children }: { children: React.ReactNode }
 
   return (
     <div className="flex min-h-screen bg-black font-sans antialiased text-white selection:bg-blue-500/30">
-      {/* Desktop Sidebar Container */}
+      
       <aside className="hidden lg:block w-64 fixed h-full border-r border-gray-900 bg-[#0a0a0a] z-50">
         <Sidebar />
       </aside>
 
-      {/* Mobile Drawer Slide-over */}
       <div className={`fixed inset-0 z-[200] lg:hidden transition-all duration-500 ${isMobileMenuOpen ? 'visible' : 'invisible'}`}>
         <div
           className={`absolute inset-0 bg-black/80 backdrop-blur-md transition-opacity duration-500 ease-in-out ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}
