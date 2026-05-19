@@ -100,7 +100,7 @@ export default function MyProductsPage() {
                     <img src={product.imageUrl} alt={product.name} className="w-full h-full object-cover" />
                   </div>
                   <div className="min-w-0">
-                    <h3 className="text-base font-bold text-white truncate max-w-[280px] lg:max-w-[400px]">{product.name}</h3>
+                    <h3 className="text-base font-bold text-white truncate max-w-70 lg:max-w-[400px]">{product.name}</h3>
                     <div className="flex items-center gap-3 mt-1.5">
                       <span className="text-[9px] text-gray-400 font-black uppercase tracking-wider bg-gray-900 border border-gray-800 px-2 py-0.5 rounded-md">{product.category}</span>
                       <span className="text-sm font-mono font-bold text-blue-400">₹{product.price.toLocaleString('en-IN')}</span>
