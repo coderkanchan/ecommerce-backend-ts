@@ -89,7 +89,7 @@ export default function SellerOrdersPage() {
                     return (
                       <tr key={order._id} className="hover:bg-white/[0.01] transition-colors duration-200">
                         <td className="px-6 py-4 font-mono text-xs text-blue-400 font-bold">
-                          #{displayId} {/* ✅ Masked safely here */}
+                          #{displayId} 
                         </td>
                         <td className="px-6 py-4 font-medium text-white max-w-[200px] truncate">
                           {order.orderItems.map((item) => item.name).join(", ")}
