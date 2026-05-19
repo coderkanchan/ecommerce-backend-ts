@@ -55,8 +55,12 @@ export default function SellerProfilePage() {
             <div className="w-20 h-20 bg-linear-to-br from-blue-500 to-blue-600 rounded-full mx-auto flex items-center justify-center text-2xl font-black text-white shadow-xl shadow-blue-500/10 border border-blue-400/20">
               {userInfo?.name?.charAt(0).toUpperCase()}
             </div>
-            <h2 className="text-lg font-bold text-white mt-4 uppercase tracking-tight truncate">{userInfo?.name}</h2>
-            <p className="text-blue-500 text-[9px] font-black uppercase tracking-widest mt-1">Verified Platform Seller</p>
+            <h2 className="text-lg font-bold text-white mt-4 uppercase tracking-tight truncate">
+              {userInfo?.name}
+            </h2>
+            <p className="text-blue-500 text-[9px] font-black uppercase tracking-widest mt-1">
+              Verified Platform Seller
+            </p>
           </div>
 
           <div className="pt-5 border-t border-gray-900 text-left space-y-3">
@@ -82,7 +86,11 @@ export default function SellerProfilePage() {
                 value={userInfo?.name}
                 icon={<User size={14} />}
               />
-              <InfoBox label="Network Route Email" value={userInfo?.email} icon={<Mail size={14} />} />
+              <InfoBox
+                label="Network Route Email"
+                value={userInfo?.email}
+                icon={<Mail size={14} />}
+              />
             </div>
           </div>
 
