@@ -121,7 +121,12 @@ export default function SellerProfilePage() {
                 <InputGroup label="Business Dial Route" value={storeData.phone} onChange={(val: string) => setStoreData({ ...storeData, phone: val })} placeholder="+91..." />
                 <InputGroup label="City Center" value={storeData.city} onChange={(val: string) => setStoreData({ ...storeData, city: val })} placeholder="Matrix Center" />
               </div>
-              <InputGroup label="Street Area Pointer" value={storeData.street} onChange={(val: string) => setStoreData({ ...storeData, street: val })} placeholder="Zone Vector 12" />
+              <InputGroup
+                label="Street Area Pointer"
+                value={storeData.street}
+                onChange={(val: string) => setStoreData({ ...storeData, street: val })}
+                placeholder="Zone Vector 12"
+              />
               <div className="flex gap-3 pt-4">
                 <button
                   type="button"
