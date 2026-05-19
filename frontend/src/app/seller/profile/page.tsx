@@ -106,7 +106,6 @@ export default function SellerProfilePage() {
         </div>
       </div>
 
-      {/* Slide-over Popup Form Block */}
       {isEditing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
           <div className="bg-[#0a0a0a] border border-gray-900 w-full max-w-md rounded-2xl p-6 shadow-2xl relative space-y-6">
