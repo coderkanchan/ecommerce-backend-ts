@@ -130,7 +130,10 @@ export default function SellerProfilePage() {
       {isEditing && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
           <div className="bg-[#0a0a0a] border border-gray-900 w-full max-w-md rounded-2xl p-6 shadow-2xl relative space-y-6">
-            <button onClick={() => setIsEditing(false)} className="absolute top-4 right-4 text-gray-500 hover:text-white transition cursor-pointer">
+            <button
+              onClick={() => setIsEditing(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-white transition cursor-pointer"
+            >
               <X size={18} />
             </button>
             <div>
