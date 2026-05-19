@@ -80,7 +80,6 @@ export default function AnalyticsPage() {
 
   return (
     <div className="space-y-8">
-      {/* Structural Metric Headers */}
       <div className="border-b border-gray-900 pb-6">
         <h1 className="text-3xl font-black tracking-tight text-white uppercase italic">Store <span className="text-blue-500">Analytics</span></h1>
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mt-1">Monitor data conversion logs and macro-economic market grids</p>
