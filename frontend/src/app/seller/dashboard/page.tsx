@@ -146,7 +146,7 @@ export default function SellerDashboard() {
       </div>
 
       {summary.productsCount === 0 ? (
-        <div className="bg-[#050505] border border-gray-900 rounded-[2rem] p-10 md:p-20 text-center space-y-6">
+        <div className="bg-[#050505] border border-gray-900 rounded-4xl p-10 md:p-20 text-center space-y-6">
           <div className="w-14 h-14 bg-gray-900/60 border border-gray-800 rounded-2xl flex items-center justify-center mx-auto text-gray-500">
             <AlertCircle size={24} />
           </div>
