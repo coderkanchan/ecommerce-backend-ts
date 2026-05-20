@@ -266,7 +266,6 @@ export const getSellerSummary = async (req: any, res: Response) => {
 
       const sellerTotal = sellerItems.reduce((sum: number, item: any) => sum + (item.price * item.qty), 0);
 
-      // Check if any item of this seller in this order is still not delivered
       const hasPendingItems = sellerItems.some((item: any) => !item.isDelivered);
       if (hasPendingItems) {
         pendingOrdersCount++;
