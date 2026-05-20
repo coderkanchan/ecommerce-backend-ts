@@ -257,7 +257,6 @@ export const getSellerSummary = async (req: any, res: Response) => {
     const orders = await Order.find({ "orderItems.seller": sellerId });
     const ordersCount = orders.length;
 
-    // 4. Calculate Total Sales & Pending Orders specifically for this seller's items
     let pendingOrdersCount = 0;
 
     const totalSales = orders.reduce((acc, order) => {
