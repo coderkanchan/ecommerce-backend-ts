@@ -264,7 +264,6 @@ export const getSellerSummary = async (req: any, res: Response) => {
         (item: any) => item.seller && item.seller.toString() === sellerId.toString()
       );
 
-      // Calculate revenue from this order
       const sellerTotal = sellerItems.reduce((sum: number, item: any) => sum + (item.price * item.qty), 0);
 
       // Check if any item of this seller in this order is still not delivered
