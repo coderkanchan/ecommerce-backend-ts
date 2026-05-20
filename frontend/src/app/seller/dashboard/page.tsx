@@ -161,7 +161,6 @@ export default function SellerDashboard() {
           </Link>
         </div>
       ) : (
-        /* Premium Dynamic Insights Interface */
         <div className={`p-6 rounded-[2rem] border transition-all duration-300 ${insight.type === 'warning' ? 'bg-amber-950/10 border-amber-900/40 text-amber-200' :
             insight.type === 'success' ? 'bg-emerald-950/5 border-emerald-900/30 text-emerald-400' :
               'bg-[#0a0a0a] border-gray-900 text-gray-400'
