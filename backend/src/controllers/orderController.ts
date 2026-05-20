@@ -243,30 +243,85 @@ export const getOrderSummary = async (req: any, res: any) => {
   }
 };
 
+// export const getSellerSummary = async (req: any, res: Response) => {
+//   try {
+//     const sellerId = req.user._id;
+
+//     const productsCount = await Product.countDocuments({ seller: sellerId });
+
+//     const orders = await Order.find({ "orderItems.seller": sellerId });
+//     const ordersCount = orders.length;
+
+//     const totalSales = orders.reduce((acc, order) => {
+//       const sellerItems = order.orderItems.filter(
+//         (item: any) => item.seller && item.seller.toString() === sellerId.toString()
+//       );
+//       const sellerTotal = sellerItems.reduce((sum: number, item: any) => sum + (item.price * item.qty), 0);
+//       return acc + sellerTotal;
+//     }, 0);
+
+//     const customersCount = [...new Set(orders.map((order) => order.user?.toString()).filter(Boolean))].length;
+
+//     res.json({
+//       productsCount,
+//       ordersCount,
+//       totalSales,
+//       customersCount
+//     });
+//   } catch (error: any) {
+//     console.error("Error fetching seller summary backend:", error);
+//     res.status(500).json({ message: "Error fetching seller stats", error: error.message });
+//   }
+// };
+
 export const getSellerSummary = async (req: any, res: Response) => {
   try {
     const sellerId = req.user._id;
 
+    // 1. Total Active Products Count
     const productsCount = await Product.countDocuments({ seller: sellerId });
 
+    // 2. Low Stock Products Count (Stock less than 5)
+    const lowStockCount = await Product.countDocuments({
+      seller: sellerId,
+      stock: { $lt: 5 }
+    });
+
+    // 3. Fetch all orders containing this seller's products
     const orders = await Order.find({ "orderItems.seller": sellerId });
     const ordersCount = orders.length;
+
+    // 4. Calculate Total Sales & Pending Orders specifically for this seller's items
+    let pendingOrdersCount = 0;
 
     const totalSales = orders.reduce((acc, order) => {
       const sellerItems = order.orderItems.filter(
         (item: any) => item.seller && item.seller.toString() === sellerId.toString()
       );
+
+      // Calculate revenue from this order
       const sellerTotal = sellerItems.reduce((sum: number, item: any) => sum + (item.price * item.qty), 0);
+
+      // Check if any item of this seller in this order is still not delivered
+      const hasPendingItems = sellerItems.some((item: any) => !item.isDelivered);
+      if (hasPendingItems) {
+        pendingOrdersCount++;
+      }
+
       return acc + sellerTotal;
     }, 0);
 
+    // 5. Distinct Target Customers Count
     const customersCount = [...new Set(orders.map((order) => order.user?.toString()).filter(Boolean))].length;
 
+    // 6. Return response matching frontend interface
     res.json({
       productsCount,
       ordersCount,
       totalSales,
-      customersCount
+      customersCount,
+      lowStockCount,
+      pendingOrdersCount
     });
   } catch (error: any) {
     console.error("Error fetching seller summary backend:", error);
