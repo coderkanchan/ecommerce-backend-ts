@@ -276,7 +276,6 @@ export const getSellerSummary = async (req: any, res: Response) => {
 
     const customersCount = [...new Set(orders.map((order) => order.user?.toString()).filter(Boolean))].length;
 
-    // 6. Return response matching frontend interface
     res.json({
       productsCount,
       ordersCount,
