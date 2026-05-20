@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import API from "@/services/api";
-import { ShoppingBag, Loader2, CheckCircle, Package } from 'lucide-react';
+import { ShoppingBag, Loader2, CheckCircle, Package, ShieldCheck, X } from 'lucide-react';
 
 interface OrderItem {
   name: string;
@@ -26,6 +26,10 @@ export default function SellerOrdersPage() {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
+  // Modal State Controllers
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+
   const fetchOrders = async () => {
     try {
       const { data } = await API.get("/orders/seller");
@@ -33,7 +37,7 @@ export default function SellerOrdersPage() {
     } catch (error) {
       console.error("Fetch Error:", error);
     } finally {
-      setLoading(false);
+      loading && setLoading(false);
     }
   };
 
@@ -41,12 +45,26 @@ export default function SellerOrdersPage() {
     fetchOrders();
   }, []);
 
-  const deliverSellerOrderHandler = async (orderId: string) => {
-    if (!window.confirm("Are you sure you want to mark this item as delivered?")) return;
+  // Triggers the beautiful custom dialog instead of window.confirm
+  const openConfirmationModal = (orderId: string) => {
+    setSelectedOrderId(orderId);
+    setIsModalOpen(true);
+  };
+
+  const closeConfirmationModal = () => {
+    setSelectedOrderId(null);
+    setIsModalOpen(false);
+  };
+
+  const deliverSellerOrderHandler = async () => {
+    if (!selectedOrderId) return;
+
+    const targetOrderId = selectedOrderId;
+    closeConfirmationModal(); // Smoothly close overlay before operations trigger
 
     try {
-      setActionLoading(orderId);
-      await API.put(`/orders/${orderId}/seller-deliver`);
+      setActionLoading(targetOrderId);
+      await API.put(`/orders/${targetOrderId}/seller-deliver`);
       await fetchOrders();
     } catch (err: any) {
       console.error(err);
@@ -57,7 +75,7 @@ export default function SellerOrdersPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 relative">
       <div className="border-b border-gray-900 pb-6">
         <h1 className="text-3xl font-black tracking-tight text-white uppercase italic">Sales <span className="text-blue-500">Orders</span></h1>
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mt-1">Audit customer fulfillment loops and dispatch tracks</p>
@@ -86,9 +104,9 @@ export default function SellerOrdersPage() {
                     const displayId = safeId.length > 6 ? safeId.slice(-6) : safeId;
 
                     return (
-                      <tr key={order._id} className="hover:bg-white/1 transition-colors duration-200">
+                      <tr key={order._id} className="hover:bg-white/5 transition-colors duration-200">
                         <td className="px-6 py-4 font-mono text-xs text-blue-400 font-bold">
-                          #{displayId} 
+                          #{displayId}
                         </td>
                         <td className="px-6 py-4 font-medium text-white max-w-50 truncate">
                           {order.orderItems.map((item) => item.name).join(", ")}
@@ -97,8 +115,8 @@ export default function SellerOrdersPage() {
                         <td className="px-6 py-4 text-white font-mono font-bold">₹{order.totalPrice.toLocaleString('en-IN')}</td>
                         <td className="px-6 py-4">
                           <span className={`px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider ${order.isDelivered
-                              ? 'bg-green-500/10 text-green-400 border border-green-500/20'
-                              : 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
+                            ? 'bg-green-500/10 text-green-400 border border-green-500/20'
+                            : 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'
                             }`}>
                             {order.isDelivered ? 'Dispatched' : 'Processing'}
                           </span>
@@ -110,7 +128,7 @@ export default function SellerOrdersPage() {
                             </div>
                           ) : (
                             <button
-                              onClick={() => deliverSellerOrderHandler(order._id)}
+                              onClick={() => openConfirmationModal(order._id)}
                               disabled={actionLoading === order._id}
                               className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800/40 text-white rounded-lg text-[11px] font-black tracking-wider uppercase transition-all shadow-md active:scale-95 cursor-pointer"
                             >
@@ -131,6 +149,55 @@ export default function SellerOrdersPage() {
                 )}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {/* Premium Custom Tailwind Dialog Overlay */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop Mask with soft blur effects */}
+          <div
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
+            onClick={closeConfirmationModal}
+          />
+
+          {/* Main Modal Surface */}
+          <div className="bg-[#0b0b0b] border border-gray-900 max-w-sm w-full rounded-2xl p-6 relative z-10 shadow-2xl border-solid animate-in fade-in zoom-in-95 duration-200">
+            <button
+              onClick={closeConfirmationModal}
+              className="absolute right-5 top-5 text-gray-500 hover:text-white transition-colors"
+            >
+              <X size={16} />
+            </button>
+
+            <div className="flex flex-col items-center text-center space-y-4">
+              <div className="w-12 h-12 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-center justify-center text-blue-500">
+                <ShieldCheck size={22} />
+              </div>
+
+              <div className="space-y-1">
+                <h3 className="text-base font-black text-white tracking-tight uppercase">Confirm Fulfillment</h3>
+                <p className="text-gray-400 text-xs font-medium leading-relaxed">
+                  Are you sure you want to initialize delivery routing status vectors for this order reference token?
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 w-full pt-2">
+                <button
+                  onClick={closeConfirmationModal}
+                  className="bg-gray-900 hover:bg-gray-800 border border-gray-800 text-white font-black text-[10px] uppercase tracking-widest py-3 rounded-xl transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={deliverSellerOrderHandler}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-black text-[10px] uppercase tracking-widest py-3 rounded-xl transition-all shadow-md shadow-blue-600/10"
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
