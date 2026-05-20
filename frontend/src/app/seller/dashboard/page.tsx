@@ -138,7 +138,6 @@ export default function SellerDashboard() {
         </Link>
       </div>
 
-      {/* Metrics Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <StatCard title="Total Revenue" value={`₹${Number(summary.totalSales || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`} icon={DollarSign} color="bg-green-500" />
         <StatCard title="Total Orders" value={summary.ordersCount || 0} icon={ShoppingBag} color="bg-blue-500" />
@@ -146,7 +145,6 @@ export default function SellerDashboard() {
         <StatCard title="Target Customers" value={summary.customersCount || 0} icon={Users} color="bg-orange-500" />
       </div>
 
-      {/* Bottom Display Layout (Always keeps structure robust) */}
       {summary.productsCount === 0 ? (
         <div className="bg-[#050505] border border-gray-900 rounded-[2rem] p-10 md:p-20 text-center space-y-6">
           <div className="w-14 h-14 bg-gray-900/60 border border-gray-800 rounded-2xl flex items-center justify-center mx-auto text-gray-500">
