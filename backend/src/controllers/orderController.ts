@@ -243,37 +243,6 @@ export const getOrderSummary = async (req: any, res: any) => {
   }
 };
 
-// export const getSellerSummary = async (req: any, res: Response) => {
-//   try {
-//     const sellerId = req.user._id;
-
-//     const productsCount = await Product.countDocuments({ seller: sellerId });
-
-//     const orders = await Order.find({ "orderItems.seller": sellerId });
-//     const ordersCount = orders.length;
-
-//     const totalSales = orders.reduce((acc, order) => {
-//       const sellerItems = order.orderItems.filter(
-//         (item: any) => item.seller && item.seller.toString() === sellerId.toString()
-//       );
-//       const sellerTotal = sellerItems.reduce((sum: number, item: any) => sum + (item.price * item.qty), 0);
-//       return acc + sellerTotal;
-//     }, 0);
-
-//     const customersCount = [...new Set(orders.map((order) => order.user?.toString()).filter(Boolean))].length;
-
-//     res.json({
-//       productsCount,
-//       ordersCount,
-//       totalSales,
-//       customersCount
-//     });
-//   } catch (error: any) {
-//     console.error("Error fetching seller summary backend:", error);
-//     res.status(500).json({ message: "Error fetching seller stats", error: error.message });
-//   }
-// };
-
 export const getSellerSummary = async (req: any, res: Response) => {
   try {
     const sellerId = req.user._id;
