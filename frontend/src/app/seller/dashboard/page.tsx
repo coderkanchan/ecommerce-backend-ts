@@ -49,7 +49,6 @@ export default function SellerDashboard() {
     ordersCount: 0,
     totalSales: 0,
     customersCount: 0,
-    // Safely handling upcoming array expansions if added in backend later
     lowStockCount: 0,
     pendingOrdersCount: 0
   });
@@ -69,7 +68,6 @@ export default function SellerDashboard() {
           const data = await res.json();
           setSummary(data);
 
-          // Dynamic Insights Generator Logic based on fetched response
           if (data.productsCount === 0) {
             setInsight({
               text: "Your digital storefront is empty. Add your initial inventory grid to launch visibility.",
@@ -82,7 +80,7 @@ export default function SellerDashboard() {
               text: `Management alert: You have ${data.pendingOrdersCount} active order(s) pending processing vectors.`,
               type: 'warning',
               actionLabel: 'Process Queue',
-              actionHref: '/seller/orders' // Update if your route varies
+              actionHref: '/seller/orders' 
             });
           } else if (data.lowStockCount > 0) {
             setInsight({
