@@ -254,7 +254,6 @@ export const getSellerSummary = async (req: any, res: Response) => {
       stock: { $lt: 5 }
     });
 
-    // 3. Fetch all orders containing this seller's products
     const orders = await Order.find({ "orderItems.seller": sellerId });
     const ordersCount = orders.length;
 
