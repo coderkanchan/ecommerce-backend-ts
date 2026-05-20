@@ -26,7 +26,6 @@ export default function SellerOrdersPage() {
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
 
-  // Modal State Controllers
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
 
@@ -45,7 +44,6 @@ export default function SellerOrdersPage() {
     fetchOrders();
   }, []);
 
-  // Triggers the beautiful custom dialog instead of window.confirm
   const openConfirmationModal = (orderId: string) => {
     setSelectedOrderId(orderId);
     setIsModalOpen(true);
@@ -60,7 +58,7 @@ export default function SellerOrdersPage() {
     if (!selectedOrderId) return;
 
     const targetOrderId = selectedOrderId;
-    closeConfirmationModal(); // Smoothly close overlay before operations trigger
+    closeConfirmationModal(); 
 
     try {
       setActionLoading(targetOrderId);
@@ -153,7 +151,6 @@ export default function SellerOrdersPage() {
         </div>
       )}
 
-      {/* Premium Custom Tailwind Dialog Overlay */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
