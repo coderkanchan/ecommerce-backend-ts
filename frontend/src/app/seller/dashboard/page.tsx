@@ -18,7 +18,6 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-// Extracted Interface for type safety
 interface InsightMessage {
   text: string;
   type: 'info' | 'warning' | 'success';
