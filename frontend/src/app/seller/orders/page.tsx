@@ -156,13 +156,11 @@ export default function SellerOrdersPage() {
       {/* Premium Custom Tailwind Dialog Overlay */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          {/* Backdrop Mask with soft blur effects */}
           <div
             className="absolute inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300 animate-in fade-in"
             onClick={closeConfirmationModal}
           />
 
-          {/* Main Modal Surface */}
           <div className="bg-[#0b0b0b] border border-gray-900 max-w-sm w-full rounded-2xl p-6 relative z-10 shadow-2xl border-solid animate-in fade-in zoom-in-95 duration-200">
             <button
               onClick={closeConfirmationModal}
