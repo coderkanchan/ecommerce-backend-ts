@@ -247,7 +247,6 @@ export const getSellerSummary = async (req: any, res: Response) => {
   try {
     const sellerId = req.user._id;
 
-    // 1. Total Active Products Count
     const productsCount = await Product.countDocuments({ seller: sellerId });
 
     // 2. Low Stock Products Count (Stock less than 5)
