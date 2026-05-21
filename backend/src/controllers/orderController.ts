@@ -355,7 +355,6 @@ export const getSellerStats = async (req: any, res: any) => {
   try {
     const sellerId = req.user._id;
 
-    // Fetch specifically the orders matching current logged-in seller token constraints
     const orders = await Order.find({
       'orderItems.seller': sellerId
     });
