@@ -1,13 +1,14 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Wallet, History, Loader2 } from 'lucide-react';
+import { Wallet, History, Loader2, Clock } from 'lucide-react';
 
 export default function EarningsPage() {
   const { userInfo } = useSelector((state: any) => state.auth);
   const [loading, setLoading] = useState(true);
   const [financials, setFinancials] = useState({
     availableBalance: 0,
+    pendingBalance: 0,
     totalDisbursed: 0
   });
 
@@ -21,7 +22,8 @@ export default function EarningsPage() {
           const data = await res.json();
           setFinancials({
             availableBalance: Number(data.totalRevenue) || 0,
-            totalDisbursed: 0 
+            pendingBalance: Number(data.pendingRevenue) || 0,
+            totalDisbursed: 0
           });
         }
       } catch (err) {
@@ -52,6 +54,7 @@ export default function EarningsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Core Wallet Container Card */}
         <div className="bg-[#0a0a0a] p-6 rounded-2xl border border-blue-500/10 shadow-xl flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="flex items-center gap-3 border-b border-gray-900 pb-3">
@@ -62,11 +65,18 @@ export default function EarningsPage() {
               ₹{financials.availableBalance.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </h3>
           </div>
-          <button className="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded-xl text-xs font-black uppercase tracking-wider text-white transition-all shadow-md shadow-blue-600/10 active:scale-95 cursor-pointer">
+          <button
+            disabled={financials.availableBalance === 0}
+            className={`w-full py-3 rounded-xl text-xs font-black uppercase tracking-wider text-white transition-all shadow-md active:scale-95 ${financials.availableBalance > 0
+                ? 'bg-blue-600 hover:bg-blue-700 shadow-blue-600/10 cursor-pointer'
+                : 'bg-gray-800 text-gray-500 cursor-not-allowed'
+              }`}
+          >
             Trigger Settlement Wire
           </button>
         </div>
 
+        {/* Dynamic Information Grid */}
         <div className="bg-[#0a0a0a] p-6 rounded-2xl border border-gray-900 shadow-xl flex flex-col justify-between gap-6">
           <div>
             <h2 className="text-[10px] font-black uppercase tracking-wider text-gray-500 mb-1">Total Disbursed Capital</h2>
@@ -75,27 +85,48 @@ export default function EarningsPage() {
             </p>
           </div>
           <div className="pt-4 border-t border-gray-900">
-            <h2 className="text-[10px] font-black uppercase tracking-wider text-gray-500 mb-1">Downstream Payout Schedule</h2>
-            <p className="text-xs font-semibold text-gray-400">No active settlement operations queue bound.</p>
+            <h2 className="text-[10px] font-black uppercase tracking-wider text-gray-500 mb-1">Downstream Payout Schedule (Escrow Holds)</h2>
+            {financials.pendingBalance > 0 ? (
+              <div className="flex items-center gap-2 mt-1 text-amber-500">
+                <Clock size={14} />
+                <p className="text-xs font-bold font-mono">
+                  ₹{financials.pendingBalance.toLocaleString('en-IN', { minimumFractionDigits: 2 })} pending delivery confirmation.
+                </p>
+              </div>
+            ) : (
+              <p className="text-xs font-semibold text-gray-400 mt-1">No active settlement operations queue bound.</p>
+            )}
           </div>
         </div>
       </div>
 
+      {/* Bottom Ledger Data Table Logs */}
       <div className="bg-[#0a0a0a] p-6 rounded-2xl border border-gray-900 shadow-xl space-y-4">
         <div className="flex items-center gap-2 border-b border-gray-900 pb-3">
-          <History className="text-gray-500 w-4 h-4" />
+          <History className="text-gray-400 w-4 h-4" />
           <h2 className="text-xs font-black uppercase tracking-wider text-gray-400">Real-time Accounting Logs</h2>
         </div>
 
-        {financials.availableBalance > 0 ? (
+        {(financials.availableBalance > 0 || financials.pendingBalance > 0) ? (
           <div className="divide-y divide-gray-900 text-xs">
-            <div className="py-3 flex justify-between items-center">
-              <div>
-                <p className="text-white font-bold uppercase">Storefront Revenue Accumulation</p>
-                <p className="text-[10px] text-gray-500 mt-0.5">Compiled from order balance nodes</p>
+            {financials.availableBalance > 0 && (
+              <div className="py-3 flex justify-between items-center">
+                <div>
+                  <p className="text-white font-bold uppercase">Storefront Revenue Accumulation</p>
+                  <p className="text-[10px] text-gray-500 mt-0.5">Cleared balance from fulfilled nodes</p>
+                </div>
+                <span className="text-green-400 font-mono font-bold">+₹{financials.availableBalance.toLocaleString('en-IN')}</span>
               </div>
-              <span className="text-green-400 font-mono font-bold">+₹{financials.availableBalance.toLocaleString('en-IN')}</span>
-            </div>
+            )}
+            {financials.pendingBalance > 0 && (
+              <div className="py-3 flex justify-between items-center">
+                <div>
+                  <p className="text-gray-400 font-bold uppercase">Escrow Hold Balance</p>
+                  <p className="text-[10px] text-gray-600 mt-0.5">Awaiting active logistics fulfillment</p>
+                </div>
+                <span className="text-amber-500 font-mono font-bold">₹{financials.pendingBalance.toLocaleString('en-IN')}</span>
+              </div>
+            )}
           </div>
         ) : (
           <div className="text-center py-12 text-xs font-medium text-gray-600 uppercase tracking-wide">
