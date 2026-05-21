@@ -325,7 +325,6 @@ export const getSellerStats = async (req: any, res: any) => {
         );
 
         sellerItems.forEach((item: any) => {
-          // Fixed the typo here directly
           const itemTotal = (Number(item.price) || 0) * (Number(item.qty) || 0);
 
           if (item.isDelivered === true) {
