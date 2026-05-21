@@ -345,8 +345,8 @@ export const getSellerStats = async (req: any, res: any) => {
     const safePending = typeof pendingRevenue === 'number' && !isNaN(pendingRevenue) ? pendingRevenue : 0;
 
     res.json({
-      totalRevenue: safeAvailable.toFixed(2), // Becomes Available Liquid Balance
-      pendingRevenue: safePending.toFixed(2), // Holds in processing state
+      totalRevenue: safeAvailable.toFixed(2), 
+      pendingRevenue: safePending.toFixed(2), 
       totalOrders: orders ? orders.length : 0,
       totalCustomers: customerIds.size,
       conversionRate: (orders && orders.length > 0) ? "5.2%" : "0%",
