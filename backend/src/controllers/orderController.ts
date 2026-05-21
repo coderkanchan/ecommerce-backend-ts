@@ -310,33 +310,43 @@ export const getSellerStats = async (req: any, res: any) => {
   try {
     const sellerId = req.user._id;
 
+    // Logged-in seller ke saare orders fetch karenge
     const orders = await Order.find({
       'orderItems.seller': sellerId
     });
 
-    let totalRevenue = 0;
+    let availableRevenue = 0;
+    let pendingRevenue = 0;
     const customerIds = new Set();
 
     if (orders && orders.length > 0) {
       orders.forEach((order) => {
+        // Sirf is seller ke items filter karenge
         const sellerItems = (order.orderItems || []).filter(
           (item: any) => item.seller && item.seller.toString() === sellerId.toString()
         );
 
-        const sellerOrderTotal = sellerItems.reduce(
-          (acc: number, item: any) => acc + (Number(item.price) || 0) * (Number(item.qty) || 0),
-          0
-        );
+        sellerItems.forEach((item: any) => {
+          const itemTotal = (someNumber = Number(item.price) || 0) * (Number(item.qty) || 0);
 
-        totalRevenue += sellerOrderTotal;
+          // CRITICAL PROFESSIONAL FILTER: Check item delivery status
+          if (item.isDelivered === true) {
+            availableRevenue += itemTotal;
+          } else {
+            pendingRevenue += itemTotal;
+          }
+        });
+
         if (order.user) customerIds.add(order.user.toString());
       });
     }
 
-    const safeRevenue = typeof totalRevenue === 'number' && !isNaN(totalRevenue) ? totalRevenue : 0;
+    const safeAvailable = typeof availableRevenue === 'number' && !isNaN(availableRevenue) ? availableRevenue : 0;
+    const safePending = typeof pendingRevenue === 'number' && !isNaN(pendingRevenue) ? pendingRevenue : 0;
 
     res.json({
-      totalRevenue: safeRevenue.toFixed(2),
+      totalRevenue: safeAvailable.toFixed(2), // Becomes Available Liquid Balance
+      pendingRevenue: safePending.toFixed(2), // Holds in processing state
       totalOrders: orders ? orders.length : 0,
       totalCustomers: customerIds.size,
       conversionRate: (orders && orders.length > 0) ? "5.2%" : "0%",
@@ -350,3 +360,48 @@ export const getSellerStats = async (req: any, res: any) => {
     });
   }
 };
+
+// export const getSellerStats = async (req: any, res: any) => {
+//   try {
+//     const sellerId = req.user._id;
+
+//     const orders = await Order.find({
+//       'orderItems.seller': sellerId
+//     });
+
+//     let totalRevenue = 0;
+//     const customerIds = new Set();
+
+//     if (orders && orders.length > 0) {
+//       orders.forEach((order) => {
+//         const sellerItems = (order.orderItems || []).filter(
+//           (item: any) => item.seller && item.seller.toString() === sellerId.toString()
+//         );
+
+//         const sellerOrderTotal = sellerItems.reduce(
+//           (acc: number, item: any) => acc + (Number(item.price) || 0) * (Number(item.qty) || 0),
+//           0
+//         );
+
+//         totalRevenue += sellerOrderTotal;
+//         if (order.user) customerIds.add(order.user.toString());
+//       });
+//     }
+
+//     const safeRevenue = typeof totalRevenue === 'number' && !isNaN(totalRevenue) ? totalRevenue : 0;
+
+//     res.json({
+//       totalRevenue: safeRevenue.toFixed(2),
+//       totalOrders: orders ? orders.length : 0,
+//       totalCustomers: customerIds.size,
+//       conversionRate: (orders && orders.length > 0) ? "5.2%" : "0%",
+//     });
+//   } catch (error) {
+//     console.error("Seller Stats Error:", error);
+//     const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+//     res.status(500).json({
+//       message: "Error fetching seller analytics",
+//       error: errorMessage
+//     });
+//   }
+// };
