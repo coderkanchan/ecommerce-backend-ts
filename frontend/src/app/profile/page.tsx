@@ -222,7 +222,7 @@ export default function ProfilePage() {
                         <td className="p-4">
                           <button
                             onClick={() => order._id && router.push(`/order/${order._id}`)}
-                            className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-1.5 rounded-lg text-xs font-medium border border-gray-700 transition"
+                            className="bg-gray-800 hover:bg-gray-700 text-white px-4 py-1.5 rounded-lg text-xs font-medium border border-gray-700 transition cursor-pointer"
                           >
                             Details
                           </button>
