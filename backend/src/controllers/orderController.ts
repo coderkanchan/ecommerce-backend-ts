@@ -310,7 +310,6 @@ export const getSellerStats = async (req: any, res: any) => {
   try {
     const sellerId = req.user._id;
 
-    // Logged-in seller ke saare orders fetch karenge
     const orders = await Order.find({
       'orderItems.seller': sellerId
     });
