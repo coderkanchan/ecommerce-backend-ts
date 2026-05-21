@@ -214,9 +214,13 @@ export default function ProfilePage() {
                         </td>
                         <td className="p-4">
                           {order.isDelivered ? (
-                            <span className="text-green-400 bg-green-900/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase">Yes</span>
+                            <span className="text-green-400 bg-green-900/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase">
+                              Yes
+                            </span>
                           ) : (
-                            <span className="text-yellow-400 bg-yellow-900/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase">No</span>
+                            <span className="text-yellow-400 bg-yellow-900/20 px-3 py-1 rounded-full text-[10px] font-bold uppercase">
+                              No
+                            </span>
                           )}
                         </td>
                         <td className="p-4">
