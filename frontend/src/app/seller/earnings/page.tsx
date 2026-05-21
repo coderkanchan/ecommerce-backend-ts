@@ -22,7 +22,7 @@ export default function EarningsPage() {
           // Total revenue calculated maps to the operational account balances seamlessly
           setFinancials({
             availableBalance: Number(data.totalRevenue) || 0,
-            totalDisbursed: 0 // Can be expanded dynamically when payment gateway logs hook in
+            totalDisbursed: 0 
           });
         }
       } catch (err) {
