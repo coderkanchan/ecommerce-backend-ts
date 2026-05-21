@@ -54,7 +54,6 @@ export default function EarningsPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Core Wallet Container Card */}
         <div className="bg-[#0a0a0a] p-6 rounded-2xl border border-blue-500/10 shadow-xl flex flex-col justify-between space-y-6">
           <div className="space-y-4">
             <div className="flex items-center gap-3 border-b border-gray-900 pb-3">
@@ -76,7 +75,6 @@ export default function EarningsPage() {
           </button>
         </div>
 
-        {/* Dynamic Information Grid */}
         <div className="bg-[#0a0a0a] p-6 rounded-2xl border border-gray-900 shadow-xl flex flex-col justify-between gap-6">
           <div>
             <h2 className="text-[10px] font-black uppercase tracking-wider text-gray-500 mb-1">Total Disbursed Capital</h2>
@@ -100,7 +98,6 @@ export default function EarningsPage() {
         </div>
       </div>
 
-      {/* Bottom Ledger Data Table Logs */}
       <div className="bg-[#0a0a0a] p-6 rounded-2xl border border-gray-900 shadow-xl space-y-4">
         <div className="flex items-center gap-2 border-b border-gray-900 pb-3">
           <History className="text-gray-400 w-4 h-4" />
