@@ -85,7 +85,6 @@ export default function EarningsPage() {
         </div>
       </div>
 
-      {/* Bottom Ledger Data Table Logs */}
       <div className="bg-[#0a0a0a] p-6 rounded-2xl border border-gray-900 shadow-xl space-y-4">
         <div className="flex items-center gap-2 border-b border-gray-900 pb-3">
           <History className="text-gray-500 w-4 h-4" />
