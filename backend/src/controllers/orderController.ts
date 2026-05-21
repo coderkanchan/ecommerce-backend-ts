@@ -321,7 +321,6 @@ export const getSellerStats = async (req: any, res: any) => {
 
     if (orders && orders.length > 0) {
       orders.forEach((order) => {
-        // Sirf is seller ke items filter karenge
         const sellerItems = (order.orderItems || []).filter(
           (item: any) => item.seller && item.seller.toString() === sellerId.toString()
         );
@@ -329,7 +328,6 @@ export const getSellerStats = async (req: any, res: any) => {
         sellerItems.forEach((item: any) => {
           const itemTotal = (someNumber = Number(item.price) || 0) * (Number(item.qty) || 0);
 
-          // CRITICAL PROFESSIONAL FILTER: Check item delivery status
           if (item.isDelivered === true) {
             availableRevenue += itemTotal;
           } else {
