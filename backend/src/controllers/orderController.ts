@@ -325,8 +325,7 @@ export const getSellerStats = async (req: any, res: any) => {
         );
 
         sellerItems.forEach((item: any) => {
-          const itemTotal = (someNumber = Number(item.price) || 0) * (Number(item.qty) || 0);
-
+          const itemTotal = (Number(item.price) || 0) * (Number(item.qty) || 0);
           if (item.isDelivered === true) {
             availableRevenue += itemTotal;
           } else {
@@ -342,8 +341,8 @@ export const getSellerStats = async (req: any, res: any) => {
     const safePending = typeof pendingRevenue === 'number' && !isNaN(pendingRevenue) ? pendingRevenue : 0;
 
     res.json({
-      totalRevenue: safeAvailable.toFixed(2), 
-      pendingRevenue: safePending.toFixed(2), 
+      totalRevenue: safeAvailable.toFixed(2),
+      pendingRevenue: safePending.toFixed(2),
       totalOrders: orders ? orders.length : 0,
       totalCustomers: customerIds.size,
       conversionRate: (orders && orders.length > 0) ? "5.2%" : "0%",
