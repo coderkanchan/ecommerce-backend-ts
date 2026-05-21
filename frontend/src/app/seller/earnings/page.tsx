@@ -19,7 +19,6 @@ export default function EarningsPage() {
         });
         if (res.ok) {
           const data = await res.json();
-          // Total revenue calculated maps to the operational account balances seamlessly
           setFinancials({
             availableBalance: Number(data.totalRevenue) || 0,
             totalDisbursed: 0 
