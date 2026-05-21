@@ -70,7 +70,6 @@ export default function EarningsPage() {
           </button>
         </div>
 
-        {/* Dynamic Static Information Grid */}
         <div className="bg-[#0a0a0a] p-6 rounded-2xl border border-gray-900 shadow-xl flex flex-col justify-between gap-6">
           <div>
             <h2 className="text-[10px] font-black uppercase tracking-wider text-gray-500 mb-1">Total Disbursed Capital</h2>
