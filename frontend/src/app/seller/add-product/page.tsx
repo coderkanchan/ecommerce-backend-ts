@@ -6,7 +6,6 @@ import { RootState } from '@/redux/store';
 import { Package, IndianRupee, Tag, Layers, Loader2, ArrowLeft, UploadCloud, X, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
-// Import corporate taxonomy configuration engine
 import { CATEGORY_TREE } from '@/constants/categoryData';
 
 export default function AddProductPage() {
@@ -17,7 +16,6 @@ export default function AddProductPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  // Synchronized state boundaries
   const [formData, setFormData] = useState({
     name: '',
     description: '',
