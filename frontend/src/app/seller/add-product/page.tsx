@@ -24,7 +24,6 @@ export default function AddProductPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  // Standardized schema fields initialized correctly
   const [formData, setFormData] = useState({
     name: '',
     description: '',
