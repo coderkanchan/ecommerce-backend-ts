@@ -305,21 +305,17 @@ export const createProduct = async (req: any, res: Response) => {
   }
 };
 
-// @desc    Advanced Multi-Tier Faceted Catalog Engine
 export const getProducts = async (req: Request, res: Response) => {
   try {
     const pageSize = 8;
     const page = Number(req.query.pageNumber) || 1;
 
-    // Isolate Query States explicitly to support parallel filtering
     const keyword = req.query.keyword as string;
     const category = req.query.category as string;
     const subCategory = req.query.subCategory as string;
 
-    // Explicit Mongoose Match Pipeline Object
     let queryFilter: any = {};
 
-    // 1. Text Search Constraints
     if (keyword) {
       queryFilter.$or = [
         { name: { $regex: keyword, $options: 'i' } },
@@ -327,17 +323,14 @@ export const getProducts = async (req: Request, res: Response) => {
       ];
     }
 
-    // 2. L1 Category Check Matrix
     if (category && category !== 'All') {
       queryFilter.category = category;
     }
 
-    // 3. L2 Sub-Category Vector Resolution
     if (subCategory) {
       queryFilter.subCategory = subCategory;
     }
 
-    // Sort order mapping configurations
     let sortOrder: any = { createdAt: -1 };
     if (req.query.sort === 'lowest') sortOrder = { price: 1 };
     else if (req.query.sort === 'highest') sortOrder = { price: -1 };
