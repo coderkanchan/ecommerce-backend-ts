@@ -58,7 +58,6 @@ export default function AddProductPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Safety verification layers
     if (!imageFile) {
       toast.error("Please assign a Product Visual media asset before publishing.");
       return;
