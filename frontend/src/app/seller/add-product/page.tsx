@@ -165,7 +165,6 @@ export default function AddProductPage() {
                 </div>
               </div>
 
-              {/* Stock */}
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">Stock Units</label>
                 <div className="relative group">
