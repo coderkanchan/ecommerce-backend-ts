@@ -153,23 +153,48 @@ export default function AddProductPage() {
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">Product Name</label>
                 <div className="relative group">
                   <Package className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-700 group-focus-within:text-blue-500 transition" size={18} />
-                  <input type="text" name="name" required value={formData.name} placeholder="Asset Identification Name" className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-medium text-sm text-white" onChange={handleInputChange} />
+                  <input
+                    type="text"
+                    name="name"
+                    required
+                    value={formData.name}
+                    placeholder="Asset Identification Name"
+                    className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-medium text-sm text-white" onChange={handleInputChange}
+                  />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">Price (INR)</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
+                  Price (INR)
+                </label>
                 <div className="relative group">
                   <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-700 group-focus-within:text-blue-500 transition" size={18} />
-                  <input type="number" name="price" min="1" step="0.01" required value={formData.price} placeholder="0.00" className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-mono text-sm text-white" onChange={handleInputChange} />
+                  <input
+                    type="number"
+                    name="price" min="1" step="0.01"
+                    required
+                    value={formData.price}
+                    placeholder="0.00"
+                    className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-mono text-sm text-white" onChange={handleInputChange}
+                  />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">Stock Units</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
+                  Stock Units
+                </label>
                 <div className="relative group">
                   <Layers className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-700 group-focus-within:text-blue-500 transition" size={18} />
-                  <input type="number" name="stock" min="0" required value={formData.stock} placeholder="Available Quantity" className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-mono text-sm text-white" onChange={handleInputChange} />
+                  <input
+                    type="number"
+                    name="stock" min="0"
+                    required
+                    value={formData.stock}
+                    placeholder="Available Quantity"
+                    className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-mono text-sm text-white" onChange={handleInputChange}
+                  />
                 </div>
               </div>
 
