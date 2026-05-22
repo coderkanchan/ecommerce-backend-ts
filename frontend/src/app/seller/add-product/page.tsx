@@ -174,13 +174,31 @@ export default function AddProductPage() {
               </div>
 
               <div className="md:col-span-2 space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">Classification Category</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
+                  Classification Category
+                </label>
                 <div className="relative group">
                   <Tag className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-700 group-focus-within:text-blue-500 transition" size={18} />
-                  <select name="category" required value={formData.category} className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition text-sm appearance-none text-white cursor-pointer" onChange={handleInputChange}>
-                    <option value="" disabled className="text-gray-600">Select Asset Classification Subsystem</option>
+                  <select
+                    name="category"
+                    required
+                    value={formData.category}
+                    className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition text-sm appearance-none text-white cursor-pointer"
+                    onChange={handleInputChange}
+                  >
+                    <option
+                      value=""
+                      disabled
+                      className="text-gray-600">
+                      Select Asset Classification Subsystem
+                    </option>
                     {MARKETPLACE_CATEGORIES.map((cat) => (
-                      <option key={cat} value={cat} className="bg-[#0A0A0A] text-white py-2">{cat}</option>
+                      <option
+                        key={cat}
+                        value={cat}
+                        className="bg-[#0A0A0A] text-white py-2">
+                        {cat}
+                      </option>
                     ))}
                   </select>
                   <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
@@ -190,16 +208,29 @@ export default function AddProductPage() {
               </div>
 
               <div className="md:col-span-2 space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">Asset Description</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
+                  Asset Description
+                </label>
                 <div className="relative group">
                   <FileText className="absolute left-4 top-4 text-gray-700 group-focus-within:text-blue-500 transition" size={18} />
-                  <textarea name="description" required rows={4} value={formData.description} placeholder="Detailed technical specifications, hardware compatibility grids, and functional parameters..." className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition resize-none text-sm text-white" onChange={handleInputChange}></textarea>
+                  <textarea
+                    name="description"
+                    required rows={4}
+                    value={formData.description}
+                    placeholder="Detailed technical specifications, hardware compatibility grids, and functional parameters..."
+                    className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition resize-none text-sm text-white"
+                    onChange={handleInputChange}>
+                  </textarea>
                 </div>
               </div>
             </div>
           </div>
 
-          <button type="submit" disabled={loading} className="w-full bg-white text-black hover:bg-blue-600 hover:text-white py-5 rounded-4xl font-black text-lg tracking-tighter transition-all hover:scale-[1.01] active:scale-95 flex items-center justify-center gap-3 disabled:bg-gray-900 disabled:text-gray-700 disabled:cursor-not-allowed">
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-white text-black hover:bg-blue-600 hover:text-white py-5 rounded-4xl font-black text-lg tracking-tighter transition-all hover:scale-[1.01] active:scale-95 flex items-center justify-center gap-3 disabled:bg-gray-900 disabled:text-gray-700 disabled:cursor-not-allowed"
+          >
             {loading ? <Loader2 className="animate-spin" size={24} /> : "PUBLISH TO NEXUSMART"}
           </button>
         </form>
