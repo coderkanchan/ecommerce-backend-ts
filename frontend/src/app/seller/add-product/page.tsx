@@ -127,7 +127,6 @@ export default function AddProductPage() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="bg-[#0A0A0A] p-5 sm:p-8 rounded-4xl border border-gray-900 shadow-2xl space-y-8">
 
-            {/* Product Visual Section */}
             <div>
               <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 mb-4">
                 Product Visual
@@ -170,10 +169,8 @@ export default function AddProductPage() {
               )}
             </div>
 
-            {/* Inputs Matrix Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-              {/* Product Name */}
               <div className="md:col-span-2 space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
                   Product Name
@@ -192,7 +189,6 @@ export default function AddProductPage() {
                 </div>
               </div>
 
-              {/* Price */}
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
                   Price (INR)
@@ -213,7 +209,6 @@ export default function AddProductPage() {
                 </div>
               </div>
 
-              {/* Stock */}
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
                   Stock Units
@@ -233,7 +228,6 @@ export default function AddProductPage() {
                 </div>
               </div>
 
-              {/* Dropdown 1: Main Parent Category Selector */}
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
                   Classification Category
