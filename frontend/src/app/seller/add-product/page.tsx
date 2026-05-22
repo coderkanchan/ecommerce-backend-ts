@@ -28,8 +28,8 @@ export default function AddProductPage() {
     name: '',
     description: '',
     price: '',
-    category: '',      // L1 Parent
-    subCategory: '',   // L2 Child
+    category: '',     
+    subCategory: '',   
     stock: '',
   });
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
