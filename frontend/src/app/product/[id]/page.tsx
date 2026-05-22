@@ -159,14 +159,12 @@ export default function ProductDetails() {
 
   if (!product) return <DetailSkeleton />;
 
-  // Dynamic Image Vector Resolver Pipeline
   const resolvedImageSrc = product.imageUrl && product.imageUrl.startsWith('http')
     ? product.imageUrl
     : `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}${product.imageUrl || '/placeholder.png'}`;
 
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-8 flex flex-col md:flex-row gap-8 lg:gap-12 text-black bg-white my-6 rounded-2xl shadow-sm">
-      {/* Visual Workspace Module */}
       <div className="flex-1 bg-[#F7F8F8] rounded-2xl p-6 flex items-center justify-center border border-gray-100">
         <div className="relative w-full aspect-square max-w-[450px]">
           <Image
@@ -180,7 +178,6 @@ export default function ProductDetails() {
         </div>
       </div>
 
-      {/* Control Configuration Board */}
       <div className="flex-1 space-y-6 flex flex-col justify-center">
         <div className="border-b border-gray-100 pb-4">
           <span className="text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md">
@@ -192,7 +189,6 @@ export default function ProductDetails() {
         <p className="text-3xl font-mono font-bold text-gray-900">${Number(product.price).toFixed(2)}</p>
         <p className="text-gray-600 text-sm leading-relaxed font-medium">{product.description}</p>
 
-        {/* Operational Trigger Dashboard */}
         <div className="space-y-4 pt-4 border-t border-gray-100">
           <div className="flex items-center gap-4 bg-gray-50 border border-gray-200 px-4 py-2.5 rounded-xl w-fit">
             <span className="text-xs font-bold uppercase text-gray-500">Allocation Metrics:</span>
