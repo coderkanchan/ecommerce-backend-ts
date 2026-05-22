@@ -110,21 +110,31 @@ export default function AddProductPage() {
   return (
     <div className="min-h-screen bg-black text-white p-4 sm:p-6 md:p-10">
       <div className="max-w-3xl mx-auto">
-        <Link href="/seller/dashboard" className="inline-flex items-center gap-2 text-gray-500 hover:text-white transition mb-6 md:mb-10 group text-xs font-bold uppercase tracking-widest">
+        <Link
+          href="/seller/dashboard"
+          className="inline-flex items-center gap-2 text-gray-500 hover:text-white transition mb-6 md:mb-10 group text-xs font-bold uppercase tracking-widest">
           <ArrowLeft size={16} className="group-hover:-translate-x-1 transition" /> Back to Nexus Console
         </Link>
 
         <h1 className="text-3xl md:text-5xl font-black mb-2 italic tracking-tighter">ADD NEW PRODUCT</h1>
-        <p className="text-gray-500 mb-8 md:mb-12 text-sm md:text-sm uppercase tracking-widest font-semibold">Deploy high-quality assets to the NexusMart ecosystem.</p>
+        <p className="text-gray-500 mb-8 md:mb-12 text-sm md:text-sm uppercase tracking-widest font-semibold">
+          Deploy high-quality assets to the NexusMart ecosystem.
+        </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="bg-[#0A0A0A] p-5 sm:p-8 rounded-4xl border border-gray-900 shadow-2xl space-y-8">
 
             <div>
-              <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 mb-4">Product Visual</label>
+              <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 mb-4">
+                Product Visual
+              </label>
               {!imagePreview ? (
                 <div className="relative border-2 border-dashed border-gray-900 rounded-3xl p-8 sm:p-14 text-center hover:border-blue-500/40 hover:bg-blue-500/5 transition-all cursor-pointer group">
-                  <input type="file" accept="image/*" onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                  />
                   <div className="space-y-4">
                     <div className="bg-gray-900 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition shadow-xl">
                       <UploadCloud className="text-blue-500" size={28} />
@@ -137,9 +147,17 @@ export default function AddProductPage() {
                 </div>
               ) : (
                 <div className="relative w-full aspect-video sm:aspect-auto sm:h-64 rounded-4xl overflow-hidden border border-gray-800 group shadow-2xl">
-                  <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="w-full h-full object-cover"
+                  />
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
-                    <button type="button" onClick={removeImage} className="bg-red-500 p-3 rounded-full hover:scale-110 transition shadow-lg">
+                    <button
+                      type="button"
+                      onClick={removeImage}
+                      className="bg-red-500 p-3 rounded-full hover:scale-110 transition shadow-lg"
+                    >
                       <X size={20} />
                     </button>
                   </div>
@@ -150,7 +168,9 @@ export default function AddProductPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
               <div className="md:col-span-2 space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">Product Name</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
+                  Product Name
+                </label>
                 <div className="relative group">
                   <Package className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-700 group-focus-within:text-blue-500 transition" size={18} />
                   <input
