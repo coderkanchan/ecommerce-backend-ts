@@ -147,7 +147,6 @@ export default function AddProductPage() {
               )}
             </div>
 
-            {/* Input Grids */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
               {/* Product Name */}
