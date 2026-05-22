@@ -58,7 +58,6 @@ export default function CategoryFilters() {
             <button
               key={cat}
               onClick={() => {
-                // Professional Search Forwarding System Architecture
                 if (cat === "All") {
                   router.push('/search');
                 } else {
