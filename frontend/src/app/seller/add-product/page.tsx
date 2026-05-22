@@ -6,15 +6,8 @@ import { RootState } from '@/redux/store';
 import { Package, IndianRupee, Tag, Layers, Loader2, ArrowLeft, UploadCloud, X, FileText } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
-
-const MARKETPLACE_CATEGORIES = [
-  "Electronics",
-  "Hardware & Tools",
-  "Apparel & Wearables",
-  "Digital Assets & Software",
-  "Home Automation",
-  "Mechanical Nodes"
-];
+// Import corporate taxonomy configuration engine
+import { CATEGORY_TREE } from '@/constants/categoryData';
 
 export default function AddProductPage() {
   const router = useRouter();
@@ -24,14 +17,16 @@ export default function AddProductPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
+  // Synchronized state boundaries
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     price: '',
-    category: '',     
-    subCategory: '',   
+    category: '',     // L1 Parent Vector
+    subCategory: '',  // L2 Child Node
     stock: '',
   });
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -50,7 +45,7 @@ export default function AddProductPage() {
   };
 
   const removeImage = () => {
-    if (imagePreview) URL.revokeObjectURL(imagePreview); // Clean memory pipeline leaks
+    if (imagePreview) URL.revokeObjectURL(imagePreview); // Memory cleanup protection
     setImageFile(null);
     setImagePreview(null);
   };
@@ -64,6 +59,10 @@ export default function AddProductPage() {
     }
     if (Number(formData.price) <= 0 || Number(formData.stock) < 0) {
       toast.error("Invalid monetary vector or negative stock metrics.");
+      return;
+    }
+    if (!formData.category || !formData.subCategory) {
+      toast.error("Taxonomy assignment incomplete! Parent and Sub-Category required.");
       return;
     }
 
@@ -107,12 +106,16 @@ export default function AddProductPage() {
     }
   };
 
+  // Derive top-level categories array dynamically
+  const parentCategories = Object.keys(CATEGORY_TREE);
+
   return (
     <div className="min-h-screen bg-black text-white p-4 sm:p-6 md:p-10">
       <div className="max-w-3xl mx-auto">
         <Link
           href="/seller/dashboard"
-          className="inline-flex items-center gap-2 text-gray-500 hover:text-white transition mb-6 md:mb-10 group text-xs font-bold uppercase tracking-widest">
+          className="inline-flex items-center gap-2 text-gray-500 hover:text-white transition mb-6 md:mb-10 group text-xs font-bold uppercase tracking-widest"
+        >
           <ArrowLeft size={16} className="group-hover:-translate-x-1 transition" /> Back to Nexus Console
         </Link>
 
@@ -124,6 +127,7 @@ export default function AddProductPage() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="bg-[#0A0A0A] p-5 sm:p-8 rounded-4xl border border-gray-900 shadow-2xl space-y-8">
 
+            {/* Product Visual Section */}
             <div>
               <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 mb-4">
                 Product Visual
@@ -133,7 +137,8 @@ export default function AddProductPage() {
                   <input
                     type="file"
                     accept="image/*"
-                    onChange={handleFileChange} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                    onChange={handleFileChange}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                   />
                   <div className="space-y-4">
                     <div className="bg-gray-900 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mx-auto group-hover:scale-110 transition shadow-xl">
@@ -165,8 +170,10 @@ export default function AddProductPage() {
               )}
             </div>
 
+            {/* Inputs Matrix Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
+              {/* Product Name */}
               <div className="md:col-span-2 space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
                   Product Name
@@ -179,11 +186,13 @@ export default function AddProductPage() {
                     required
                     value={formData.name}
                     placeholder="Asset Identification Name"
-                    className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-medium text-sm text-white" onChange={handleInputChange}
+                    className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-medium text-sm text-white"
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
 
+              {/* Price */}
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
                   Price (INR)
@@ -192,15 +201,19 @@ export default function AddProductPage() {
                   <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-700 group-focus-within:text-blue-500 transition" size={18} />
                   <input
                     type="number"
-                    name="price" min="1" step="0.01"
+                    name="price"
+                    min="1"
+                    step="0.01"
                     required
                     value={formData.price}
                     placeholder="0.00"
-                    className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-mono text-sm text-white" onChange={handleInputChange}
+                    className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-mono text-sm text-white"
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
 
+              {/* Stock */}
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
                   Stock Units
@@ -209,16 +222,19 @@ export default function AddProductPage() {
                   <Layers className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-700 group-focus-within:text-blue-500 transition" size={18} />
                   <input
                     type="number"
-                    name="stock" min="0"
+                    name="stock"
+                    min="0"
                     required
                     value={formData.stock}
                     placeholder="Available Quantity"
-                    className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-mono text-sm text-white" onChange={handleInputChange}
+                    className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-mono text-sm text-white"
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>
 
-              <div className="md:col-span-2 space-y-2">
+              {/* Dropdown 1: Main Parent Category Selector */}
+              <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
                   Classification Category
                 </label>
@@ -229,19 +245,16 @@ export default function AddProductPage() {
                     required
                     value={formData.category}
                     className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition text-sm appearance-none text-white cursor-pointer"
-                    onChange={handleInputChange}
+                    onChange={(e) => {
+                      // Standard Reset Pattern: Jab parent badlega, child clear ho jayega
+                      setFormData({ ...formData, category: e.target.value, subCategory: '' });
+                    }}
                   >
-                    <option
-                      value=""
-                      disabled
-                      className="text-gray-600">
-                      Select Asset Classification Subsystem
+                    <option value="" disabled className="text-gray-600">
+                      Select Parent Vector
                     </option>
-                    {MARKETPLACE_CATEGORIES.map((cat) => (
-                      <option
-                        key={cat}
-                        value={cat}
-                        className="bg-[#0A0A0A] text-white py-2">
+                    {parentCategories.map((cat) => (
+                      <option key={cat} value={cat} className="bg-[#0A0A0A] text-white py-2">
                         {cat}
                       </option>
                     ))}
@@ -252,6 +265,37 @@ export default function AddProductPage() {
                 </div>
               </div>
 
+              {/* Dropdown 2: Dynamic Sub-Category Selector */}
+              <div className="space-y-2">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
+                  Sub-Category Segment
+                </label>
+                <div className="relative group">
+                  <Layers className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-700 group-focus-within:text-blue-500 transition" size={18} />
+                  <select
+                    name="subCategory"
+                    required
+                    disabled={!formData.category} // Protected State Vector
+                    value={formData.subCategory}
+                    className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition text-sm appearance-none text-white cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                    onChange={handleInputChange}
+                  >
+                    <option value="" disabled className="text-gray-600">
+                      {formData.category ? "Select Sub-Category Node" : "Awaiting Parent Vector..."}
+                    </option>
+                    {formData.category && CATEGORY_TREE[formData.category]?.map((sub) => (
+                      <option key={sub} value={sub} className="bg-[#0A0A0A] text-white py-2">
+                        {sub}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Asset Description */}
               <div className="md:col-span-2 space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
                   Asset Description
@@ -260,12 +304,13 @@ export default function AddProductPage() {
                   <FileText className="absolute left-4 top-4 text-gray-700 group-focus-within:text-blue-500 transition" size={18} />
                   <textarea
                     name="description"
-                    required rows={4}
+                    required
+                    rows={4}
                     value={formData.description}
                     placeholder="Detailed technical specifications, hardware compatibility grids, and functional parameters..."
                     className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition resize-none text-sm text-white"
-                    onChange={handleInputChange}>
-                  </textarea>
+                    onChange={handleInputChange}
+                  />
                 </div>
               </div>
             </div>
