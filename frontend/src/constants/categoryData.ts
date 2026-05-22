@@ -1,4 +1,3 @@
-// Single Source of Truth for the entire Marketplace Taxonomy
 export const CATEGORY_TREE: Record<string, string[]> = {
   "Electronics": ["Laptops", "Mice", "Keyboards", "Monitors", "Microwaves", "Air Conditioners", "Washing machines"],
   "Fashion": ["T-Shirts", "Shirts", "Jeans", "Shoes"],
