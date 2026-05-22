@@ -126,7 +126,6 @@ export const metadata = {
 
 async function FeaturedProductsGrid() {
   try {
-    // Top-tier curated products fetch sequence for marketplace conversion
     const response = await API.get('/products/all?pageNumber=1');
     const products = response.data.products?.slice(0, 8) || [];
 
@@ -148,16 +147,13 @@ async function FeaturedProductsGrid() {
 export default async function Home() {
   return (
     <main className="w-full bg-[#EAEDED] min-h-screen pb-16 overflow-x-hidden text-black">
-      {/* Top Navbar Categorization Strip */}
       <CategoryFilters />
 
-      {/* Hero Showcase System */}
       <div className="relative w-full">
         <HomeCarousel />
         <div className="absolute bottom-0 left-0 w-full h-32 md:h-64 bg-gradient-to-t from-[#EAEDED] via-[#EAEDED]/70 to-transparent z-10" />
       </div>
 
-      {/* Structural Layer Layout Layer Matrix */}
       <div className="max-w-7xl mx-auto px-4 relative z-20 -mt-24 md:-mt-52 lg:-mt-64">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {HOME_CARDS.map((card) => (
