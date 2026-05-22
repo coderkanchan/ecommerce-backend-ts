@@ -149,7 +149,6 @@ export default function AddProductPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-              {/* Product Name */}
               <div className="md:col-span-2 space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">Product Name</label>
                 <div className="relative group">
