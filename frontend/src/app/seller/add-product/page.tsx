@@ -246,7 +246,6 @@ export default function AddProductPage() {
                     value={formData.category}
                     className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition text-sm appearance-none text-white cursor-pointer"
                     onChange={(e) => {
-                      // Standard Reset Pattern: Jab parent badlega, child clear ho jayega
                       setFormData({ ...formData, category: e.target.value, subCategory: '' });
                     }}
                   >
@@ -265,7 +264,6 @@ export default function AddProductPage() {
                 </div>
               </div>
 
-              {/* Dropdown 2: Dynamic Sub-Category Selector */}
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
                   Sub-Category Segment
@@ -275,7 +273,7 @@ export default function AddProductPage() {
                   <select
                     name="subCategory"
                     required
-                    disabled={!formData.category} // Protected State Vector
+                    disabled={!formData.category}
                     value={formData.subCategory}
                     className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition text-sm appearance-none text-white cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
                     onChange={handleInputChange}
@@ -295,7 +293,6 @@ export default function AddProductPage() {
                 </div>
               </div>
 
-              {/* Asset Description */}
               <div className="md:col-span-2 space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">
                   Asset Description
