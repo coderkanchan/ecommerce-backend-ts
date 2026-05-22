@@ -173,7 +173,6 @@ export default function AddProductPage() {
                 </div>
               </div>
 
-              {/* Classification Selector Dropdown */}
               <div className="md:col-span-2 space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">Classification Category</label>
                 <div className="relative group">
