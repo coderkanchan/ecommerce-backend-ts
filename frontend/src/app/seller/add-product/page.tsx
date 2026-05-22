@@ -7,6 +7,16 @@ import { Package, IndianRupee, Tag, Layers, Loader2, ArrowLeft, UploadCloud, X, 
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
 
+// Professional standardized taxonomy
+const MARKETPLACE_CATEGORIES = [
+  "Electronics",
+  "Hardware & Tools",
+  "Apparel & Wearables",
+  "Digital Assets & Software",
+  "Home Automation",
+  "Mechanical Nodes"
+];
+
 export default function AddProductPage() {
   const router = useRouter();
   const { userInfo } = useSelector((state: RootState) => state.auth);
@@ -14,6 +24,8 @@ export default function AddProductPage() {
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  // Standardized schema fields initialized correctly
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -22,11 +34,16 @@ export default function AddProductPage() {
     stock: '',
   });
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        toast.error("File size too large! Max 5MB allowed.");
+        toast.error("File size limits breached! Max 5MB allowed.");
         return;
       }
       setImageFile(file);
@@ -35,12 +52,24 @@ export default function AddProductPage() {
   };
 
   const removeImage = () => {
+    if (imagePreview) URL.revokeObjectURL(imagePreview); // Clean memory pipeline leaks
     setImageFile(null);
     setImagePreview(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Safety verification layers
+    if (!imageFile) {
+      toast.error("Please assign a Product Visual media asset before publishing.");
+      return;
+    }
+    if (Number(formData.price) <= 0 || Number(formData.stock) < 0) {
+      toast.error("Invalid monetary vector or negative stock metrics.");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -48,13 +77,15 @@ export default function AddProductPage() {
       if (imageFile) {
         const uploadData = new FormData();
         uploadData.append('image', imageFile);
+
         const uploadRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/upload`, {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${userInfo?.token}` },
           body: uploadData,
         });
+
         const uploadResult = await uploadRes.json();
-        if (!uploadRes.ok) throw new Error(uploadResult.message || 'Image upload failed');
+        if (!uploadRes.ok) throw new Error(uploadResult.message || 'Image upload tracking failed');
         finalImageUrl = uploadResult.image;
       }
 
@@ -68,12 +99,12 @@ export default function AddProductPage() {
       });
 
       const productData = await productRes.json();
-      if (!productRes.ok) throw new Error(productData.message || 'Failed to create product');
+      if (!productRes.ok) throw new Error(productData.message || 'Failed to sync product data mapping');
 
-      toast.success('Product published successfully! ✨');
+      toast.success('Product deployed successfully to NexusMart ecosystem! ✨');
       router.push('/seller/dashboard');
     } catch (err: any) {
-      toast.error(err.message || 'Something went wrong');
+      toast.error(err.message || 'Fatal ecosystem operational pipeline error');
     } finally {
       setLoading(false);
     }
@@ -87,11 +118,12 @@ export default function AddProductPage() {
         </Link>
 
         <h1 className="text-3xl md:text-5xl font-black mb-2 italic tracking-tighter">ADD NEW PRODUCT</h1>
-        <p className="text-gray-500 mb-8 md:mb-12 text-sm md:text-lg">Deploy high-quality assets to the NexusMart ecosystem.</p>
+        <p className="text-gray-500 mb-8 md:mb-12 text-sm md:text-sm uppercase tracking-widest font-semibold">Deploy high-quality assets to the NexusMart ecosystem.</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="bg-[#0A0A0A] p-5 sm:p-8 rounded-4xl border border-gray-900 shadow-2xl space-y-8">
 
+            {/* Product Image Section */}
             <div>
               <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 mb-4">Product Visual</label>
               {!imagePreview ? (
@@ -119,50 +151,65 @@ export default function AddProductPage() {
               )}
             </div>
 
+            {/* Input Grids */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+              {/* Product Name */}
               <div className="md:col-span-2 space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">Product Name</label>
                 <div className="relative group">
                   <Package className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-700 group-focus-within:text-blue-500 transition" size={18} />
-                  <input type="text" required placeholder="Asset Identification Name" className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-medium text-sm" onChange={(e) => setFormData({ ...formData, name: e.target.value })} />
+                  <input type="text" name="name" required value={formData.name} placeholder="Asset Identification Name" className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-medium text-sm text-white" onChange={handleInputChange} />
                 </div>
               </div>
 
+              {/* Price */}
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">Price (INR)</label>
                 <div className="relative group">
                   <IndianRupee className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-700 group-focus-within:text-blue-500 transition" size={18} />
-                  <input type="number" required placeholder="0.00" className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-mono text-sm" onChange={(e) => setFormData({ ...formData, price: e.target.value })} />
+                  <input type="number" name="price" min="1" step="0.01" required value={formData.price} placeholder="0.00" className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-mono text-sm text-white" onChange={handleInputChange} />
                 </div>
               </div>
 
+              {/* Stock */}
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">Stock Units</label>
                 <div className="relative group">
                   <Layers className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-700 group-focus-within:text-blue-500 transition" size={18} />
-                  <input type="number" required placeholder="Available Quantity" className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-mono text-sm" onChange={(e) => setFormData({ ...formData, stock: e.target.value })} />
+                  <input type="number" name="stock" min="0" required value={formData.stock} placeholder="Available Quantity" className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition font-mono text-sm text-white" onChange={handleInputChange} />
                 </div>
               </div>
 
+              {/* Classification Selector Dropdown */}
               <div className="md:col-span-2 space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">Classification</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">Classification Category</label>
                 <div className="relative group">
                   <Tag className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-700 group-focus-within:text-blue-500 transition" size={18} />
-                  <input type="text" required placeholder="e.g. Electronics, Hardware, Apparel" className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition text-sm" onChange={(e) => setFormData({ ...formData, category: e.target.value })} />
+                  <select name="category" required value={formData.category} className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition text-sm appearance-none text-white cursor-pointer" onChange={handleInputChange}>
+                    <option value="" disabled className="text-gray-600">Select Asset Classification Subsystem</option>
+                    {MARKETPLACE_CATEGORIES.map((cat) => (
+                      <option key={cat} value={cat} className="bg-[#0A0A0A] text-white py-2">{cat}</option>
+                    ))}
+                  </select>
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
+                    <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+                  </div>
                 </div>
               </div>
 
+              {/* Description */}
               <div className="md:col-span-2 space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">Asset Description</label>
                 <div className="relative group">
                   <FileText className="absolute left-4 top-4 text-gray-700 group-focus-within:text-blue-500 transition" size={18} />
-                  <textarea required rows={4} placeholder="Detailed technical specifications and features..." className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition resize-none text-sm" onChange={(e) => setFormData({ ...formData, description: e.target.value })}></textarea>
+                  <textarea name="description" required rows={4} value={formData.description} placeholder="Detailed technical specifications, hardware compatibility grids, and functional parameters..." className="w-full bg-black border border-gray-800 rounded-2xl py-4 pl-12 pr-4 focus:border-blue-500 outline-none transition resize-none text-sm text-white" onChange={handleInputChange}></textarea>
                 </div>
               </div>
             </div>
           </div>
 
-          <button type="submit" disabled={loading} className="w-full bg-white text-black hover:bg-blue-600 hover:text-white py-5 rounded-4xl font-black text-lg tracking-tighter transition-all shadow-[0_0_40px_rgba(255,255,255,0.05)] flex items-center justify-center gap-3 disabled:bg-gray-900 disabled:text-gray-700">
+          <button type="submit" disabled={loading} className="w-full bg-white text-black hover:bg-blue-600 hover:text-white py-5 rounded-4xl font-black text-lg tracking-tighter transition-all hover:scale-[1.01] active:scale-95 flex items-center justify-center gap-3 disabled:bg-gray-900 disabled:text-gray-700 disabled:cursor-not-allowed">
             {loading ? <Loader2 className="animate-spin" size={24} /> : "PUBLISH TO NEXUSMART"}
           </button>
         </form>
