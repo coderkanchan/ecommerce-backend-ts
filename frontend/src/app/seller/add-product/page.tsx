@@ -120,7 +120,6 @@ export default function AddProductPage() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="bg-[#0A0A0A] p-5 sm:p-8 rounded-4xl border border-gray-900 shadow-2xl space-y-8">
 
-            {/* Product Image Section */}
             <div>
               <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 mb-4">Product Visual</label>
               {!imagePreview ? (
