@@ -7,7 +7,6 @@ import { Package, IndianRupee, Tag, Layers, Loader2, ArrowLeft, UploadCloud, X, 
 import Link from 'next/link';
 import { toast } from 'react-hot-toast';
 
-// Professional standardized taxonomy
 const MARKETPLACE_CATEGORIES = [
   "Electronics",
   "Hardware & Tools",
