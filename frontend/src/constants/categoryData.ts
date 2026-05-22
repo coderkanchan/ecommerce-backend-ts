@@ -12,7 +12,6 @@ export const CATEGORY_TREE: Record<string, string[]> = {
   "Sports": ["Cricket", "Football", "Gym Equipment"]
 };
 
-// Frontend Dropdowns aur Filters ke liye automatic derivation
 export const PRODUCT_CATEGORIES = Object.keys(CATEGORY_TREE);
 export const SEARCH_CATEGORIES = ["All", ...PRODUCT_CATEGORIES];
 export const QUICK_FILTERS = ["All", "Electronics", "Fashion", "Home & Kitchen", "Automotive"];
