@@ -248,7 +248,6 @@ import { Product } from '../models/Product.js';
 import { index } from "../config/pinecone.js";
 import { getEmbedding } from "../utils/embedding.js";
 
-// @desc    Create a product and update Pinecone semantic index cluster
 export const createProduct = async (req: any, res: Response) => {
   try {
     const { name, description, price, category, subCategory, stock, imageUrl } = req.body;
@@ -270,7 +269,7 @@ export const createProduct = async (req: any, res: Response) => {
       description,
       price: Number(price),
       category,
-      subCategory: subCategory || "", // Multi-tier taxonomy scaling
+      subCategory: subCategory || "", 
       stock: Number(stock),
       imageUrl,
       seller: req.user._id,
@@ -278,7 +277,6 @@ export const createProduct = async (req: any, res: Response) => {
 
     const savedProduct = await product.save();
 
-    // AI Semantic Mapping Configuration (Vector Space Aggregation)
     const embedding = await getEmbedding(
       `${product.name} ${product.description} ${product.category} ${product.subCategory || ''}`
     );
