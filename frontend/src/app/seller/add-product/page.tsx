@@ -24,14 +24,21 @@ export default function AddProductPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
+  // const [formData, setFormData] = useState({
+  //   name: '',
+  //   description: '',
+  //   price: '',
+  //   category: '',
+  //   stock: '',
+  // });
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     price: '',
-    category: '',
+    category: '',      // L1 Parent
+    subCategory: '',   // L2 Child
     stock: '',
   });
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
