@@ -22,8 +22,8 @@ export default function AddProductPage() {
     name: '',
     description: '',
     price: '',
-    category: '',     // L1 Parent Vector
-    subCategory: '',  // L2 Child Node
+    category: '',    
+    subCategory: '',  
     stock: '',
   });
 
