@@ -157,7 +157,6 @@ export default function AddProductPage() {
                 </div>
               </div>
 
-              {/* Price */}
               <div className="space-y-2">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-600 px-1">Price (INR)</label>
                 <div className="relative group">
