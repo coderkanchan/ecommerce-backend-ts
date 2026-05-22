@@ -169,7 +169,6 @@ export default async function Home() {
           ))}
         </div>
 
-        {/* Dynamic Hydration Products Feed */}
         <Suspense fallback={<div className="text-center text-gray-500 py-12">Compiling System Nodes...</div>}>
           <FeaturedProductsGrid />
         </Suspense>
