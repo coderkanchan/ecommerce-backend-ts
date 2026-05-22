@@ -45,7 +45,7 @@ export default function AddProductPage() {
   };
 
   const removeImage = () => {
-    if (imagePreview) URL.revokeObjectURL(imagePreview); // Memory cleanup protection
+    if (imagePreview) URL.revokeObjectURL(imagePreview); 
     setImageFile(null);
     setImagePreview(null);
   };
@@ -106,7 +106,6 @@ export default function AddProductPage() {
     }
   };
 
-  // Derive top-level categories array dynamically
   const parentCategories = Object.keys(CATEGORY_TREE);
 
   return (
