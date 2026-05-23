@@ -19,7 +19,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const currentCategory = searchParams.get('category') || 'All';
 
-  // Debounced search logic forwarding to central /search landing zone
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (keyword.trim()) {
