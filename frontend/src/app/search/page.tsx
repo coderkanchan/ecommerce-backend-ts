@@ -89,7 +89,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           <aside className="w-full lg:w-64 shrink-0 bg-white border border-gray-200 rounded-xl p-5 shadow-sm h-fit">
             <div className="mb-6">
               <h2 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Filter Modules</h2>
-              <div className="h-[1px] bg-gray-100 w-full mb-4"></div>
+              <div className="h-px bg-gray-100 w-full mb-4"></div>
 
               <h3 className="text-sm font-bold text-gray-800 mb-2">Primary Domains</h3>
               <ul className="space-y-1.5">
