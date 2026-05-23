@@ -3,7 +3,6 @@ import ProductCard from '@/components/ProductCard';
 import Link from 'next/link';
 import { CATEGORY_TREE } from '@/constants/categoryData';
 
-// Explicit structural typing for Next.js 14+ / 15 server params
 interface SearchPageProps {
   searchParams: Promise<{
     category?: string;
@@ -17,7 +16,6 @@ interface SearchPageProps {
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const params = await searchParams;
 
-  // Extract state constraints cleanly
   const keyword = params.keyword || '';
   const category = params.category || '';
   const subCategory = params.subCategory || '';
@@ -27,7 +25,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   let products = [];
   let isSuggestionMode = false;
 
-  // Build the granular backend analytical query pipeline
   let apiUrl = `/products/all?pageNumber=${pageNumber}`;
   if (keyword) apiUrl += `&keyword=${encodeURIComponent(keyword)}`;
   if (category && category !== 'All') apiUrl += `&category=${encodeURIComponent(category)}`;
@@ -38,7 +35,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     const { data } = await API.get(apiUrl);
     products = data.products;
 
-    // Smart Suggestion Core Mechanism: If zero matches occur, fetch top global collection
     if (products.length === 0) {
       isSuggestionMode = true;
       const { data: fallbackData } = await API.get(`/products/all?pageSize=10`);
@@ -48,7 +44,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     console.error("Advanced Search Pipeline Stream Resolution Failure:", error);
   }
 
-  // Active taxonomy logic mapping for sidebar components
   const activeSubCategories = category && CATEGORY_TREE[category] ? CATEGORY_TREE[category] : [];
 
   return (
