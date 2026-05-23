@@ -55,7 +55,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     <main className="min-h-screen bg-[#F7F8FA] py-8 text-black">
       <div className="max-w-[1400px] mx-auto px-4 lg:px-6">
 
-        {/* Top Header Grid Area */}
         <div className="bg-white border border-gray-200 rounded-xl p-5 mb-6 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <nav className="text-xs text-gray-500 mb-1 flex items-center gap-1">
@@ -77,7 +76,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             <p className="text-xs text-gray-500 mt-0.5">{isSuggestionMode ? "Global catalog fallback applied" : `Found ${products.length} matching inventory entities`}</p>
           </div>
 
-          {/* Quick Sort Dropdown Pipeline Interface */}
           <div className="flex items-center gap-2 self-end md:self-auto">
             <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Sort By:</span>
             <select
