@@ -125,7 +125,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               </ul>
             </div>
 
-            {/* Dynamic L2 sub-category layer display box conditionally mounted */}
             {activeSubCategories.length > 0 && (
               <div className="animate-fadeIn">
                 <div className="h-[1px] bg-gray-100 w-full my-4"></div>
@@ -146,7 +145,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             )}
           </aside>
 
-          {/* Core Results Mesh Grid Grid Frame */}
           <div className="flex-1">
             {products.length === 0 ? (
               <div className="w-full flex flex-col items-center justify-center py-24 bg-white border border-gray-200 rounded-xl shadow-sm">
