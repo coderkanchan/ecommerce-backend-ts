@@ -116,7 +116,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
             {activeSubCategories.length > 0 && (
               <div className="animate-fadeIn">
-                <div className="h-[1px] bg-gray-100 w-full my-4"></div>
+                <div className="h-px bg-gray-100 w-full my-4"></div>
                 <h3 className="text-sm font-bold text-gray-800 mb-2">Sub-Taxonomies</h3>
                 <ul className="space-y-1.5">
                   {activeSubCategories.map((sub) => (
