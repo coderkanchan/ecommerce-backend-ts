@@ -24,4 +24,10 @@ export const CATEGORY_TREE: Record<string, string[]> = {
   "Mechanical Nodes": ["Actuators", "Sensors", "Gearboxes"]
 };
 
-export const QUICK_FILTERS = ["All", ...Object.keys(CATEGORY_TREE)];
+// Extracted keys list for root nodes
+export const PRODUCT_CATEGORIES = Object.keys(CATEGORY_TREE);
+
+// RESTORED: Central array declaration requested by SearchBox component ✨
+export const SEARCH_CATEGORIES = ["All", ...PRODUCT_CATEGORIES];
+
+export const QUICK_FILTERS = ["All", ...PRODUCT_CATEGORIES];

@@ -269,7 +269,7 @@ export const createProduct = async (req: any, res: Response) => {
       description,
       price: Number(price),
       category,
-      subCategory: subCategory || "", 
+      subCategory: subCategory || "",
       stock: Number(stock),
       imageUrl,
       seller: req.user._id,
