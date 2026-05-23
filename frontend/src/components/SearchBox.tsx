@@ -19,12 +19,13 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const currentCategory = searchParams.get('category') || 'All';
 
+  // Debounced search logic forwarding to central /search landing zone
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (keyword.trim()) {
-        router.push(`/?keyword=${keyword}${currentCategory !== 'All' ? `&category=${currentCategory}` : ''}`);
+        router.push(`/search?keyword=${encodeURIComponent(keyword)}${currentCategory !== 'All' ? `&category=${encodeURIComponent(currentCategory)}` : ''}`);
       } else if (keyword === "" && searchParams.get('keyword')) {
-        router.push(currentCategory !== 'All' ? `/?category=${currentCategory}` : '/');
+        router.push(currentCategory !== 'All' ? `/search?category=${encodeURIComponent(currentCategory)}` : '/search');
       }
     }, 500);
     return () => clearTimeout(delayDebounceFn);
@@ -59,17 +60,16 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
 
   return (
     <div className="relative flex-1 max-w-sm" ref={suggestionRef}>
-      
       <form onSubmit={(e) => e.preventDefault()}
         className="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-gray-100 shadow-sm transition-all duration-200 focus-within:ring-2 focus-within:ring-orange-400 focus-within:border-transparent focus-within:shadow-md"
       >
         <select
           className="max-w-15 text-gray-700 text-sm px-2 outline-none h-10 border-r border-gray-400 bg-gray-300 cursor-pointer"
           value={currentCategory}
-          onChange={(e) => router.push(e.target.value === 'All' ? '/' : `/?category=${e.target.value}`)}
+          onChange={(e) => router.push(e.target.value === 'All' ? '/search' : `/search?category=${encodeURIComponent(e.target.value)}`)}
         >
           {SEARCH_CATEGORIES.map((cat) => (
-            <option key={cat} value={cat} >{cat}</option>
+            <option key={cat} value={cat}>{cat}</option>
           ))}
         </select>
 
@@ -80,18 +80,12 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
             id="product-search"
             value={keyword}
             onFocus={() => {
-              if (keyword.length > 1) {
-                setShowSuggestions(true);
-              }
-              if (onFocusChange) {
-                onFocusChange(true);
-              }
+              if (keyword.length > 1) setShowSuggestions(true);
+              if (onFocusChange) onFocusChange(true);
             }}
             onBlur={() => {
               setTimeout(() => {
-                if (onFocusChange) {
-                  onFocusChange(false);
-                }
+                if (onFocusChange) onFocusChange(false);
               }, 200);
             }}
             onChange={(e) => setKeyword(e.target.value)}
@@ -103,7 +97,7 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
       </form>
 
       {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute top-full left-0 w-full bg-white border border-gray-200 shadow-2xl rounded-b-xl z-999 mt-1 overflow-hidden">
+        <div className="absolute top-full left-0 w-full bg-white border border-gray-200 shadow-2xl rounded-b-xl z-50 mt-1 overflow-hidden">
           {suggestions.map((p: any) => (
             <div
               key={p._id}
