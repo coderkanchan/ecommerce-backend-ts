@@ -48,7 +48,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <main className="min-h-screen bg-[#F7F8FA] py-8 text-black">
-      <div className="max-w-[1400px] mx-auto px-4 lg:px-6">
+      <div className="max-w-350 mx-auto px-4 lg:px-6">
 
         <div className="bg-white border border-gray-200 rounded-xl p-5 mb-6 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
