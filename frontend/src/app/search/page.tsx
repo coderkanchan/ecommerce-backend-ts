@@ -83,8 +83,6 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
             <select
               className="bg-gray-50 border border-gray-300 text-gray-800 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 outline-none font-medium cursor-pointer"
               defaultValue={sort}
-            // Runtime redirection via query updating simulation layer
-            // Simple native link or immediate form submission substitute
             >
               <option value="">Featured / Newest</option>
               <option value="lowest">Price: Low to High</option>
