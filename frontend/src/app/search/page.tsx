@@ -93,10 +93,8 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           </div>
         </div>
 
-        {/* Master Content Layout Frame */}
         <div className="flex flex-col lg:flex-row gap-6">
 
-          {/* Sidebar Taxonomy Engine Control Panel */}
           <aside className="w-full lg:w-64 shrink-0 bg-white border border-gray-200 rounded-xl p-5 shadow-sm h-fit">
             <div className="mb-6">
               <h2 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Filter Modules</h2>
