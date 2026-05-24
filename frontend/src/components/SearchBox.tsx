@@ -137,7 +137,7 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
             value={keyword}
             onFocus={() => {
               if (keyword.length > 0) setShowSuggestions(true);
-              if (onFocusChange) onFocusChange(true); // Keep overlay open on input focus
+              if (onFocusChange) onFocusChange(true); 
             }}
             onChange={(e) => {
               setKeyword(e.target.value);
