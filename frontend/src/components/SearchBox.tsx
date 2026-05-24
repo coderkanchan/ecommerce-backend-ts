@@ -23,7 +23,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   // Real-time tracking of the dropdown width state
   const [dropdownWidth, setDropdownWidth] = useState(60);
 
-  // Dynamic Amazon-Style Width Calculator Matrix
   useEffect(() => {
     if (textMeasurementRef.current) {
       const calculatedWidth = textMeasurementRef.current.offsetWidth + 36;
