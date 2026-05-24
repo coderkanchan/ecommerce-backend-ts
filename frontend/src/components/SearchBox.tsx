@@ -75,12 +75,11 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
     router.push(queryParts.length > 0 ? `${targetUrl}${queryParts.join('&')}` : '/search');
   };
 
-  // Close suggestions and overlay ONLY when clicking entirely outside the component
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (suggestionRef.current && !suggestionRef.current.contains(e.target as Node)) {
         setShowSuggestions(false);
-        if (onFocusChange) onFocusChange(false); // Triggers overlay close
+        if (onFocusChange) onFocusChange(false); 
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
