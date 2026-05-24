@@ -37,7 +37,7 @@ export default function ProductDetails() {
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-8 flex flex-col md:flex-row gap-8 lg:gap-12 text-black bg-white my-6 rounded-2xl shadow-sm">
       <div className="flex-1 bg-[#F7F8F8] rounded-2xl p-6 flex items-center justify-center border border-gray-100">
-        <div className="relative w-full aspect-square max-w-[450px]">
+        <div className="relative w-full aspect-square max-w-112.5">
           <Image
             src={resolvedImageSrc}
             alt={product.name}
