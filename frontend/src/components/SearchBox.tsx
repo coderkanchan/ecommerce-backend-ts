@@ -135,7 +135,9 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
               }}
               className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center gap-3 border-b border-gray-50 last:border-0"
             >
-              <Search size={14} className="text-gray-400" />
+              <Search 
+              size={14} 
+              className="text-gray-400" />
               <span className="text-gray-800 text-sm font-medium">{p.name}</span>
             </div>
           ))}
