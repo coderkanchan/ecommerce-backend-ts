@@ -19,7 +19,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const currentCategory = searchParams.get('category') || 'All';
 
-  // Sync state if URL search query changes from outside root
   useEffect(() => {
     setKeyword(searchParams.get('keyword') || '');
   }, [searchParams]);
