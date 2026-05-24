@@ -28,7 +28,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
     if (textMeasurementRef.current) {
       // Calculate active text length in pixels and add safety padding for custom arrow
       const calculatedWidth = textMeasurementRef.current.offsetWidth + 36;
-      // Impose a strict clean bounds range [60px to 170px]
       setDropdownWidth(Math.min(Math.max(calculatedWidth, 60), 170));
     }
   }, [currentCategory]);
