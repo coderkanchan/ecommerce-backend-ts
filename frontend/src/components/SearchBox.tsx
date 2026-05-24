@@ -20,7 +20,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const currentCategory = searchParams.get('category') || 'All';
 
-  // Real-time tracking of the dropdown width state
   const [dropdownWidth, setDropdownWidth] = useState(60);
 
   useEffect(() => {
