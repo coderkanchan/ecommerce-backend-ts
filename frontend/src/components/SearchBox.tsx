@@ -46,7 +46,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
     return () => clearTimeout(delayDebounceFn);
   }, [keyword]);
 
-  // Unified Centralized Navigation Trigger
   const handleSearchSubmit = (searchKeyword: string, searchCategory: string) => {
     setShowSuggestions(false);
     let targetUrl = `/search?`;
