@@ -26,7 +26,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   // Dynamic Amazon-Style Width Calculator Matrix
   useEffect(() => {
     if (textMeasurementRef.current) {
-      // Calculate active text length in pixels and add safety padding for custom arrow
       const calculatedWidth = textMeasurementRef.current.offsetWidth + 36;
       setDropdownWidth(Math.min(Math.max(calculatedWidth, 60), 170));
     }
