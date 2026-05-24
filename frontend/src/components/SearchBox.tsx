@@ -19,33 +19,48 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const currentCategory = searchParams.get('category') || 'All';
 
+  // Sync state if URL search query changes from outside root
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (keyword.trim()) {
-        router.push(`/search?keyword=${encodeURIComponent(keyword)}${currentCategory !== 'All' ? `&category=${encodeURIComponent(currentCategory)}` : ''}`);
-      } else if (keyword === "" && searchParams.get('keyword')) {
-        router.push(currentCategory !== 'All' ? `/search?category=${encodeURIComponent(currentCategory)}` : '/search');
-      }
-    }, 500);
-    return () => clearTimeout(delayDebounceFn);
-  }, [keyword, currentCategory, router, searchParams]);
+    setKeyword(searchParams.get('keyword') || '');
+  }, [searchParams]);
 
+  // Handle active suggestions query mapping on keystroke
   useEffect(() => {
     const fetchSuggestions = async () => {
-      if (keyword.length > 0) {
+      if (keyword.trim().length > 0) {
         try {
-          const { data } = await API.get(`/products/all?keyword=${keyword}&limit=6`);
+          const { data } = await API.get(`/products/all?keyword=${encodeURIComponent(keyword)}&limit=6`);
           setSuggestions(data.products);
-          setShowSuggestions(true);
         } catch (err) {
           console.error("Suggestions fetch error:", err);
         }
       } else {
-        setShowSuggestions(false);
+        setSuggestions([]);
       }
     };
-    fetchSuggestions();
+
+    const delayDebounceFn = setTimeout(() => {
+      fetchSuggestions();
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
   }, [keyword]);
+
+  // Unified Centralized Navigation Trigger
+  const handleSearchSubmit = (searchKeyword: string, searchCategory: string) => {
+    setShowSuggestions(false);
+    let targetUrl = `/search?`;
+    const queryParts: string[] = [];
+
+    if (searchKeyword.trim()) {
+      queryParts.push(`keyword=${encodeURIComponent(searchKeyword.trim())}`);
+    }
+    if (searchCategory && searchCategory !== 'All') {
+      queryParts.push(`category=${encodeURIComponent(searchCategory)}`);
+    }
+
+    router.push(queryParts.length > 0 ? `${targetUrl}${queryParts.join('&')}` : '/search');
+  };
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -59,13 +74,20 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
 
   return (
     <div className="relative flex-1 max-w-sm" ref={suggestionRef}>
-      <form onSubmit={(e) => e.preventDefault()}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSearchSubmit(keyword, currentCategory);
+        }}
         className="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-gray-100 shadow-sm transition-all duration-200 focus-within:ring-2 focus-within:ring-orange-400 focus-within:border-transparent focus-within:shadow-md"
       >
         <select
           className="max-w-15 text-gray-700 text-sm px-2 outline-none h-10 border-r border-gray-400 bg-gray-300 cursor-pointer"
           value={currentCategory}
-          onChange={(e) => router.push(e.target.value === 'All' ? '/search' : `/search?category=${encodeURIComponent(e.target.value)}`)}
+          onChange={(e) => {
+            const nextCat = e.target.value;
+            handleSearchSubmit(keyword, nextCat);
+          }}
         >
           {SEARCH_CATEGORIES.map((cat) => (
             <option key={cat} value={cat}>{cat}</option>
@@ -79,7 +101,7 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
             id="product-search"
             value={keyword}
             onFocus={() => {
-              if (keyword.length > 1) setShowSuggestions(true);
+              if (keyword.length > 0) setShowSuggestions(true);
               if (onFocusChange) onFocusChange(true);
             }}
             onBlur={() => {
@@ -87,11 +109,20 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
                 if (onFocusChange) onFocusChange(false);
               }, 200);
             }}
-            onChange={(e) => setKeyword(e.target.value)}
+            onChange={(e) => {
+              setKeyword(e.target.value);
+              setShowSuggestions(true);
+            }}
             className="px-4 w-full text-black outline-none h-10 text-sm py-2"
             placeholder="Search NexusMart..."
           />
-          <div className="p-2 text-blue-600"><Search size={20} /></div>
+          <button
+            type="submit"
+            className="p-2 text-blue-600 hover:bg-gray-200 h-10 transition-colors"
+            aria-label="Submit Search"
+          >
+            <Search size={20} />
+          </button>
         </div>
       </form>
 
