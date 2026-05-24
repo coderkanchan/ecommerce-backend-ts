@@ -24,7 +24,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
     setKeyword(searchParams.get('keyword') || '');
   }, [searchParams]);
 
-  // Handle active suggestions query mapping on keystroke
   useEffect(() => {
     const fetchSuggestions = async () => {
       if (keyword.trim().length > 0) {
