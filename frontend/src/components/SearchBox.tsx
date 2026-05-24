@@ -20,12 +20,16 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const currentCategory = searchParams.get('category') || 'All';
 
+  // Real-time tracking of the dropdown width state
   const [dropdownWidth, setDropdownWidth] = useState(60);
 
+  // Dynamic Amazon-Style Width Calculator Matrix (Expanded bounds to prevent dots)
   useEffect(() => {
     if (textMeasurementRef.current) {
-      const calculatedWidth = textMeasurementRef.current.offsetWidth + 36;
-      setDropdownWidth(Math.min(Math.max(calculatedWidth, 60), 170));
+      // Calculate active text length in pixels and add safety padding for custom arrow
+      const calculatedWidth = textMeasurementRef.current.offsetWidth + 38;
+      // Expanded upper bound to 210px so long category names show completely
+      setDropdownWidth(Math.min(Math.max(calculatedWidth, 60), 210));
     }
   }, [currentCategory]);
 
@@ -56,6 +60,8 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
 
   const handleSearchSubmit = (searchKeyword: string, searchCategory: string) => {
     setShowSuggestions(false);
+    if (onFocusChange) onFocusChange(false);
+
     let targetUrl = `/search?`;
     const queryParts: string[] = [];
 
@@ -69,19 +75,22 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
     router.push(queryParts.length > 0 ? `${targetUrl}${queryParts.join('&')}` : '/search');
   };
 
+  // Close suggestions and overlay ONLY when clicking entirely outside the component
   useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
+    const handleClickOutside = (e: MouseEvent) => {
       if (suggestionRef.current && !suggestionRef.current.contains(e.target as Node)) {
         setShowSuggestions(false);
+        if (onFocusChange) onFocusChange(false); // Triggers overlay close
       }
     };
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [onFocusChange]);
 
   return (
     <div className="relative flex-1 max-w-sm" ref={suggestionRef}>
 
+      {/* GHOST SPAN ENGINE: Hidden text component that calculates exact active width */}
       <span
         ref={textMeasurementRef}
         className="absolute invisible h-0 w-auto text-xs sm:text-sm font-medium whitespace-pre"
@@ -99,11 +108,20 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
       >
         <select
           style={{ width: `${dropdownWidth}px` }}
-          className="text-gray-700 text-xs sm:text-sm pl-3 pr-7 outline-none h-10 border-r border-gray-300 bg-gray-200 cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234A5568%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:9px_9px] bg-[position:right_10px_center] bg-no-repeat transition-all duration-150 hover:bg-gray-300 font-medium truncate"
+          className="text-gray-700 text-xs sm:text-sm pl-3 pr-7 outline-none h-10 border-r border-gray-300 bg-gray-200 cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234A5568%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:9px_9px] bg-[position:right_10px_center] bg-no-repeat transition-all duration-150 hover:bg-gray-300 font-medium whitespace-nowrap"
           value={currentCategory}
+          onFocus={() => {
+            if (onFocusChange) onFocusChange(true); // Persist overlay on select focus
+          }}
           onChange={(e) => {
             const nextCat = e.target.value;
-            handleSearchSubmit(keyword, nextCat);
+            // Native state tracking update
+            let targetUrl = `/search?`;
+            const queryParts: string[] = [];
+            if (keyword.trim()) queryParts.push(`keyword=${encodeURIComponent(keyword.trim())}`);
+            if (nextCat !== 'All') queryParts.push(`category=${encodeURIComponent(nextCat)}`);
+
+            router.push(queryParts.length > 0 ? `${targetUrl}${queryParts.join('&')}` : '/search');
           }}
         >
           {SEARCH_CATEGORIES.map((cat) => (
@@ -119,23 +137,18 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
             value={keyword}
             onFocus={() => {
               if (keyword.length > 0) setShowSuggestions(true);
-              if (onFocusChange) onFocusChange(true);
-            }}
-            onBlur={() => {
-              setTimeout(() => {
-                if (onFocusChange) onFocusChange(false);
-              }, 200);
+              if (onFocusChange) onFocusChange(true); // Keep overlay open on input focus
             }}
             onChange={(e) => {
               setKeyword(e.target.value);
               setShowSuggestions(true);
             }}
-            className="px-4 w-full text-black outline-none h-10 text-sm py-2"
+            className="px-4 w-full text-black outline-none h-10 text-sm py-2 bg-white"
             placeholder="Search NexusMart..."
           />
           <button
             type="submit"
-            className="p-2 text-blue-600 hover:bg-gray-200 h-10 transition-colors shrink-0"
+            className="p-2 text-blue-600 hover:bg-gray-200 h-10 transition-colors shrink-0 bg-white"
             aria-label="Submit Search"
           >
             <Search size={20} />
@@ -151,6 +164,7 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
               onClick={() => {
                 setKeyword(p.name);
                 setShowSuggestions(false);
+                if (onFocusChange) onFocusChange(false);
                 router.push(`/product/${p._id}`);
               }}
               className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center gap-3 border-b border-gray-50 last:border-0"
