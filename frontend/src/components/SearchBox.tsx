@@ -23,12 +23,9 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   // Real-time tracking of the dropdown width state
   const [dropdownWidth, setDropdownWidth] = useState(60);
 
-  // Dynamic Amazon-Style Width Calculator Matrix (Expanded bounds to prevent dots)
   useEffect(() => {
     if (textMeasurementRef.current) {
-      // Calculate active text length in pixels and add safety padding for custom arrow
       const calculatedWidth = textMeasurementRef.current.offsetWidth + 38;
-      // Expanded upper bound to 210px so long category names show completely
       setDropdownWidth(Math.min(Math.max(calculatedWidth, 60), 210));
     }
   }, [currentCategory]);
