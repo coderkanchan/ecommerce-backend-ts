@@ -86,7 +86,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   return (
     <div className="relative flex-1 max-w-sm" ref={suggestionRef}>
 
-      {/* GHOST SPAN ENGINE: Hidden text component that calculates exact active width */}
       <span
         ref={textMeasurementRef}
         className="absolute invisible h-0 w-auto text-xs sm:text-sm font-medium whitespace-pre"
