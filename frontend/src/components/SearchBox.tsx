@@ -13,11 +13,25 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const suggestionRef = useRef<HTMLDivElement>(null);
+  const textMeasurementRef = useRef<HTMLSpanElement>(null);
 
   const [keyword, setKeyword] = useState(searchParams.get('keyword') || '');
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const currentCategory = searchParams.get('category') || 'All';
+
+  // Real-time tracking of the dropdown width state
+  const [dropdownWidth, setDropdownWidth] = useState(60);
+
+  // Dynamic Amazon-Style Width Calculator Matrix
+  useEffect(() => {
+    if (textMeasurementRef.current) {
+      // Calculate active text length in pixels and add safety padding for custom arrow
+      const calculatedWidth = textMeasurementRef.current.offsetWidth + 36;
+      // Impose a strict clean bounds range [60px to 170px]
+      setDropdownWidth(Math.min(Math.max(calculatedWidth, 60), 170));
+    }
+  }, [currentCategory]);
 
   useEffect(() => {
     setKeyword(searchParams.get('keyword') || '');
@@ -71,6 +85,16 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
 
   return (
     <div className="relative flex-1 max-w-sm" ref={suggestionRef}>
+
+      {/* GHOST SPAN ENGINE: Hidden text component that calculates exact active width */}
+      <span
+        ref={textMeasurementRef}
+        className="absolute invisible h-0 w-auto text-xs sm:text-sm font-medium whitespace-pre"
+        aria-hidden="true"
+      >
+        {currentCategory}
+      </span>
+
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -79,8 +103,8 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
         className="flex items-center border border-gray-300 rounded-lg overflow-hidden bg-gray-100 shadow-sm transition-all duration-200 focus-within:ring-2 focus-within:ring-orange-400 focus-within:border-transparent focus-within:shadow-md"
       >
         <select
-          className="w-auto max-w-40 text-gray-700 text-xs sm:text-sm pl-3 pr-8 outline-none h-10 border-r border-gray-300 bg-gray-200 cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234A5568%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')]
-           bg-size-[10px_10px] bg-position-[right_10px_center] bg-no-repeat transition-colors hover:bg-gray-300"
+          style={{ width: `${dropdownWidth}px` }}
+          className="text-gray-700 text-xs sm:text-sm pl-3 pr-7 outline-none h-10 border-r border-gray-300 bg-gray-200 cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234A5568%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:9px_9px] bg-[position:right_10px_center] bg-no-repeat transition-all duration-150 hover:bg-gray-300 font-medium truncate"
           value={currentCategory}
           onChange={(e) => {
             const nextCat = e.target.value;
@@ -88,7 +112,7 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
           }}
         >
           {SEARCH_CATEGORIES.map((cat) => (
-            <option key={cat} value={cat}>{cat}</option>
+            <option key={cat} value={cat} className="bg-white text-black font-normal">{cat}</option>
           ))}
         </select>
 
@@ -116,7 +140,7 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
           />
           <button
             type="submit"
-            className="p-2 text-blue-600 hover:bg-gray-200 h-10 transition-colors"
+            className="p-2 text-blue-600 hover:bg-gray-200 h-10 transition-colors shrink-0"
             aria-label="Submit Search"
           >
             <Search size={20} />
@@ -136,9 +160,7 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
               }}
               className="px-4 py-3 hover:bg-gray-100 cursor-pointer flex items-center gap-3 border-b border-gray-50 last:border-0"
             >
-              <Search
-                size={14}
-                className="text-gray-400" />
+              <Search size={14} className="text-gray-400" />
               <span className="text-gray-800 text-sm font-medium">{p.name}</span>
             </div>
           ))}
