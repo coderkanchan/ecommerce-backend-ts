@@ -32,7 +32,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
     if (urlKeyword) {
       setKeyword(urlKeyword);
     } else if (pathname === '/' || pathname === '/search') {
-      // Clear only if on main paths without query parameters
       setKeyword('');
     }
 
