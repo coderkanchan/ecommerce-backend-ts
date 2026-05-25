@@ -126,7 +126,7 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
           onChange={(e) => {
             const nextCat = e.target.value;
             setCurrentCategory(nextCat);
-            localStorage.setItem('nexusmart_search_cat', nextCat); // Cache assignment instantly
+            localStorage.setItem('nexusmart_search_cat', nextCat); 
             handleSearchSubmit(keyword, nextCat);
           }}
         >
