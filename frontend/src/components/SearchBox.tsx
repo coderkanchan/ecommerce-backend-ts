@@ -19,11 +19,9 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  // Persistent tracking initialized directly from URL matrix structure
   const [currentCategory, setCurrentCategory] = useState('All');
   const [dropdownWidth, setDropdownWidth] = useState(65);
 
-  // Sync category state seamlessly with URL params updates
   useEffect(() => {
     const urlCategory = searchParams.get('category');
     if (urlCategory) {
@@ -33,7 +31,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
     }
   }, [searchParams]);
 
-  // Amazon-Style Dynamic Width Calculator Matrix
   useEffect(() => {
     if (textMeasurementRef.current) {
       const calculatedWidth = textMeasurementRef.current.offsetWidth + 44;
