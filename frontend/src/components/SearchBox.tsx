@@ -28,7 +28,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
     const urlKeyword = searchParams.get('keyword');
     const urlCategory = searchParams.get('category');
 
-    // Sync input box text
     if (urlKeyword) {
       setKeyword(urlKeyword);
     } else if (pathname === '/' || pathname === '/search') {
