@@ -20,18 +20,15 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  // Safe Initialization: Hydrate selector state using fallback sequence parameters
   const [currentCategory, setCurrentCategory] = useState('All');
   const [dropdownWidth, setDropdownWidth] = useState(65);
 
-  // Sync state cleanly using fallback local storage state parameters
   useEffect(() => {
     const urlCategory = searchParams.get('category');
     if (urlCategory) {
       setCurrentCategory(urlCategory);
       localStorage.setItem('nexusmart_search_cat', urlCategory);
     } else {
-      // If landing outside search routes (like product views) check memory snapshot storage
       const cachedCategory = localStorage.getItem('nexusmart_search_cat');
       if (cachedCategory) {
         setCurrentCategory(cachedCategory);
@@ -41,7 +38,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
     }
   }, [searchParams, pathname]);
 
-  // Amazon-Style Dynamic Auto-Width Engine Matrix
   useEffect(() => {
     if (textMeasurementRef.current) {
       const calculatedWidth = textMeasurementRef.current.offsetWidth + 44;
