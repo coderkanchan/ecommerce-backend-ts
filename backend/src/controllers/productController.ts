@@ -32,10 +32,14 @@ export const createProduct = async (req: any, res: Response) => {
 
     const savedProduct = await product.save();
 
+    // const embedding = await getEmbedding(
+    //   `${product.name} ${product.description} ${product.category} ${product.subCategory || ''}`
+    // );
+    // Type safety bypass for optional property access or dynamic payload retrieval
+    const productData = savedProduct.toObject();
     const embedding = await getEmbedding(
-      `${product.name} ${product.description} ${product.category} ${product.subCategory || ''}`
+      `${productData.name} ${productData.description} ${productData.category} ${productData.subCategory || ''}`
     );
-
     await index.upsert({
       records: [
         {
