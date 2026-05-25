@@ -46,7 +46,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
     }
   }, [searchParams, pathname]);
 
-  // Amazon-Style Auto Width Matrix
   useEffect(() => {
     if (textMeasurementRef.current) {
       const calculatedWidth = textMeasurementRef.current.offsetWidth + 44;
