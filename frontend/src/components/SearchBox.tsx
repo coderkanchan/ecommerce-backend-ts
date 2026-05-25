@@ -23,7 +23,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   const [currentCategory, setCurrentCategory] = useState('All');
   const [dropdownWidth, setDropdownWidth] = useState(65);
 
-  // DYNAMIC SYNC ENGINE: Keeps input text and dropdown perfectly synced with active URL params
   useEffect(() => {
     const urlKeyword = searchParams.get('keyword');
     const urlCategory = searchParams.get('category');
