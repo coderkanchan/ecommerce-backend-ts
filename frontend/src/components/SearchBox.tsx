@@ -36,7 +36,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
       setKeyword('');
     }
 
-    // Sync dropdown selection matrix
     if (urlCategory) {
       setCurrentCategory(urlCategory);
       localStorage.setItem('nexusmart_search_cat', urlCategory);
