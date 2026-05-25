@@ -72,9 +72,12 @@ export const getProducts = async (req: Request, res: Response) => {
     let queryFilter: any = {};
 
     if (keyword) {
+      // ESCAPE SANITIZATION: Escapes special regex characters like [, ], (, ), ?, + to avoid crashing MongoDB
+      const sanitizedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
       queryFilter.$or = [
-        { name: { $regex: keyword, $options: 'i' } },
-        { description: { $regex: keyword, $options: 'i' } }
+        { name: { $regex: sanitizedKeyword, $options: 'i' } },
+        { description: { $regex: sanitizedKeyword, $options: 'i' } }
       ];
     }
 
@@ -106,7 +109,6 @@ export const getProducts = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Error fetching products from data vector" });
   }
 };
-
 export const deleteProduct = async (req: any, res: any) => {
   const product = await Product.findById(req.params.id);
   if (product) {
