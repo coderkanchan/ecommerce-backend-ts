@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { Search, Clock } from 'lucide-react';
 import API from '@/services/api';
 import { SEARCH_CATEGORIES } from '@/constants/categoryData';
@@ -12,6 +12,7 @@ interface SearchInputProps {
 function SearchInput({ onFocusChange }: SearchInputProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const suggestionRef = useRef<HTMLDivElement>(null);
   const textMeasurementRef = useRef<HTMLSpanElement>(null);
 
@@ -19,18 +20,28 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
+  // Safe Initialization: Hydrate selector state using fallback sequence parameters
   const [currentCategory, setCurrentCategory] = useState('All');
   const [dropdownWidth, setDropdownWidth] = useState(65);
 
+  // Sync state cleanly using fallback local storage state parameters
   useEffect(() => {
     const urlCategory = searchParams.get('category');
     if (urlCategory) {
       setCurrentCategory(urlCategory);
+      localStorage.setItem('nexusmart_search_cat', urlCategory);
     } else {
-      setCurrentCategory('All');
+      // If landing outside search routes (like product views) check memory snapshot storage
+      const cachedCategory = localStorage.getItem('nexusmart_search_cat');
+      if (cachedCategory) {
+        setCurrentCategory(cachedCategory);
+      } else {
+        setCurrentCategory('All');
+      }
     }
-  }, [searchParams]);
+  }, [searchParams, pathname]);
 
+  // Amazon-Style Dynamic Auto-Width Engine Matrix
   useEffect(() => {
     if (textMeasurementRef.current) {
       const calculatedWidth = textMeasurementRef.current.offsetWidth + 44;
@@ -111,7 +122,7 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
       >
         <select
           style={{ width: `${dropdownWidth}px` }}
-          className="text-gray-700 text-xs sm:text-sm pl-3 pr-8 outline-none h-10 border-r border-gray-300 bg-gray-200 cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234A5568%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-size-[9px_9px] bg-position-[right_12px_center] bg-no-repeat transition-all duration-150 hover:bg-gray-300 font-semibold whitespace-nowrap overflow-hidden"
+          className="text-gray-700 text-xs sm:text-sm pl-3 pr-8 outline-none h-10 border-r border-gray-300 bg-gray-200 cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234A5568%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:9px_9px] bg-[position:right_12px_center] bg-no-repeat transition-all duration-150 hover:bg-gray-300 font-semibold whitespace-nowrap overflow-hidden"
           value={currentCategory}
           onFocus={() => {
             if (onFocusChange) onFocusChange(true);
@@ -119,6 +130,7 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
           onChange={(e) => {
             const nextCat = e.target.value;
             setCurrentCategory(nextCat);
+            localStorage.setItem('nexusmart_search_cat', nextCat); // Cache assignment instantly
             handleSearchSubmit(keyword, nextCat);
           }}
         >
