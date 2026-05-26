@@ -37,6 +37,7 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
       if (urlKeyword) setKeyword(urlKeyword);
       if (urlCategory) setCurrentCategory(urlCategory);
     } else {
+      // Automatic drop and reset to default template on normal page shifts or main loads
       setKeyword('');
       setCurrentCategory('All');
     }
