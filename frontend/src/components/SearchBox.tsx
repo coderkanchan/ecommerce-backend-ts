@@ -43,7 +43,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
     }
   }, [searchParams, pathname]);
 
-  // Amazon-Style Dynamic Width Calculator Matrix
   useEffect(() => {
     if (textMeasurementRef.current) {
       const calculatedWidth = textMeasurementRef.current.offsetWidth + 44;
