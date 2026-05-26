@@ -17,18 +17,15 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
   const suggestionRef = useRef<HTMLDivElement>(null);
   const textMeasurementRef = useRef<HTMLSpanElement>(null);
 
-  // DOM Input Reference Pointer for Auto-Focus execution
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const [keyword, setKeyword] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  // Standard Local States without localStorage caching for native reset on hard refresh
   const [currentCategory, setCurrentCategory] = useState('All');
   const [dropdownWidth, setDropdownWidth] = useState(65);
 
-  // URL State Synchronizer (Only tracks parameters if present in search routes)
   useEffect(() => {
     const urlKeyword = searchParams.get('keyword');
     const urlCategory = searchParams.get('category');
