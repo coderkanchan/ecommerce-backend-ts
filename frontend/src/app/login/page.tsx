@@ -43,13 +43,13 @@ function LoginContent() {
   };
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4">
-      <form onSubmit={handleSubmit} className="bg-gray-900 p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-800">
+      <form onSubmit={handleSubmit} className="bg-gray-900 p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-800 ">
         <h2 className="text-3xl font-bold text-white mb-6 text-center">Login to NexusMart</h2>
 
         <input
           type="email"
           placeholder="Email"
-          className="w-full p-4 mb-4 bg-black border border-gray-700 rounded-lg text-white outline-none focus:border-blue-500 transition"
+          className="w-full p-4 bg-black border border-gray-700 rounded-xl text-white outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           required
         />
@@ -58,7 +58,7 @@ function LoginContent() {
           <input
             type={showPassword ? "text" : "password"}
             placeholder="Password"
-            className="w-full p-4 bg-black border border-gray-700 rounded-lg text-white outline-none focus:border-blue-500 transition pr-12"
+            className="w-full p-4 bg-black border border-gray-700 rounded-xl text-white outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             required
           />
