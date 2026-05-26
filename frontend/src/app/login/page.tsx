@@ -43,7 +43,7 @@ function LoginContent() {
   };
   return (
     <div className="min-h-screen flex items-center justify-center bg-black px-4">
-      <form onSubmit={handleSubmit} className="bg-gray-900 p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-800 ">
+      <form onSubmit={handleSubmit} className="bg-gray-900 p-8 rounded-2xl shadow-xl w-full max-w-md border border-gray-800 space-y-4">
         <h2 className="text-3xl font-bold text-white mb-6 text-center">Login to NexusMart</h2>
 
         <input
