@@ -130,7 +130,6 @@ function SearchInput({ onFocusChange }: SearchInputProps) {
             // 1. Instantly shift internal category state value
             setCurrentCategory(nextCat);
 
-            // 2. Direct user cursor layout alignment into the text search box immediately
             if (searchInputRef.current) {
               searchInputRef.current.focus();
             }
